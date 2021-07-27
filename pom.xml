@@ -8,6 +8,12 @@
     <artifactId>openmall</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+    <modules>
+        <module>openmall-common</module>
+        <module>openmall-api</module>
+        <module>openmall-dao</module>
+        <module>openmall-service</module>
+    </modules>
 
     <repositories>
         <repository>
