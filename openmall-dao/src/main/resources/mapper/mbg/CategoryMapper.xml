@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.mbg.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="cat_image" jdbcType="VARCHAR" property="catImage" />
+    <result column="bg_color" jdbcType="VARCHAR" property="bgColor" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, type, parent_id, logo, slogan, cat_image, bg_color
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from categories
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from categories
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into categories (name, type, parent_id, 
+      logo, slogan, cat_image, 
+      bg_color)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{logo,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{catImage,jdbcType=VARCHAR}, 
+      #{bgColor,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into categories
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="logo != null">
+        logo,
+      </if>
+      <if test="slogan != null">
+        slogan,
+      </if>
+      <if test="catImage != null">
+        cat_image,
+      </if>
+      <if test="bgColor != null">
+        bg_color,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="slogan != null">
+        #{slogan,jdbcType=VARCHAR},
+      </if>
+      <if test="catImage != null">
+        #{catImage,jdbcType=VARCHAR},
+      </if>
+      <if test="bgColor != null">
+        #{bgColor,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+    update categories
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="slogan != null">
+        slogan = #{slogan,jdbcType=VARCHAR},
+      </if>
+      <if test="catImage != null">
+        cat_image = #{catImage,jdbcType=VARCHAR},
+      </if>
+      <if test="bgColor != null">
+        bg_color = #{bgColor,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+    update categories
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      logo = #{logo,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      cat_image = #{catImage,jdbcType=VARCHAR},
+      bg_color = #{bgColor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
