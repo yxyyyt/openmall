@@ -16,4 +16,16 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!-- openmall -->
+        <dependency>
+            <groupId>com.sciatta.openmall</groupId>
+            <artifactId>openmall-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sciatta.openmall</groupId>
+            <artifactId>openmall-dao</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
