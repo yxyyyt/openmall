@@ -33,22 +33,21 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Item">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into items (item_name, cat_id, root_cat_id, 
-      sell_counts, on_off_status, created_time, 
-      updated_time, content)
-    values (#{itemName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, #{rootCatId,jdbcType=INTEGER}, 
-      #{sellCounts,jdbcType=INTEGER}, #{onOffStatus,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+    insert into items (id, item_name, cat_id, 
+      root_cat_id, sell_counts, on_off_status, 
+      created_time, updated_time, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{rootCatId,jdbcType=INTEGER}, #{sellCounts,jdbcType=INTEGER}, #{onOffStatus,jdbcType=INTEGER}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.Item">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into items
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="itemName != null">
         item_name,
       </if>
@@ -75,6 +74,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
       <if test="itemName != null">
         #{itemName,jdbcType=VARCHAR},
       </if>

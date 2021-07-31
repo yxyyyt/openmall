@@ -28,24 +28,21 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.ItemComment">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into item_comments (user_id, item_id, item_name, 
-      item_spec_id, item_sepc_name, comment_level, 
-      content, created_time, updated_time
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, 
-      #{itemSpecId,jdbcType=VARCHAR}, #{itemSepcName,jdbcType=VARCHAR}, #{commentLevel,jdbcType=INTEGER}, 
-      #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
-      )
+    insert into item_comments (id, user_id, item_id, 
+      item_name, item_spec_id, item_sepc_name, 
+      comment_level, content, created_time, 
+      updated_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{itemSpecId,jdbcType=VARCHAR}, #{itemSepcName,jdbcType=VARCHAR}, 
+      #{commentLevel,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.ItemComment">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into item_comments
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -75,6 +72,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null">
         #{userId,jdbcType=VARCHAR},
       </if>

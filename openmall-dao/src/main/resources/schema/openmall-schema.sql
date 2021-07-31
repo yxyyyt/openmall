@@ -67,16 +67,16 @@ CREATE TABLE `items`
 DROP TABLE IF EXISTS `item_comments`;
 CREATE TABLE `item_comments`
 (
-    `id`            varchar(64)  NOT NULL COMMENT '商品评价主键',
-    `user_id`       varchar(64) DEFAULT NULL COMMENT '用户外键',
-    `item_id`       varchar(64)  NOT NULL COMMENT '商品外键',
-    `item_name`     varchar(64) DEFAULT NULL COMMENT '商品名称',
-    `item_spec_id`  varchar(64) DEFAULT NULL COMMENT '商品规格外键 可为空',
-    `item_sepc_name`     varchar(32) DEFAULT NULL COMMENT '商品规格名称 可为空',
-    `comment_level` int(11)      NOT NULL COMMENT '评价等级 1：好评 2：中评 3：差评',
-    `content`       varchar(128) NOT NULL COMMENT '评价内容',
-    `created_time`  datetime    DEFAULT NULL COMMENT '创建时间',
-    `updated_time`  datetime    DEFAULT NULL COMMENT '更新时间',
+    `id`             varchar(64)  NOT NULL COMMENT '商品评价主键',
+    `user_id`        varchar(64) DEFAULT NULL COMMENT '用户外键',
+    `item_id`        varchar(64)  NOT NULL COMMENT '商品外键',
+    `item_name`      varchar(64) DEFAULT NULL COMMENT '商品名称',
+    `item_spec_id`   varchar(64) DEFAULT NULL COMMENT '商品规格外键 可为空',
+    `item_sepc_name` varchar(32) DEFAULT NULL COMMENT '商品规格名称 可为空',
+    `comment_level`  int(11)      NOT NULL COMMENT '评价等级 1：好评 2：中评 3：差评',
+    `content`        varchar(128) NOT NULL COMMENT '评价内容',
+    `created_time`   datetime    DEFAULT NULL COMMENT '创建时间',
+    `updated_time`   datetime    DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品评价表';
@@ -190,8 +190,8 @@ CREATE TABLE `order_items`
 DROP TABLE IF EXISTS `order_statuses`;
 CREATE TABLE `order_statuses`
 (
-    `id`           varchar(64)  NOT NULL COMMENT '订单主键',
-    `order_status` int(11)      NOT NULL COMMENT '订单状态 10：待付款 20：已付款，待发货 30：已发货，待收货（7天自动确认） 40：交易成功（此时可以评价） 50：交易关闭（待付款时用户取消或长时间未付款，系统识别后自动关闭）',
+    `id`           varchar(64) NOT NULL COMMENT '订单主键',
+    `order_status` int(11)     NOT NULL COMMENT '订单状态 10：待付款 20：已付款，待发货 30：已发货，待收货（7天自动确认） 40：交易成功（此时可以评价） 50：交易关闭（待付款时用户取消或长时间未付款，系统识别后自动关闭）',
     `created_time` datetime DEFAULT NULL COMMENT '订单创建时间 对应[10:待付款]状态',
     `pay_time`     datetime DEFAULT NULL COMMENT '支付成功时间 对应[20:已付款，待发货]状态',
     `deliver_time` datetime DEFAULT NULL COMMENT '发货时间 对应[30：已发货，待收货]状态',
@@ -208,18 +208,18 @@ CREATE TABLE `order_statuses`
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `id`           varchar(64)      NOT NULL COMMENT '用户主键',
-    `username`     varchar(32)      NOT NULL COMMENT '用户名',
-    `password`     varchar(64)      NOT NULL COMMENT '密码',
+    `id`           varchar(64)   NOT NULL COMMENT '用户主键',
+    `username`     varchar(32)   NOT NULL COMMENT '用户名',
+    `password`     varchar(64)   NOT NULL COMMENT '密码',
     `nickname`     varchar(32)  DEFAULT NULL COMMENT '昵称',
     `realname`     varchar(128) DEFAULT NULL COMMENT '真实姓名',
-    `face`         varchar(1024)    NOT NULL COMMENT '头像',
+    `face`         varchar(1024) NOT NULL COMMENT '头像',
     `mobile`       varchar(32)  DEFAULT NULL COMMENT '手机号',
     `email`        varchar(32)  DEFAULT NULL COMMENT '邮箱地址',
     `sex`          int(11)      DEFAULT NULL COMMENT '性别 1：男 0：女 2：保密',
     `birthday`     date         DEFAULT NULL COMMENT '生日',
-    `created_time` datetime         NOT NULL COMMENT '创建时间',
-    `updated_time` datetime         NOT NULL COMMENT '更新时间',
+    `created_time` datetime      NOT NULL COMMENT '创建时间',
+    `updated_time` datetime      NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户表';
@@ -230,18 +230,18 @@ CREATE TABLE `users`
 DROP TABLE IF EXISTS `user_addresses`;
 CREATE TABLE `user_addresses`
 (
-    `id`           varchar(64)      NOT NULL COMMENT '用户地址主键',
-    `user_id`      varchar(64)      NOT NULL COMMENT '用户外键',
-    `receiver`     varchar(32)      NOT NULL COMMENT '收件人姓名',
-    `mobile`       varchar(32)      NOT NULL COMMENT '收件人手机号',
-    `province`     varchar(32)      NOT NULL COMMENT '省份',
-    `city`         varchar(32)      NOT NULL COMMENT '城市',
-    `district`     varchar(32)      NOT NULL COMMENT '区县',
-    `detail`       varchar(128)     NOT NULL COMMENT '详细地址',
-    `extend`       varchar(128)     DEFAULT NULL COMMENT '扩展字段',
-    `is_default`   int(11)          DEFAULT NULL COMMENT '是否默认地址',
-    `created_time` datetime             NOT NULL COMMENT '创建时间',
-    `updated_time` datetime             NOT NULL COMMENT '更新时间',
+    `id`           varchar(64)  NOT NULL COMMENT '用户地址主键',
+    `user_id`      varchar(64)  NOT NULL COMMENT '用户外键',
+    `receiver`     varchar(32)  NOT NULL COMMENT '收件人姓名',
+    `mobile`       varchar(32)  NOT NULL COMMENT '收件人手机号',
+    `province`     varchar(32)  NOT NULL COMMENT '省份',
+    `city`         varchar(32)  NOT NULL COMMENT '城市',
+    `district`     varchar(32)  NOT NULL COMMENT '区县',
+    `detail`       varchar(128) NOT NULL COMMENT '详细地址',
+    `extend`       varchar(128) DEFAULT NULL COMMENT '扩展字段',
+    `is_default`   int(11)      DEFAULT NULL COMMENT '是否默认地址',
+    `created_time` datetime     NOT NULL COMMENT '创建时间',
+    `updated_time` datetime     NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户地址表';

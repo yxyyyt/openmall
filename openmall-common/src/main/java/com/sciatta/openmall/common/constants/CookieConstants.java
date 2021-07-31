@@ -1,4 +1,4 @@
-package com.sciatta.openmall.common.constant;
+package com.sciatta.openmall.common.constants;
 
 /**
  * Created by yangxiaoyu on 2021/7/30<br>

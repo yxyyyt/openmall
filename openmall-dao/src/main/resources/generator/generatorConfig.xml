@@ -51,9 +51,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 商品分类表 -->
         <table tableName="categories"
@@ -71,9 +69,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 商品评价表 -->
         <table tableName="item_comments"
@@ -81,9 +77,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 商品图片表 -->
         <table tableName="item_images"
@@ -91,9 +85,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 商品参数表 -->
         <table tableName="item_params"
@@ -101,9 +93,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 商品规格表 -->
         <table tableName="item_specs"
@@ -111,9 +101,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 订单表 -->
         <table tableName="orders"
@@ -121,9 +109,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 订单商品关联表 -->
         <table tableName="order_items"
@@ -131,9 +117,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 订单状态表 -->
         <table tableName="order_statuses"
@@ -141,9 +125,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 用户表 -->
         <table tableName="users"
@@ -151,9 +133,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
         <!-- 用户地址表 -->
         <table tableName="user_addresses"
@@ -161,9 +141,7 @@
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+               enableUpdateByExample="false"/>
 
     </context>
 </generatorConfiguration>

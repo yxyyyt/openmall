@@ -8,11 +8,11 @@ import org.mapstruct.factory.Mappers;
 /**
  * Created by yangxiaoyu on 2021/7/29<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * UserConverter
+ * UserLoginConverter
  */
 @Mapper
-public interface UserConverter {
-    UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
+public abstract class UserLoginConverter {
+    public static UserLoginConverter INSTANCE = Mappers.getMapper(UserLoginConverter.class);
     
-    UserLoginDTO userToUserLoginDTO(User user);
+    public abstract UserLoginDTO userToUserLoginDTO(User user);
 }

@@ -11,8 +11,8 @@ import org.mapstruct.factory.Mappers;
  * UserLoginConverter
  */
 @Mapper
-public interface UserLoginConverter {
-    UserLoginConverter INSTANCE = Mappers.getMapper(UserLoginConverter.class);
+public abstract class UserLoginConverter {
+    public static UserLoginConverter INSTANCE = Mappers.getMapper(UserLoginConverter.class);
     
-    UserLoginVO userLoginDTOtoUserLoginVO(UserLoginDTO userLoginDTO);
+    public abstract UserLoginVO userLoginDTOtoUserLoginVO(UserLoginDTO userLoginDTO);
 }

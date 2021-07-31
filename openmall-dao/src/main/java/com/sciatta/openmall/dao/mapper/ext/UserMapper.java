@@ -9,5 +9,8 @@ import org.apache.ibatis.annotations.Param;
  * UserMapper
  */
 public interface UserMapper extends com.sciatta.openmall.dao.mapper.mbg.UserMapper {
+    
     User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    
+    User selectByUsername(@Param("username") String username);
 }

@@ -1,11 +1,11 @@
-package com.sciatta.openmall.api.pojo.query;
+package com.sciatta.openmall.service.pojo.query;
 
 /**
- * Created by yangxiaoyu on 2021/7/16<br>
+ * Created by yangxiaoyu on 2021/7/30<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * 用户登录请求
+ * UserRegisterServiceQuery
  */
-public class UserLoginQuery {
+public class UserRegisterServiceQuery {
     private String username;
     private String password;
     
