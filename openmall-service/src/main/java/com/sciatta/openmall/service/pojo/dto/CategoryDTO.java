@@ -1,6 +1,6 @@
 package com.sciatta.openmall.service.pojo.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -9,6 +9,7 @@ import java.io.Serializable;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * 商品种类DTO
  */
+@Data
 public class CategoryDTO implements Serializable {
     
     private static final long serialVersionUID = 8385262944496750216L;
@@ -16,28 +17,4 @@ public class CategoryDTO implements Serializable {
     private Integer id;
     private String name;
     private String logo;
-    
-    public Integer getId() {
-        return id;
-    }
-    
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getLogo() {
-        return logo;
-    }
-    
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
 }

@@ -2,7 +2,6 @@ package com.sciatta.openmall.api.pojo.vo;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +11,7 @@ import java.util.List;
  * 子商品种类DTO，描述二级和三级分类
  */
 @Data
-public class SubCategoryVO implements Serializable {
-    
-    private static final long serialVersionUID = 8385262944496750216L;
-    
+public class SubCategoryVO {
     private Integer id;
     private String name;
     private Integer type;
