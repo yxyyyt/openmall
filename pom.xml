@@ -211,6 +211,11 @@
             <groupId>com.github.bingoohuang</groupId>
             <artifactId>idworker-client</artifactId>
         </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

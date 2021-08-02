@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.ext.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Category">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo"/>
+        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+        <result column="cat_image" jdbcType="VARCHAR" property="catImage"/>
+        <result column="bg_color" jdbcType="VARCHAR" property="bgColor"/>
+    </resultMap>
+
+    <resultMap id="SubCategoryResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.SubCategory">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="parentId" jdbcType="INTEGER" property="parentId"/>
+        <collection property="subCategories" ofType="com.sciatta.openmall.dao.pojo.po.ext.SubCategory">
+            <id column="subId" jdbcType="INTEGER" property="id"/>
+            <result column="subName" jdbcType="VARCHAR" property="name"/>
+            <result column="subType" jdbcType="INTEGER" property="type"/>
+            <result column="subParentId" jdbcType="INTEGER" property="parentId"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, type, parent_id, logo, slogan, cat_image, bg_color
+    </sql>
+
+    <select id="selectByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from categories
+        where type = #{type,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSubCategoriesByParentId" resultMap="SubCategoryResultMap">
+        SELECT
+        p.id as id,
+        p.`name` as `name`,
+        p.type as type,
+        p.parent_id as parentId,
+        c.id as subId,
+        c.`name` as subName,
+        c.type as subType,
+        c.parent_id as subParentId
+        FROM categories p
+        LEFT JOIN categories c on p.id = c.parent_id
+        WHERE
+        p.parent_id = #{parentId}
+    </select>
+
+</mapper>
