@@ -3,6 +3,7 @@ package com.sciatta.openmall.api.controller;
 import com.sciatta.openmall.api.converter.CarouselConverter;
 import com.sciatta.openmall.api.converter.CategoryConverter;
 import com.sciatta.openmall.api.pojo.vo.CarouselVO;
+import com.sciatta.openmall.api.pojo.vo.CategoryItemVO;
 import com.sciatta.openmall.api.pojo.vo.CategoryVO;
 import com.sciatta.openmall.api.pojo.vo.SubCategoryVO;
 import com.sciatta.openmall.common.JSONResult;
@@ -11,6 +12,7 @@ import com.sciatta.openmall.service.CarouselService;
 import com.sciatta.openmall.service.CategoryService;
 import com.sciatta.openmall.service.pojo.dto.CarouselDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
+import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +62,18 @@ public class IndexController {
         List<SubCategoryVO> subCategoriesVO = CategoryConverter.INSTANCE.subCategoriesDTOToSubCategoriesVO(subCategoriesDTO);
         
         return JSONResult.success(subCategoriesVO);
+    }
+    
+    @GetMapping("/sixItems/{parentId}")
+    public JSONResult sixItems(@PathVariable Integer parentId) {
+        
+        if (parentId == null) {
+            return JSONResult.errorUsingMessage("分类不存在");
+        }
+        
+        List<CategoryItemDTO> categoryItemsDTO = categoryService.querySixItemsByParentId(parentId);
+        List<CategoryItemVO> categoryItemsVO = CategoryConverter.INSTANCE.categoryItemsDTOToCategoryItemsVO(categoryItemsDTO);
+        
+        return JSONResult.success(categoryItemsVO);
     }
 }

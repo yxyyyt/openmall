@@ -1,6 +1,7 @@
 package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
+import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface CategoryService {
     List<CategoryDTO> queryAllRootLevel();
     
     public List<SubCategoryDTO> querySubCategoriesByParentId(Integer parentId);
+    
+    public List<CategoryItemDTO> querySixItemsByParentId(Integer parentId);
 }

@@ -1,11 +1,13 @@
 package com.sciatta.openmall.service.impl;
 
 import com.sciatta.openmall.dao.mapper.ext.CategoryMapper;
+import com.sciatta.openmall.dao.pojo.po.ext.CategoryItem;
 import com.sciatta.openmall.dao.pojo.po.ext.SubCategory;
 import com.sciatta.openmall.dao.pojo.po.mbg.Category;
 import com.sciatta.openmall.service.CategoryService;
 import com.sciatta.openmall.service.converter.CategoryConverter;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
+import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,13 @@ public class CategoryServiceImpl implements CategoryService {
         List<SubCategory> subCategories = categoryMapper.selectSubCategoriesByParentId(parentId);   // 通过一级商品种类Id查询二级和三级商品种类
         
         return CategoryConverter.INSTANCE.subCategoriesToSubCategoriesDTO(subCategories);
+    }
+    
+    @Override
+    public List<CategoryItemDTO> querySixItemsByParentId(Integer parentId) {
+        List<CategoryItem> categoryItems = categoryMapper.selectSixItemsByParentId(parentId);
+        
+        return CategoryConverter.INSTANCE.categoryItemsToCategoryItemsDTO(categoryItems);
     }
     
 }

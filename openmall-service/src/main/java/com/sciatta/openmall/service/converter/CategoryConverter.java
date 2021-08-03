@@ -1,8 +1,10 @@
 package com.sciatta.openmall.service.converter;
 
+import com.sciatta.openmall.dao.pojo.po.ext.CategoryItem;
 import com.sciatta.openmall.dao.pojo.po.ext.SubCategory;
 import com.sciatta.openmall.dao.pojo.po.mbg.Category;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
+import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -23,4 +25,6 @@ public abstract class CategoryConverter {
     public abstract List<CategoryDTO> categoriesToCategoriesDTO(List<Category> categories);
     
     public abstract List<SubCategoryDTO> subCategoriesToSubCategoriesDTO(List<SubCategory> subCategories);
+    
+    public abstract List<CategoryItemDTO> categoryItemsToCategoryItemsDTO (List<CategoryItem> categoryItems);
 }
