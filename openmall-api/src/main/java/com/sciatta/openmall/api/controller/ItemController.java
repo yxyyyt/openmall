@@ -38,14 +38,14 @@ public class ItemController {
         }
         
         ItemDTO itemDTO = itemService.queryItemById(itemId);
-        List<ItemImageDTO> itemImageDTOS = itemService.queryItemImagesByItemId(itemId);
-        List<ItemSpecDTO> itemSpecDTOS = itemService.queryItemSpecsByItemId(itemId);
+        List<ItemImageDTO> itemImageDTOList = itemService.queryItemImagesByItemId(itemId);
+        List<ItemSpecDTO> itemSpecDTOList = itemService.queryItemSpecsByItemId(itemId);
         ItemParamDTO itemParamDTO = itemService.queryItemParamByItemId(itemId);
         
         ItemInfoVO itemInfoVO = ItemConverter.INSTANCE.toItemInfoVO(
                 itemDTO,
-                itemImageDTOS,
-                itemSpecDTOS,
+                itemImageDTOList,
+                itemSpecDTOList,
                 itemParamDTO);
         
         

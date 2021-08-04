@@ -24,11 +24,9 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract CategoryVO categoryDTOToCategoryVO(CategoryDTO categoryDTO);
+    public abstract List<CategoryVO> categoryDTOListToCategoryVOList(List<CategoryDTO> categoryDTOList);
     
-    public abstract List<CategoryVO> categoriesDTOToCategoriesVO(List<CategoryDTO> categoryDTO);
-    
-    public abstract List<SubCategoryVO> subCategoriesDTOToSubCategoriesVO(List<SubCategoryDTO> subCategoriesDTO);
+    public abstract List<SubCategoryVO> subCategoryDTOListToSubCategoryVOList(List<SubCategoryDTO> subCategoryDTOList);
     
     @Mappings({
             @Mapping(source = "id", target = "itemId"),
@@ -43,5 +41,5 @@ public abstract class CategoryConverter {
     })
     public abstract CategoryItemVO categoryItemDTOToCategoryItemVO(CategoryItemDTO categoryItemDTO);
     
-    public abstract List<CategoryItemVO> categoryItemsDTOToCategoryItemsVO(List<CategoryItemDTO> categoryItemsDTO);
+    public abstract List<CategoryItemVO> categoryItemDTOListToCategoryItemVOList(List<CategoryItemDTO> categoryItemDTOList);
 }

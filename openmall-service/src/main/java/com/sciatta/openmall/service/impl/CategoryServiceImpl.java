@@ -28,24 +28,24 @@ public class CategoryServiceImpl implements CategoryService {
     
     @Override
     public List<CategoryDTO> queryAllRootLevel() {
-        List<Category> categories = categoryMapper.selectByType(1); // 第一级商品种类
+        List<Category> categoryList = categoryMapper.selectByType(1); // 第一级商品种类
         
-        return CategoryConverter.INSTANCE.categoriesToCategoriesDTO(categories);
+        return CategoryConverter.INSTANCE.categoryListToCategoryDTOList(categoryList);
     }
     
     @Override
     public List<SubCategoryDTO> querySubCategoriesByParentId(Integer parentId) {
         
-        List<SubCategory> subCategories = categoryMapper.selectSubCategoriesByParentId(parentId);   // 通过一级商品种类Id查询二级和三级商品种类
+        List<SubCategory> subCategoryList = categoryMapper.selectSubCategoriesByParentId(parentId);   // 通过一级商品种类Id查询二级和三级商品种类
         
-        return CategoryConverter.INSTANCE.subCategoriesToSubCategoriesDTO(subCategories);
+        return CategoryConverter.INSTANCE.subCategoryListToSubCategoryDTOList(subCategoryList);
     }
     
     @Override
     public List<CategoryItemDTO> querySixItemsByParentId(Integer parentId) {
-        List<CategoryItem> categoryItems = categoryMapper.selectSixItemsByParentId(parentId);
+        List<CategoryItem> categoryItemList = categoryMapper.selectSixItemsByParentId(parentId);
         
-        return CategoryConverter.INSTANCE.categoryItemsToCategoryItemsDTO(categoryItems);
+        return CategoryConverter.INSTANCE.categoryItemListToCategoryItemDTOList(categoryItemList);
     }
     
 }

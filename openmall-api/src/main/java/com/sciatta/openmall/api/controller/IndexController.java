@@ -39,18 +39,18 @@ public class IndexController {
     
     @GetMapping("carousels")
     public JSONResult carousels() {
-        List<CarouselDTO> carouselsDTO = carouselService.queryAll(YesOrNo.YES.type);
+        List<CarouselDTO> carouselDTOList = carouselService.queryAll(YesOrNo.YES.type);
         
-        List<CarouselVO> carouselsVO = CarouselConverter.INSTANCE.carouselsDTOToCarouselsVO(carouselsDTO);
+        List<CarouselVO> carouselsVO = CarouselConverter.INSTANCE.carouselDTOListToCarouselVOList(carouselDTOList);
         return JSONResult.success(carouselsVO);
     }
     
     @GetMapping("categories")
     public JSONResult categories() {
-        List<CategoryDTO> categoriesDTO = categoryService.queryAllRootLevel();
+        List<CategoryDTO> categoryDTOList = categoryService.queryAllRootLevel();
         
-        List<CategoryVO> categoriesVO = CategoryConverter.INSTANCE.categoriesDTOToCategoriesVO(categoriesDTO);
-        return JSONResult.success(categoriesVO);
+        List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.categoryDTOListToCategoryVOList(categoryDTOList);
+        return JSONResult.success(categoryVOList);
     }
     
     @GetMapping("subCategories/{parentId}")
@@ -60,10 +60,10 @@ public class IndexController {
             return JSONResult.errorUsingMessage("分类不存在");
         }
         
-        List<SubCategoryDTO> subCategoriesDTO = categoryService.querySubCategoriesByParentId(parentId);
-        List<SubCategoryVO> subCategoriesVO = CategoryConverter.INSTANCE.subCategoriesDTOToSubCategoriesVO(subCategoriesDTO);
+        List<SubCategoryDTO> subCategoryDTOList = categoryService.querySubCategoriesByParentId(parentId);
+        List<SubCategoryVO> subCategoryVOList = CategoryConverter.INSTANCE.subCategoryDTOListToSubCategoryVOList(subCategoryDTOList);
         
-        return JSONResult.success(subCategoriesVO);
+        return JSONResult.success(subCategoryVOList);
     }
     
     @GetMapping("/sixItems/{parentId}")
@@ -73,9 +73,9 @@ public class IndexController {
             return JSONResult.errorUsingMessage("分类不存在");
         }
         
-        List<CategoryItemDTO> categoryItemsDTO = categoryService.querySixItemsByParentId(parentId);
-        List<CategoryItemVO> categoryItemsVO = CategoryConverter.INSTANCE.categoryItemsDTOToCategoryItemsVO(categoryItemsDTO);
+        List<CategoryItemDTO> categoryItemDTOList = categoryService.querySixItemsByParentId(parentId);
+        List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.categoryItemDTOListToCategoryItemVOList(categoryItemDTOList);
         
-        return JSONResult.success(categoryItemsVO);
+        return JSONResult.success(categoryItemVOList);
     }
 }

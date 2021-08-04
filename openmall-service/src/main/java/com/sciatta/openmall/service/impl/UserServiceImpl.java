@@ -3,8 +3,7 @@ package com.sciatta.openmall.service.impl;
 import com.sciatta.openmall.dao.mapper.ext.UserMapper;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.UserService;
-import com.sciatta.openmall.service.converter.UserLoginConverter;
-import com.sciatta.openmall.service.converter.UserRegisterConverter;
+import com.sciatta.openmall.service.converter.UserConverter;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public UserLoginDTO queryUserForLogin(String username, String password) {
         User user = userMapper.selectByUsernameAndPassword(username, DigestUtils.md5DigestAsHex(password.getBytes()));
         
-        return UserLoginConverter.INSTANCE.userToUserLoginDTO(user);
+        return UserConverter.INSTANCE.userToUserLoginDTO(user);
     }
     
     @Transactional(readOnly = true)
@@ -44,10 +43,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public UserRegisterDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery) {
-        User user = UserRegisterConverter.INSTANCE.userRegisterServiceQueryToUser(userRegisterServiceQuery);
+        User user = UserConverter.INSTANCE.userRegisterServiceQueryToUser(userRegisterServiceQuery);
         
         userMapper.insert(user);
         
-        return UserRegisterConverter.INSTANCE.userToUserRegisterDTO(user);
+        return UserConverter.INSTANCE.userToUserRegisterDTO(user);
     }
 }

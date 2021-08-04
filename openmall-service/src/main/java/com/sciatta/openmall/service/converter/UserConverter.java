@@ -3,6 +3,7 @@ package com.sciatta.openmall.service.converter;
 import com.sciatta.openmall.common.enums.Sex;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
+import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
 import org.mapstruct.Mapper;
@@ -20,9 +21,10 @@ import static com.sciatta.openmall.common.constants.PictureConstants.USER_FACE;
  * UserConverter
  */
 @Mapper
-public abstract class UserRegisterConverter {
+public abstract class UserConverter {
+    public static UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
     
-    public static UserRegisterConverter INSTANCE = Mappers.getMapper(UserRegisterConverter.class);
+    public abstract UserLoginDTO userToUserLoginDTO(User user);
     
     public User userRegisterServiceQueryToUser(UserRegisterServiceQuery userRegisterServiceQuery) {
         User user = new User();

@@ -20,11 +20,9 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract CategoryDTO categoryToCategoryDTO(Category category);
+    public abstract List<CategoryDTO> categoryListToCategoryDTOList(List<Category> categoryList);
     
-    public abstract List<CategoryDTO> categoriesToCategoriesDTO(List<Category> categories);
+    public abstract List<SubCategoryDTO> subCategoryListToSubCategoryDTOList(List<SubCategory> subCategoryList);
     
-    public abstract List<SubCategoryDTO> subCategoriesToSubCategoriesDTO(List<SubCategory> subCategories);
-    
-    public abstract List<CategoryItemDTO> categoryItemsToCategoryItemsDTO (List<CategoryItem> categoryItems);
+    public abstract List<CategoryItemDTO> categoryItemListToCategoryItemDTOList (List<CategoryItem> categoryItemList);
 }

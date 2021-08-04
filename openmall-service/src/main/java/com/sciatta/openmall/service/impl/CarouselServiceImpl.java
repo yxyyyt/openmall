@@ -24,8 +24,8 @@ public class CarouselServiceImpl implements CarouselService {
     
     @Override
     public List<CarouselDTO> queryAll(Integer isShow) {
-        List<Carousel> carousels = carouselMapper.selectByIsShow(isShow);
+        List<Carousel> carouselList = carouselMapper.selectByIsShow(isShow);
         
-        return CarouselConverter.INSTANCE.carouselsToCarouselsDTO(carousels);
+        return CarouselConverter.INSTANCE.carouselListToCarouselDTOList(carouselList);
     }
 }

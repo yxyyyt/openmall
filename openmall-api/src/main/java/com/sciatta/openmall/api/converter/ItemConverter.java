@@ -23,10 +23,10 @@ public abstract class ItemConverter {
     
     @Mappings({
             @Mapping(source = "itemDTO", target = "item"),
-            @Mapping(source = "itemImageDTOS", target = "itemImgList"),
-            @Mapping(source = "itemSpecDTOS", target = "itemSpecList"),
+            @Mapping(source = "itemImageDTOList", target = "itemImgList"),
+            @Mapping(source = "itemSpecDTOList", target = "itemSpecList"),
             @Mapping(source = "itemParamDTO", target = "itemParams")
     })
-    public abstract ItemInfoVO toItemInfoVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOS, List<ItemSpecDTO> itemSpecDTOS
+    public abstract ItemInfoVO toItemInfoVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList, List<ItemSpecDTO> itemSpecDTOList
             , ItemParamDTO itemParamDTO);
 }

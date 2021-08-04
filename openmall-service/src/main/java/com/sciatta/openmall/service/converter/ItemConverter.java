@@ -24,9 +24,9 @@ public abstract class ItemConverter {
     
     public abstract ItemDTO itemToItemDTO(Item item);
     
-    public abstract List<ItemImageDTO> itemImagesToItemImagesDTO(List<ItemImage> itemImages);
+    public abstract List<ItemImageDTO> itemImageListToItemImageDTOList(List<ItemImage> itemImageList);
     
-    public abstract List<ItemSpecDTO> itemSpecsToItemSpecsDTO(List<ItemSpec> itemSpecs);
+    public abstract List<ItemSpecDTO> itemSpecListToItemSpecDTOList(List<ItemSpec> itemSpecList);
     
     public abstract ItemParamDTO itemParamToItemParamDTO(ItemParam itemParam);
 }

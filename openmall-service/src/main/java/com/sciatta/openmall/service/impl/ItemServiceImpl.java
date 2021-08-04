@@ -46,16 +46,16 @@ public class ItemServiceImpl implements ItemService {
     
     @Override
     public List<ItemImageDTO> queryItemImagesByItemId(String itemId) {
-        List<ItemImage> itemImages = itemImageMapper.selectByItemId(itemId);
+        List<ItemImage> itemImageList = itemImageMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.itemImagesToItemImagesDTO(itemImages);
+        return ItemConverter.INSTANCE.itemImageListToItemImageDTOList(itemImageList);
     }
     
     @Override
     public List<ItemSpecDTO> queryItemSpecsByItemId(String itemId) {
-        List<ItemSpec> itemSpecs = itemSpecMapper.selectByItemId(itemId);
+        List<ItemSpec> itemSpecList = itemSpecMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.itemSpecsToItemSpecsDTO(itemSpecs);
+        return ItemConverter.INSTANCE.itemSpecListToItemSpecDTOList(itemSpecList);
     }
     
     @Override
