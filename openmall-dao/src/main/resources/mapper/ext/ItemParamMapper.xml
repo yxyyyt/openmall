@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.ext.ItemParamMapper">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.ItemParam">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+        <result column="product_place" jdbcType="VARCHAR" property="productPlace"/>
+        <result column="food_period" jdbcType="VARCHAR" property="foodPeriod"/>
+        <result column="brand" jdbcType="VARCHAR" property="brand"/>
+        <result column="factory_name" jdbcType="VARCHAR" property="factoryName"/>
+        <result column="factory_address" jdbcType="VARCHAR" property="factoryAddress"/>
+        <result column="packaging_method" jdbcType="VARCHAR" property="packagingMethod"/>
+        <result column="weight" jdbcType="VARCHAR" property="weight"/>
+        <result column="storage_method" jdbcType="VARCHAR" property="storageMethod"/>
+        <result column="eat_method" jdbcType="VARCHAR" property="eatMethod"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, item_id, product_place, food_period, brand, factory_name, factory_address, packaging_method,
+        weight, storage_method, eat_method, created_time, updated_time
+    </sql>
+
+    <select id="selectByItemId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from item_params
+        where item_id = #{itemId,jdbcType=VARCHAR}
+    </select>
+</mapper>

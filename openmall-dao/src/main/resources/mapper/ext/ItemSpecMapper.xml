@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.ext.ItemSpecMapper">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="discounts" jdbcType="DECIMAL" property="discounts"/>
+        <result column="price_discount" jdbcType="INTEGER" property="priceDiscount"/>
+        <result column="price_normal" jdbcType="INTEGER" property="priceNormal"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, item_id, name, stock, discounts, price_discount, price_normal, created_time,
+        updated_time
+    </sql>
+
+    <select id="selectByItemId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from item_specs
+        where item_id = #{itemId,jdbcType=VARCHAR}
+    </select>
+</mapper>
