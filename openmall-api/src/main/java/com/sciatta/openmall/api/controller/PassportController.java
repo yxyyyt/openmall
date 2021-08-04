@@ -13,7 +13,6 @@ import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +29,11 @@ import static com.sciatta.openmall.common.constants.CookieConstants.COOKIE_USERN
 @RestController
 @RequestMapping("passport")
 public class PassportController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    
+    public PassportController(UserService userService) {
+        this.userService = userService;
+    }
     
     @PostMapping("login")
     public JSONResult login(@RequestBody UserLoginApiQuery userLoginApiQuery,

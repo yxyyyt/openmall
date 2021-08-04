@@ -8,9 +8,6 @@ import com.sciatta.openmall.service.converter.UserRegisterConverter;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +20,11 @@ import org.springframework.util.DigestUtils;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final UserMapper userMapper;
     
-    @Autowired
-    private UserMapper userMapper;
+    public UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
     
     @Transactional(readOnly = true)
     @Override
@@ -48,8 +46,7 @@ public class UserServiceImpl implements UserService {
     public UserRegisterDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery) {
         User user = UserRegisterConverter.INSTANCE.userRegisterServiceQueryToUser(userRegisterServiceQuery);
         
-        int id = userMapper.insert(user);
-        logger.debug(id + " create");
+        userMapper.insert(user);
         
         return UserRegisterConverter.INSTANCE.userToUserRegisterDTO(user);
     }

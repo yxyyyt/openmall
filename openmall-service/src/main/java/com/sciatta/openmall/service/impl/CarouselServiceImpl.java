@@ -5,7 +5,6 @@ import com.sciatta.openmall.dao.pojo.po.mbg.Carousel;
 import com.sciatta.openmall.service.CarouselService;
 import com.sciatta.openmall.service.converter.CarouselConverter;
 import com.sciatta.openmall.service.pojo.dto.CarouselDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,11 @@ import java.util.List;
  */
 @Service
 public class CarouselServiceImpl implements CarouselService {
-    @Autowired
-    private CarouselMapper carouselMapper;
+    private final CarouselMapper carouselMapper;
+    
+    public CarouselServiceImpl(CarouselMapper carouselMapper) {
+        this.carouselMapper = carouselMapper;
+    }
     
     @Override
     public List<CarouselDTO> queryAll(Integer isShow) {

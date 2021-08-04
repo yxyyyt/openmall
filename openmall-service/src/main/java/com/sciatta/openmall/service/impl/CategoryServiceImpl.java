@@ -9,7 +9,6 @@ import com.sciatta.openmall.service.converter.CategoryConverter;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +20,11 @@ import java.util.List;
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
-    private CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
+    
+    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+        this.categoryMapper = categoryMapper;
+    }
     
     @Override
     public List<CategoryDTO> queryAllRootLevel() {

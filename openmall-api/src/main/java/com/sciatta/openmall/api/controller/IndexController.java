@@ -14,7 +14,6 @@ import com.sciatta.openmall.service.pojo.dto.CarouselDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +29,13 @@ import java.util.List;
 @RestController
 @RequestMapping("index")
 public class IndexController {
-    @Autowired
-    private CarouselService carouselService;
-    @Autowired
-    private CategoryService categoryService;
+    private final CarouselService carouselService;
+    private final CategoryService categoryService;
+    
+    public IndexController(CarouselService carouselService, CategoryService categoryService) {
+        this.carouselService = carouselService;
+        this.categoryService = categoryService;
+    }
     
     @GetMapping("carousels")
     public JSONResult carousels() {

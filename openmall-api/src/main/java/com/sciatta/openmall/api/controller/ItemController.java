@@ -8,7 +8,6 @@ import com.sciatta.openmall.service.pojo.dto.ItemDTO;
 import com.sciatta.openmall.service.pojo.dto.ItemImageDTO;
 import com.sciatta.openmall.service.pojo.dto.ItemParamDTO;
 import com.sciatta.openmall.service.pojo.dto.ItemSpecDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("items")
 public class ItemController {
-    @Autowired
-    private ItemService itemService;
+    private final ItemService itemService;
+    
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
     
     @GetMapping("info/{itemId}")
     public JSONResult info(@PathVariable String itemId) {
