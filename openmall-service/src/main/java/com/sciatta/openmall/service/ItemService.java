@@ -1,9 +1,8 @@
 package com.sciatta.openmall.service;
 
-import com.sciatta.openmall.service.pojo.dto.ItemDTO;
-import com.sciatta.openmall.service.pojo.dto.ItemImageDTO;
-import com.sciatta.openmall.service.pojo.dto.ItemParamDTO;
-import com.sciatta.openmall.service.pojo.dto.ItemSpecDTO;
+import com.sciatta.openmall.common.utils.PagedUtils;
+import com.sciatta.openmall.service.pojo.dto.*;
+import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface ItemService {
     List<ItemSpecDTO> queryItemSpecsByItemId(String itemId);
     
     ItemParamDTO queryItemParamByItemId(String itemId);
+    
+    List<UserItemCommentDTO> queryUserItemComment(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedUtils.PagedGridResult pagedGridResult);
 }
