@@ -34,4 +34,6 @@ public abstract class ItemConverter {
             UserItemCommentServiceQuery userItemCommentServiceQuery);
     
     public abstract List<UserItemCommentDTO> userItemCommentListToUserItemCommentDTOList(List<UserItemComment> userItemCommentList);
+    
+    public abstract CommentLevelCountsDTO toCommentLevelCountsDTO(Integer goodCounts, Integer normalCounts, Integer badCounts, Integer totalCounts);
 }

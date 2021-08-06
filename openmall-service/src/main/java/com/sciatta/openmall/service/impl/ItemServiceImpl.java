@@ -1,6 +1,6 @@
 package com.sciatta.openmall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.sciatta.openmall.common.enums.CommentLevel;
 import com.sciatta.openmall.common.utils.PagedUtils;
 import com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper;
 import com.sciatta.openmall.dao.mapper.ext.ItemImageMapper;
@@ -88,5 +88,16 @@ public class ItemServiceImpl implements ItemService {
         PagedUtils.initPagedGridResult(userItemComments, userItemCommentServiceQuery.getPage(), pagedGridResult);
         
         return ItemConverter.INSTANCE.userItemCommentListToUserItemCommentDTOList(userItemComments);
+    }
+    
+    @Override
+    public CommentLevelCountsDTO queryCommentLevelCounts(String itemId) {
+        Integer goodCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.GOOD.type);
+        Integer normalCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.NORMAL.type);
+        Integer badCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.BAD.type);
+        
+        Integer totalCounts = goodCounts + normalCounts + badCounts;
+        
+        return ItemConverter.INSTANCE.toCommentLevelCountsDTO(goodCounts, normalCounts, badCounts, totalCounts);
     }
 }

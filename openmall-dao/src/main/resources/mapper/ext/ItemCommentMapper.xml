@@ -46,4 +46,11 @@
             AND ic.comment_level = #{level,jdbcType=INTEGER}
         </if>
     </select>
+
+    <select id="selectCommentCountsByItemIdAndLevel" resultType="Integer">
+        SELECT count(1)
+        FROM
+        item_comments ic
+        WHERE ic.item_id = #{itemId,jdbcType=VARCHAR} AND ic.comment_level = #{level,jdbcType=INTEGER}
+    </select>
 </mapper>

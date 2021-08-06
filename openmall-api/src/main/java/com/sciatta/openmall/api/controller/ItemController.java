@@ -1,6 +1,7 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.ItemConverter;
+import com.sciatta.openmall.api.pojo.vo.CommentLevelCountsVO;
 import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
 import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
 import com.sciatta.openmall.common.JSONResult;
@@ -49,6 +50,19 @@ public class ItemController {
         
         
         return JSONResult.success(itemInfoVO);
+    }
+    
+    @GetMapping("/commentLevelCounts")
+    public JSONResult commentLevelCounts(@RequestParam String itemId) {
+        if (!StringUtils.hasText(itemId)) {
+            return JSONResult.errorUsingMessage("商品不存在");
+        }
+        
+        CommentLevelCountsDTO commentLevelCountsDTO = itemService.queryCommentLevelCounts(itemId);
+        
+        CommentLevelCountsVO commentLevelCountsVO = ItemConverter.INSTANCE.commentLevelCountsDTOToCommentLevelCountsVO(commentLevelCountsDTO);
+        
+        return JSONResult.success(commentLevelCountsVO);
     }
     
     @GetMapping("/comments")

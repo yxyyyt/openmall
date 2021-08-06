@@ -1,5 +1,6 @@
 package com.sciatta.openmall.api.converter;
 
+import com.sciatta.openmall.api.pojo.vo.CommentLevelCountsVO;
 import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
 import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
 import com.sciatta.openmall.service.pojo.dto.*;
@@ -33,10 +34,12 @@ public abstract class ItemConverter {
                                                                               Integer page, Integer pageSize);
     
     @Mappings({
-            @Mapping(expression = "java(com.sciatta.openmall.common.utils.DesensitizationUtils.commonDisplay(userItemCommentDTO.getNickname()))",target = "nickname")
+            @Mapping(expression = "java(com.sciatta.openmall.common.utils.DesensitizationUtils.commonDisplay(userItemCommentDTO.getNickname()))", target = "nickname")
     })
-    public abstract UserItemCommentVO userItemCommentDTOToUserItemCommentVO (UserItemCommentDTO userItemCommentDTO);
+    public abstract UserItemCommentVO userItemCommentDTOToUserItemCommentVO(UserItemCommentDTO userItemCommentDTO);
     
     
     public abstract List<UserItemCommentVO> userItemCommentDTOListToUserItemCommentVOList(List<UserItemCommentDTO> userItemCommentDTOList);
+    
+    public abstract CommentLevelCountsVO commentLevelCountsDTOToCommentLevelCountsVO(CommentLevelCountsDTO commentLevelCountsDTO);
 }

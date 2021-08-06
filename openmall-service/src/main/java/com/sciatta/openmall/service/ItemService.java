@@ -21,4 +21,6 @@ public interface ItemService {
     ItemParamDTO queryItemParamByItemId(String itemId);
     
     List<UserItemCommentDTO> queryUserItemComment(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedUtils.PagedGridResult pagedGridResult);
+    
+    CommentLevelCountsDTO queryCommentLevelCounts(String itemId);
 }
