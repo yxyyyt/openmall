@@ -2,8 +2,10 @@ package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.vo.CommentLevelCountsVO;
 import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
+import com.sciatta.openmall.api.pojo.vo.SearchItemVO;
 import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
 import com.sciatta.openmall.service.pojo.dto.*;
+import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -42,4 +44,9 @@ public abstract class ItemConverter {
     public abstract List<UserItemCommentVO> userItemCommentDTOListToUserItemCommentVOList(List<UserItemCommentDTO> userItemCommentDTOList);
     
     public abstract CommentLevelCountsVO commentLevelCountsDTOToCommentLevelCountsVO(CommentLevelCountsDTO commentLevelCountsDTO);
+    
+    public abstract SearchItemsServiceQuery toSearchItemsServiceQuery(String keywords, String sort,
+                                                                      Integer page, Integer pageSize);
+    
+    public abstract List<SearchItemVO> searchItemDTOListToSearchItemVOList (List<SearchItemDTO> searchItemDTOList);
 }

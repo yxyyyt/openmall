@@ -2,6 +2,7 @@ package com.sciatta.openmall.common.utils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -30,6 +31,13 @@ public class PagedUtils {
     
     public static void setRows(PagedGridResult pagedGridResult, List<?> list) {
         pagedGridResult.setRows(list);  // 当前页的记录
+    }
+    
+    @Data
+    @AllArgsConstructor
+    public static class Page {
+        private Integer pageNum;
+        private Integer pageSize;
     }
     
     @Data
