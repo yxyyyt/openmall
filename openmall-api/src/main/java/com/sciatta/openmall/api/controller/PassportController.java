@@ -63,6 +63,16 @@ public class PassportController {
         return JSONResult.success();
     }
     
+    @PostMapping("logout")
+    public JSONResult logout(@RequestParam String userId,
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
+        // 清除客户端Cookie
+        CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
+        
+        return JSONResult.success();
+    }
+    
     @GetMapping("usernameIsExist")
     public JSONResult usernameIsExist(@RequestParam String username) {
         // 判断用户名不能为空
