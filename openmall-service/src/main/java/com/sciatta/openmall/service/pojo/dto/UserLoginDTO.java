@@ -18,5 +18,6 @@ public class UserLoginDTO implements Serializable {
     private String username;
     private String nickname;
     private String realname;
+    private String face;
     private Integer sex;
 }
