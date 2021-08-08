@@ -32,8 +32,7 @@ public abstract class ItemConverter {
     public abstract ItemInfoVO toItemInfoVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
                                             List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
     
-    public abstract UserItemCommentServiceQuery toUserItemCommentServiceQuery(String itemId, Integer level,
-                                                                              Integer page, Integer pageSize);
+    public abstract UserItemCommentServiceQuery toUserItemCommentServiceQuery(String itemId, Integer level);
     
     @Mappings({
             @Mapping(expression = "java(com.sciatta.openmall.common.utils.DesensitizationUtils.commonDisplay(userItemCommentDTO.getNickname()))", target = "nickname")
@@ -45,8 +44,7 @@ public abstract class ItemConverter {
     
     public abstract CommentLevelCountsVO commentLevelCountsDTOToCommentLevelCountsVO(CommentLevelCountsDTO commentLevelCountsDTO);
     
-    public abstract SearchItemsServiceQuery toSearchItemsServiceQuery(String keywords, String sort,
-                                                                      Integer page, Integer pageSize);
+    public abstract SearchItemsServiceQuery toSearchItemsServiceQuery(String keywords, String sort);
     
     public abstract List<SearchItemVO> searchItemDTOListToSearchItemVOList (List<SearchItemDTO> searchItemDTOList);
 }

@@ -11,6 +11,4 @@ import lombok.Data;
 public class UserItemCommentServiceQuery {
     private String itemId;
     private Integer level;
-    private Integer page;
-    private Integer pageSize;
 }

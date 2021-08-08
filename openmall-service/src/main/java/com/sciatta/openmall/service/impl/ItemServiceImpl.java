@@ -1,7 +1,6 @@
 package com.sciatta.openmall.service.impl;
 
 import com.sciatta.openmall.common.enums.CommentLevel;
-import com.sciatta.openmall.common.utils.PagedUtils;
 import com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper;
 import com.sciatta.openmall.dao.mapper.ext.ItemImageMapper;
 import com.sciatta.openmall.dao.mapper.ext.ItemParamMapper;
@@ -13,12 +12,12 @@ import com.sciatta.openmall.dao.pojo.po.mbg.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemParam;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec;
-import com.sciatta.openmall.dao.pojo.query.UserItemCommentDaoQuery;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.converter.ItemConverter;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
+import com.sciatta.openmall.service.support.PagedContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,21 +76,14 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
-    public List<UserItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery,
-                                                          PagedUtils.PagedGridResult pagedGridResult) {
+    public List<UserItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedContext pagedContext) {
         
-        UserItemCommentDaoQuery userItemCommentDaoQuery = ItemConverter.
-                INSTANCE.userItemCommentServiceQueryToUserItemCommentDaoQuery(userItemCommentServiceQuery);
+        List<UserItemComment> userItemCommentList = pagedContext.startPage(
+                () -> itemCommentMapper.selectItemComments(userItemCommentServiceQuery.getItemId(), userItemCommentServiceQuery.getLevel()),
+                false
+        );
         
-        // 分页
-        PagedUtils.startPage(userItemCommentServiceQuery.getPage(), userItemCommentServiceQuery.getPageSize());
-        
-        List<UserItemComment> userItemComments = itemCommentMapper.selectItemComments(userItemCommentDaoQuery);
-        
-        // 初始化PagedGridResult分页数据
-        PagedUtils.initPagedGridResult(userItemComments, userItemCommentServiceQuery.getPage(), pagedGridResult);
-        
-        return ItemConverter.INSTANCE.userItemCommentListToUserItemCommentDTOList(userItemComments);
+        return ItemConverter.INSTANCE.userItemCommentListToUserItemCommentDTOList(userItemCommentList);
     }
     
     @Override
@@ -106,16 +98,14 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
-    public List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedUtils.PagedGridResult pagedGridResult) {
-        // 分页
-        PagedUtils.startPage(searchItemsServiceQuery.getPage(), searchItemsServiceQuery.getPageSize());
+    public List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedContext pagedContext) {
         
-        List<SearchItem> searchItems = itemMapper.searchItems(searchItemsServiceQuery.getKeywords(), searchItemsServiceQuery.getSort());
+        List<SearchItem> searchItemList = pagedContext.startPage(
+                () -> itemMapper.searchItems(searchItemsServiceQuery.getKeywords(), searchItemsServiceQuery.getSort()),
+                false
+        );
         
-        // 初始化PagedGridResult分页数据
-        PagedUtils.initPagedGridResult(searchItems, searchItemsServiceQuery.getPage(), pagedGridResult);
-        
-        return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItems);
+        return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
     }
     
 }

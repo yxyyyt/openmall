@@ -11,6 +11,4 @@ import lombok.Data;
 public class SearchItemsServiceQuery {
     private String keywords;
     private String sort;
-    private Integer page;
-    private Integer pageSize;
 }

@@ -28,8 +28,7 @@
         created_time, updated_time
     </sql>
 
-    <select id="selectItemComments" parameterType="com.sciatta.openmall.dao.pojo.query.UserItemCommentDaoQuery"
-            resultMap="UserItemCommentResultMap">
+    <select id="selectItemComments" resultMap="UserItemCommentResultMap">
         SELECT
         ic.comment_level as commentLevel,
         ic.content as content,

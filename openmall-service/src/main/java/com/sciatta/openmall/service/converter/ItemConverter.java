@@ -6,7 +6,6 @@ import com.sciatta.openmall.dao.pojo.po.mbg.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemParam;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec;
-import com.sciatta.openmall.dao.pojo.query.UserItemCommentDaoQuery;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import org.mapstruct.Mapper;
@@ -30,9 +29,6 @@ public abstract class ItemConverter {
     public abstract List<ItemSpecDTO> itemSpecListToItemSpecDTOList(List<ItemSpec> itemSpecList);
     
     public abstract ItemParamDTO itemParamToItemParamDTO(ItemParam itemParam);
-    
-    public abstract UserItemCommentDaoQuery userItemCommentServiceQueryToUserItemCommentDaoQuery(
-            UserItemCommentServiceQuery userItemCommentServiceQuery);
     
     public abstract List<UserItemCommentDTO> userItemCommentListToUserItemCommentDTOList(List<UserItemComment> userItemCommentList);
     

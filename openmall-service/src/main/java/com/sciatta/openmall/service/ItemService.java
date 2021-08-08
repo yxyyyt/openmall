@@ -1,9 +1,9 @@
 package com.sciatta.openmall.service;
 
-import com.sciatta.openmall.common.utils.PagedUtils;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
+import com.sciatta.openmall.service.support.PagedContext;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public interface ItemService {
     
     ItemParamDTO queryItemParamByItemId(String itemId);
     
-    List<UserItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedUtils.PagedGridResult pagedGridResult);
+    List<UserItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedContext pagedContext);
     
     CommentLevelCountsDTO queryCommentLevelCounts(String itemId);
     
-    List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedUtils.PagedGridResult pagedGridResult);
+    List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedContext pagedContext);
 }

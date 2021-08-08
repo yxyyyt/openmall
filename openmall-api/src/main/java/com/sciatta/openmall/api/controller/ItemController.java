@@ -6,9 +6,10 @@ import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
 import com.sciatta.openmall.api.pojo.vo.SearchItemVO;
 import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.utils.PagedUtils;
+import com.sciatta.openmall.common.constants.PagedConstants;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.*;
+import com.sciatta.openmall.service.support.PagedContext;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,29 +75,20 @@ public class ItemController {
             return JSONResult.errorUsingMessage("商品不存在");
         }
         
-        if (page == null) {
-            page = PAGE_START;
-        }
-        
-        if (pageSize == null) {
-            pageSize = PAGE_SIZE;
-        }
-        
-        // 创建pagedGridResult
-        PagedUtils.PagedGridResult pagedGridResult = PagedUtils.createPagedGridResult();
+        PagedContext pagedContext = new PagedContext.Builder()
+                .setPageNumber(page)
+                .setPageSize(pageSize)
+                .build();
         
         List<UserItemCommentDTO> userItemCommentDTOList = itemService.queryUserItemComments(
-                ItemConverter.INSTANCE.toUserItemCommentServiceQuery(itemId, level, page, pageSize),
-                pagedGridResult
+                ItemConverter.INSTANCE.toUserItemCommentServiceQuery(itemId, level),
+                pagedContext
         );
         
         // 转换，nickname脱敏
         List<UserItemCommentVO> userItemCommentVOList = ItemConverter.INSTANCE.userItemCommentDTOListToUserItemCommentVOList(userItemCommentDTOList);
         
-        // 设置当前页记录
-        PagedUtils.setRows(pagedGridResult, userItemCommentVOList);
-        
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(pagedContext.getPagedGridResult(userItemCommentVOList));
     }
     
     @GetMapping("search")
@@ -106,27 +98,18 @@ public class ItemController {
             return JSONResult.errorUsingMessage("商品不存在");
         }
         
-        if (page == null) {
-            page = PAGE_START;
-        }
-        
-        if (pageSize == null) {
-            pageSize = PAGE_SIZE;
-        }
-        
-        // 创建pagedGridResult
-        PagedUtils.PagedGridResult pagedGridResult = PagedUtils.createPagedGridResult();
+        PagedContext pagedContext = new PagedContext.Builder()
+                .setPageNumber(page)
+                .setPageSize(pageSize)
+                .build();
         
         List<SearchItemDTO> searchItemDTOList = itemService.querySearchItems(
-                ItemConverter.INSTANCE.toSearchItemsServiceQuery(keywords, sort, page, pageSize),
-                pagedGridResult
+                ItemConverter.INSTANCE.toSearchItemsServiceQuery(keywords, sort),
+                pagedContext
         );
         
         List<SearchItemVO> searchItemVOList = ItemConverter.INSTANCE.searchItemDTOListToSearchItemVOList(searchItemDTOList);
         
-        // 设置当前页记录
-        PagedUtils.setRows(pagedGridResult, searchItemVOList);
-        
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(pagedContext.getPagedGridResult(searchItemVOList));
     }
 }
