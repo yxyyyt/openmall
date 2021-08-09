@@ -42,7 +42,8 @@
         FROM
         items i
         LEFT JOIN item_images ii on i.id = ii.item_id
-        LEFT JOIN (SELECT item_id,MIN(price_discount) as price_discount from item_specs GROUP BY item_id) tempSpec on i.id = tempSpec.item_id
+        LEFT JOIN (SELECT item_id,MIN(price_discount) as price_discount from item_specs GROUP BY item_id) tempSpec on
+        i.id = tempSpec.item_id
         WHERE
         ii.is_main = 1
         <if test="keywords != null">
@@ -72,7 +73,8 @@
         FROM
         items i
         LEFT JOIN item_images ii on i.id = ii.item_id
-        LEFT JOIN (SELECT item_id,MIN(price_discount) as price_discount from item_specs GROUP BY item_id) tempSpec on i.id = tempSpec.item_id
+        LEFT JOIN (SELECT item_id,MIN(price_discount) as price_discount from item_specs GROUP BY item_id) tempSpec on
+        i.id = tempSpec.item_id
         WHERE ii.is_main = 1 and i.cat_id = #{catId}
         order by
         <choose>
@@ -86,6 +88,28 @@
                 i.item_name asc
             </otherwise>
         </choose>
+    </select>
+
+    <select id="searchShopCartItemsBySpecIds" parameterType="List"
+            resultType="com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem">
+        SELECT
+        i.id as itemId,
+        i.item_name as itemName,
+        ii.url as itemImgUrl,
+        specs.id as specId,
+        specs.`name` as specName,
+        specs.price_discount as priceDiscount,
+        specs.price_normal as priceNormal
+        FROM item_specs specs
+        LEFT JOIN items i ON i.id = specs.item_id
+        LEFT JOIN item_images ii on ii.item_id = i.id
+        WHERE
+        ii.is_main = 1
+        AND
+        specs.id IN
+        <foreach collection="list" index="index" item="specId" open="(" separator="," close=")">
+            #{specId}
+        </foreach>
     </select>
 
 </mapper>

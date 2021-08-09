@@ -29,4 +29,6 @@ public interface ItemService {
     List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedContext pagedContext);
     
     List<SearchItemDTO> querySearchCatItems(SearchCatItemsServiceQuery searchCatItemsServiceQuery, PagedContext pagedContext);
+    
+    List<ShopCartItemDTO> queryShopCartItemsBySpecIds(String specIds);
 }

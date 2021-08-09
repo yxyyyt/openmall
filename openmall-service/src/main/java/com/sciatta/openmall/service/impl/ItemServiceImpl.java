@@ -1,12 +1,9 @@
 package com.sciatta.openmall.service.impl;
 
 import com.sciatta.openmall.common.enums.CommentLevel;
-import com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper;
-import com.sciatta.openmall.dao.mapper.ext.ItemImageMapper;
-import com.sciatta.openmall.dao.mapper.ext.ItemParamMapper;
-import com.sciatta.openmall.dao.mapper.ext.ItemSpecMapper;
-import com.sciatta.openmall.dao.mapper.ext.ItemMapper;
+import com.sciatta.openmall.dao.mapper.ext.*;
 import com.sciatta.openmall.dao.pojo.po.ext.SearchItem;
+import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
 import com.sciatta.openmall.dao.pojo.po.ext.UserItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
@@ -20,7 +17,9 @@ import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import com.sciatta.openmall.service.support.PagedContext;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -117,5 +116,19 @@ public class ItemServiceImpl implements ItemService {
         );
         
         return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
+    }
+    
+    @Override
+    public List<ShopCartItemDTO> queryShopCartItemsBySpecIds(String specIds) {
+        String[] ids = specIds.split(",");
+        List<String> idList = CollectionUtils.arrayToList(ids);
+        
+        if (idList.size() <= 0) {
+            return Collections.EMPTY_LIST;
+        }
+        
+        List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
+        
+        return ItemConverter.INSTANCE.shopCartItemListToShopCartItemDTOList(shopCartItemList);
     }
 }

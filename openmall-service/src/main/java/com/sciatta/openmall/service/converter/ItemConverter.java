@@ -1,6 +1,7 @@
 package com.sciatta.openmall.service.converter;
 
 import com.sciatta.openmall.dao.pojo.po.ext.SearchItem;
+import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
 import com.sciatta.openmall.dao.pojo.po.ext.UserItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
@@ -35,4 +36,6 @@ public abstract class ItemConverter {
     public abstract CommentLevelCountsDTO toCommentLevelCountsDTO(Integer goodCounts, Integer normalCounts, Integer badCounts, Integer totalCounts);
     
     public abstract List<SearchItemDTO> searchItemListToSearchItemDTOList(List<SearchItem> searchItemList);
+    
+    public abstract List<ShopCartItemDTO> shopCartItemListToShopCartItemDTOList(List<ShopCartItem> shopCartItemList);
 }
