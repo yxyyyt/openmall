@@ -127,7 +127,7 @@ CREATE TABLE `item_params`
 DROP TABLE IF EXISTS `item_specs`;
 CREATE TABLE `item_specs`
 (
-    `id`             varchar(64)   NOT NULL COMMENT '商品规格注解',
+    `id`             varchar(64)   NOT NULL COMMENT '商品规格主键',
     `item_id`        varchar(64)   NOT NULL COMMENT '商品外键',
     `name`           varchar(32)   NOT NULL COMMENT '规格名称',
     `stock`          int(11)       NOT NULL COMMENT '库存',
