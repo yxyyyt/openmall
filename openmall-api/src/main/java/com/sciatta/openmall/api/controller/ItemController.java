@@ -112,4 +112,22 @@ public class ItemController {
         
         return JSONResult.success(pagedContext.getPagedGridResult(searchItemVOList));
     }
+    
+    @GetMapping("catItems")
+    public JSONResult catItems(@RequestParam Integer catId, @RequestParam String sort,
+                               @RequestParam Integer page, @RequestParam Integer pageSize) {
+        PagedContext pagedContext = new PagedContext.Builder()
+                .setPageNumber(page)
+                .setPageSize(pageSize)
+                .build();
+        
+        List<SearchItemDTO> searchItemDTOList = itemService.querySearchCatItems(
+                ItemConverter.INSTANCE.toSearchCatItemsServiceQuery(catId, sort),
+                pagedContext
+        );
+        
+        List<SearchItemVO> searchItemVOList = ItemConverter.INSTANCE.searchItemDTOListToSearchItemVOList(searchItemDTOList);
+        
+        return JSONResult.success(pagedContext.getPagedGridResult(searchItemVOList));
+    }
 }

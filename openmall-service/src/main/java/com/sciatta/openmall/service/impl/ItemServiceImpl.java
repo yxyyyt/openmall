@@ -15,6 +15,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.converter.ItemConverter;
 import com.sciatta.openmall.service.pojo.dto.*;
+import com.sciatta.openmall.service.pojo.query.SearchCatItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import com.sciatta.openmall.service.support.PagedContext;
@@ -101,11 +102,20 @@ public class ItemServiceImpl implements ItemService {
     public List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedContext pagedContext) {
         
         List<SearchItem> searchItemList = pagedContext.startPage(
-                () -> itemMapper.searchItems(searchItemsServiceQuery.getKeywords(), searchItemsServiceQuery.getSort()),
+                () -> itemMapper.searchItemsByKeywords(searchItemsServiceQuery.getKeywords(), searchItemsServiceQuery.getSort()),
                 false
         );
         
         return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
     }
     
+    @Override
+    public List<SearchItemDTO> querySearchCatItems(SearchCatItemsServiceQuery searchCatItemsServiceQuery, PagedContext pagedContext) {
+        List<SearchItem> searchItemList = pagedContext.startPage(
+                () -> itemMapper.searchItemsByCatId(searchCatItemsServiceQuery.getCatId(), searchCatItemsServiceQuery.getSort()),
+                false
+        );
+        
+        return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
+    }
 }
