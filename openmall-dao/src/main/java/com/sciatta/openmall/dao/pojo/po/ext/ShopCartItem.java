@@ -19,6 +19,6 @@ public class ShopCartItem implements Serializable {
     private String itemImgUrl;
     private String specId;
     private String specName;
-    private String priceDiscount;
-    private String priceNormal;
+    private Integer priceDiscount;
+    private Integer priceNormal;
 }

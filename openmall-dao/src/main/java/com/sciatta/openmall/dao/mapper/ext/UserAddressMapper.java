@@ -14,4 +14,6 @@ public interface UserAddressMapper extends com.sciatta.openmall.dao.mapper.mbg.U
                                              @Param("isDefault") Integer isDefault);
     
     List<UserAddress> selectByUserIdAndIsDefault(@Param("userId") String userId, @Param("isDefault") Integer isDefault);
+    
+    UserAddress selectByUserIdAndAddressId(@Param("userId") String userId, @Param("addressId") String addressId);
 }

@@ -20,6 +20,13 @@
         created_time, updated_time
     </sql>
 
+    <select id="selectByUserIdAndAddressId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_addresses
+        where id = #{addressId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
