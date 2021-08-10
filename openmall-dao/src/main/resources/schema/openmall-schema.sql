@@ -54,7 +54,7 @@ CREATE TABLE `items`
     `root_cat_id`   int(11)     NOT NULL COMMENT '商品一级分类外键',
     `sell_counts`   int(11)     NOT NULL COMMENT '累计销售',
     `on_off_status` int(11)     NOT NULL COMMENT '上下架状态 1：上架 2：下架',
-    `content` text NOT NULL COMMENT '商品内容',
+    `content`       text        NOT NULL COMMENT '商品内容',
     `created_time`  datetime    NOT NULL COMMENT '创建时间',
     `updated_time`  datetime    NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
@@ -190,7 +190,7 @@ CREATE TABLE `order_items`
 DROP TABLE IF EXISTS `order_statuses`;
 CREATE TABLE `order_statuses`
 (
-    `id`           varchar(64) NOT NULL COMMENT '订单主键',
+    `order_id`     varchar(64) NOT NULL COMMENT '订单主键',
     `order_status` int(11)     NOT NULL COMMENT '订单状态 10：待付款 20：已付款，待发货 30：已发货，待收货（7天自动确认） 40：交易成功（此时可以评价） 50：交易关闭（待付款时用户取消或长时间未付款，系统识别后自动关闭）',
     `created_time` datetime DEFAULT NULL COMMENT '订单创建时间 对应[10:待付款]状态',
     `pay_time`     datetime DEFAULT NULL COMMENT '支付成功时间 对应[20:已付款，待发货]状态',
@@ -198,7 +198,7 @@ CREATE TABLE `order_statuses`
     `success_time` datetime DEFAULT NULL COMMENT '交易成功时间 对应[40：交易成功]状态',
     `close_time`   datetime DEFAULT NULL COMMENT '交易关闭时间 对应[50：交易关闭]状态',
     `comment_time` datetime DEFAULT NULL COMMENT '留言时间，用户在交易成功后的留言时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`order_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='订单状态表';
 

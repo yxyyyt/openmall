@@ -9,7 +9,6 @@ import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
-import io.swagger.annotations.ApiModelProperty;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -86,7 +85,7 @@ public abstract class OrderConverter {
     public OrderStatus toOrderStatus(Order order) {
         OrderStatus orderStatus = new OrderStatus();
         
-        orderStatus.setId(order.getId());
+        orderStatus.setOrderId(order.getId());
         orderStatus.setOrderStatus(OrderStatusCode.WAIT_PAY.type);
         orderStatus.setCreatedTime(new Date());
         

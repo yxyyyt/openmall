@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class OrderStatus implements Serializable {
     @ApiModelProperty(value = "订单主键")
-    private String id;
+    private String orderId;
 
     @ApiModelProperty(value = "订单状态 10：待付款 20：已付款，待发货 30：已发货，待收货（7天自动确认） 40：交易成功（此时可以评价） 50：交易关闭（待付款时用户取消或长时间未付款，系统识别后自动关闭）")
     private Integer orderStatus;
@@ -31,12 +31,12 @@ public class OrderStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getOrderStatus() {
@@ -101,7 +101,7 @@ public class OrderStatus implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
+        sb.append(", orderId=").append(orderId);
         sb.append(", orderStatus=").append(orderStatus);
         sb.append(", createdTime=").append(createdTime);
         sb.append(", payTime=").append(payTime);

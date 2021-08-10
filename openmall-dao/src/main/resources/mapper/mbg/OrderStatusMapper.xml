@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.mbg.OrderStatusMapper">
   <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
@@ -12,32 +12,32 @@
     <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, order_status, created_time, pay_time, deliver_time, success_time, close_time, 
+    order_id, order_status, created_time, pay_time, deliver_time, success_time, close_time, 
     comment_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from order_statuses
-    where id = #{id,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from order_statuses
-    where id = #{id,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
-    insert into order_statuses (id, order_status, created_time, 
+    insert into order_statuses (order_id, order_status, created_time, 
       pay_time, deliver_time, success_time, 
       close_time, comment_time)
-    values (#{id,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+    values (#{orderId,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{payTime,jdbcType=TIMESTAMP}, #{deliverTime,jdbcType=TIMESTAMP}, #{successTime,jdbcType=TIMESTAMP}, 
       #{closeTime,jdbcType=TIMESTAMP}, #{commentTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
     insert into order_statuses
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
+      <if test="orderId != null">
+        order_id,
       </if>
       <if test="orderStatus != null">
         order_status,
@@ -62,8 +62,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null">
         #{orderStatus,jdbcType=INTEGER},
@@ -113,7 +113,7 @@
         comment_time = #{commentTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
     update order_statuses
@@ -124,6 +124,6 @@
       success_time = #{successTime,jdbcType=TIMESTAMP},
       close_time = #{closeTime,jdbcType=TIMESTAMP},
       comment_time = #{commentTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 </mapper>
