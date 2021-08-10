@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by yangxiaoyu on 2021/8/4<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ItemService
+ * 商品服务
  */
 public interface ItemService {
     ItemDTO queryItemById(String id);
