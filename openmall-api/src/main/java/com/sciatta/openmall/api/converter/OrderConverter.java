@@ -7,6 +7,8 @@ import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
  * Created by yangxiaoyu on 2021/8/10<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
@@ -19,4 +21,6 @@ public abstract class OrderConverter {
     public abstract OrderCreateServiceQuery orderCreateApiQueryToOrderCreateServiceQuery(OrderCreateApiQuery orderCreateApiQuery);
     
     public abstract OrderStatusVO orderStatusDTOToOrderStatusVO(OrderStatusDTO orderStatusDTO);
+    
+    public abstract List<OrderStatusVO> orderStatusDTOListToOrderStatusVOList(List<OrderStatusDTO> orderStatusDTOList);
 }

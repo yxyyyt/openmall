@@ -27,4 +27,31 @@
         </if>
     </select>
 
+    <select id="selectOrderStatus" parameterType="com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery"
+            resultType="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
+        SELECT
+        os.order_id as orderId,
+        os.order_status as orderStatus,
+        os.created_time as createdTime,
+        os.pay_time as payTime,
+        os.deliver_time as deliverTime,
+        os.success_time as successTime,
+        os.close_time as closeTime,
+        os.comment_time as commentTime
+        FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE
+        o.user_id = #{userId,jdbcType=VARCHAR}
+        <if test="isDelete != null">
+            AND o.is_delete = #{isDelete,jdbcType=INTEGER}
+        </if>
+        <if test="orderStatuses != null and orderStatuses.size() > 0">
+            AND os.order_status IN
+            <foreach collection="orderStatuses" index="index" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+        ORDER BY os.order_id DESC
+    </select>
+
 </mapper>

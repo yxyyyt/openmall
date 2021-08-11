@@ -1,9 +1,12 @@
 package com.sciatta.openmall.service.converter;
 
 import com.sciatta.openmall.dao.pojo.query.OrderStatusCountsDaoQuery;
+import com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * Created by yangxiaoyu on 2021/8/11<br>
@@ -20,4 +23,7 @@ public abstract class MyOrderConverter {
                                                                 Integer waitDeliverCounts,
                                                                 Integer waitReceiveCounts,
                                                                 Integer waitCommentCounts);
+    
+    
+    public abstract OrderStatusDaoQuery toOrderStatusDaoQuery(String userId, Integer isDelete, List<Integer> orderStatuses);
 }

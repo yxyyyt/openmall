@@ -104,4 +104,6 @@ public abstract class OrderConverter {
     public abstract OrderDTO orderToOrderDTO(Order order);
     
     public abstract OrderStatusDTO orderStatusToOrderStatusDTO(OrderStatus orderStatus);
+    
+    public abstract List<OrderStatusDTO> orderStatusListToOrderStatusDTOList(List<OrderStatus> orderStatusList);
 }
