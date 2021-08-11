@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.ext.OrderStatusMapper">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_status" jdbcType="INTEGER" property="orderStatus"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="deliver_time" jdbcType="TIMESTAMP" property="deliverTime"/>
+        <result column="success_time" jdbcType="TIMESTAMP" property="successTime"/>
+        <result column="close_time" jdbcType="TIMESTAMP" property="closeTime"/>
+        <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id, order_status, created_time, pay_time, deliver_time, success_time, close_time,
+        comment_time
+    </sql>
+
+    <select id="selectOrderStatusCounts"
+            parameterType="com.sciatta.openmall.dao.pojo.query.OrderStatusCountsDaoQuery" resultType="Integer">
+        SELECT count(1) FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE o.user_id = #{userId,jdbcType=VARCHAR} AND os.order_status = #{orderStatus,jdbcType=INTEGER}
+        <if test="isComment != null">
+            and o.is_comment = #{isComment,jdbcType=INTEGER}
+        </if>
+    </select>
+
+</mapper>
