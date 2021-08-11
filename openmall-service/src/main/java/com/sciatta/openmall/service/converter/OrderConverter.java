@@ -8,6 +8,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.OrderItem;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -101,4 +102,6 @@ public abstract class OrderConverter {
             @Mapping(source = "payMethod", target = "merchantOrderDTO.payMethod")
     })
     public abstract OrderDTO orderToOrderDTO(Order order);
+    
+    public abstract OrderStatusDTO orderStatusToOrderStatusDTO(OrderStatus orderStatus);
 }

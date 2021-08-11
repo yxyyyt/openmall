@@ -2,15 +2,14 @@ package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.OrderConverter;
 import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
+import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.enums.PayMethod;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +48,15 @@ public class OrderController {
         // TODO 支付中心
         
         return JSONResult.success(orderDTO.getOrderId());
+    }
+    
+    @PostMapping("/getPaidOrderInfo")
+    public JSONResult getPaidOrderInfo(@RequestParam("orderId") String orderId) {
+        OrderStatusDTO orderStatusDTO = orderService.queryOrderStatusByOrderId(orderId);
+        
+        OrderStatusVO orderStatusVO = OrderConverter.INSTANCE.orderStatusDTOToOrderStatusVO(orderStatusDTO);
+        
+        return JSONResult.success(orderStatusVO);
     }
     
 }

@@ -11,6 +11,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.*;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.converter.OrderConverter;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -100,5 +101,12 @@ public class OrderServiceImpl implements OrderService {
     
     private OrderStatus doCreateOrderStatus(OrderCreateServiceQuery orderCreateServiceQuery, Order order) {
         return OrderConverter.INSTANCE.toOrderStatus(order);
+    }
+    
+    @Override
+    public OrderStatusDTO queryOrderStatusByOrderId(String orderId) {
+        OrderStatus orderStatus = orderStatusMapper.selectByPrimaryKey(orderId);
+        
+        return OrderConverter.INSTANCE.orderStatusToOrderStatusDTO(orderStatus);
     }
 }

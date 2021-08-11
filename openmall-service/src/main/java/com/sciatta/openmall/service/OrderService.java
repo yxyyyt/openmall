@@ -1,6 +1,7 @@
 package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +12,6 @@ import org.springframework.stereotype.Service;
  */
 public interface OrderService {
     OrderDTO createOrder(OrderCreateServiceQuery orderCreateServiceQuery);
+    
+    OrderStatusDTO queryOrderStatusByOrderId(String orderId);
 }
