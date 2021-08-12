@@ -33,4 +33,8 @@ public abstract class MyOrderConverter {
     public abstract OrderStatus toReceiveOrderStatus(Integer orderStatus, Date successTime);
     
     public abstract Order toDeleteOrder(Integer isDelete, Date updatedTime);
+    
+    public abstract Order toCommentOrder(String id, Integer isComment);
+    
+    public abstract OrderStatus toCommentOrderStatus(String orderId, Date commentTime);
 }

@@ -72,7 +72,7 @@ CREATE TABLE `item_comments`
     `item_id`        varchar(64)  NOT NULL COMMENT '商品外键',
     `item_name`      varchar(64) DEFAULT NULL COMMENT '商品名称',
     `item_spec_id`   varchar(64) DEFAULT NULL COMMENT '商品规格外键 可为空',
-    `item_sepc_name` varchar(32) DEFAULT NULL COMMENT '商品规格名称 可为空',
+    `item_spec_name` varchar(32) DEFAULT NULL COMMENT '商品规格名称 可为空',
     `comment_level`  int(11)      NOT NULL COMMENT '评价等级 1：好评 2：中评 3：差评',
     `content`        varchar(128) NOT NULL COMMENT '评价内容',
     `created_time`   datetime    DEFAULT NULL COMMENT '创建时间',

@@ -7,7 +7,7 @@
         <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
         <result column="item_name" jdbcType="VARCHAR" property="itemName"/>
         <result column="item_spec_id" jdbcType="VARCHAR" property="itemSpecId"/>
-        <result column="item_sepc_name" jdbcType="VARCHAR" property="itemSepcName"/>
+        <result column="item_spec_name" jdbcType="VARCHAR" property="itemSpecName"/>
         <result column="comment_level" jdbcType="INTEGER" property="commentLevel"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
@@ -24,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, item_id, item_name, item_spec_id, item_sepc_name, comment_level, content,
+        id, user_id, item_id, item_name, item_spec_id, item_spec_name, comment_level, content,
         created_time, updated_time
     </sql>
 
@@ -32,7 +32,7 @@
         SELECT
         ic.comment_level as commentLevel,
         ic.content as content,
-        ic.item_sepc_name as specName,
+        ic.item_spec_name as specName,
         ic.created_time as createdTime,
         u.face as userFace,
         u.nickname as nickname
@@ -52,4 +52,26 @@
         item_comments ic
         WHERE ic.item_id = #{itemId,jdbcType=VARCHAR} AND ic.comment_level = #{level,jdbcType=INTEGER}
     </select>
+
+    <insert id="insertBatch">
+        insert into item_comments (id, user_id, item_id,
+        item_name, item_spec_id, item_spec_name,
+        comment_level, content, created_time,
+        updated_time)
+        values
+        <foreach collection="itemCommentList" item="itemComment" index="index" separator=",">
+            (
+            #{itemComment.id},
+            #{itemComment.userId},
+            #{itemComment.itemId},
+            #{itemComment.itemName},
+            #{itemComment.itemSpecId},
+            #{itemComment.itemSpecName},
+            #{itemComment.commentLevel},
+            #{itemComment.content},
+            #{itemComment.createdTime},
+            #{itemComment.updatedTime}
+            )
+        </foreach>
+    </insert>
 </mapper>

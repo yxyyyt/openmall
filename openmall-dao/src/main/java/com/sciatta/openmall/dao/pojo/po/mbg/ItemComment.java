@@ -21,7 +21,7 @@ public class ItemComment implements Serializable {
     private String itemSpecId;
 
     @ApiModelProperty(value = "商品规格名称 可为空")
-    private String itemSepcName;
+    private String itemSpecName;
 
     @ApiModelProperty(value = "评价等级 1：好评 2：中评 3：差评")
     private Integer commentLevel;
@@ -77,12 +77,12 @@ public class ItemComment implements Serializable {
         this.itemSpecId = itemSpecId;
     }
 
-    public String getItemSepcName() {
-        return itemSepcName;
+    public String getItemSpecName() {
+        return itemSpecName;
     }
 
-    public void setItemSepcName(String itemSepcName) {
-        this.itemSepcName = itemSepcName;
+    public void setItemSpecName(String itemSpecName) {
+        this.itemSpecName = itemSpecName;
     }
 
     public Integer getCommentLevel() {
@@ -128,7 +128,7 @@ public class ItemComment implements Serializable {
         sb.append(", itemId=").append(itemId);
         sb.append(", itemName=").append(itemName);
         sb.append(", itemSpecId=").append(itemSpecId);
-        sb.append(", itemSepcName=").append(itemSepcName);
+        sb.append(", itemSpecName=").append(itemSpecName);
         sb.append(", commentLevel=").append(commentLevel);
         sb.append(", content=").append(content);
         sb.append(", createdTime=").append(createdTime);

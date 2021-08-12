@@ -1,17 +1,17 @@
 package com.sciatta.openmall.api.controller;
 
+import com.sciatta.openmall.api.converter.CommentConverter;
 import com.sciatta.openmall.api.converter.OrderConverter;
+import com.sciatta.openmall.api.pojo.query.OrderItemCommentApiQuery;
 import com.sciatta.openmall.api.pojo.vo.OrderItemVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.enums.YesOrNo;
+import com.sciatta.openmall.service.MyCommentService;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,9 +24,11 @@ import java.util.List;
 @RequestMapping("mycomments")
 public class MyCommentController {
     private final OrderService orderService;
+    private final MyCommentService myCommentService;
     
-    public MyCommentController(OrderService orderService) {
+    public MyCommentController(OrderService orderService, MyCommentService myCommentService) {
         this.orderService = orderService;
+        this.myCommentService = myCommentService;
     }
     
     @PostMapping("/pending")
@@ -45,5 +47,25 @@ public class MyCommentController {
         List<OrderItemVO> orderItemVOList = OrderConverter.INSTANCE.orderItemDTOListToOrderItemVOList(orderItemDTOList);
         
         return JSONResult.success(orderItemVOList);
+    }
+    
+    @PostMapping("/saveList")
+    public JSONResult saveList(@RequestParam String userId, @RequestParam String orderId,
+                               @RequestBody List<OrderItemCommentApiQuery> orderItemCommentApiQueryList) {
+        
+        OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
+        
+        if (ObjectUtils.isEmpty(orderDTO)) {
+            return JSONResult.errorUsingMessage("订单不存在");
+        }
+        
+        if (ObjectUtils.isEmpty(orderItemCommentApiQueryList)) {
+            return JSONResult.errorUsingMessage("评论内容不能为空");
+        }
+        
+        myCommentService.saveComments(orderId, userId,
+                CommentConverter.INSTANCE.orderItemCommentApiQueryListToOrderItemCommentServiceQueryList(orderItemCommentApiQueryList));
+        
+        return JSONResult.success();
     }
 }

@@ -19,7 +19,7 @@ public class OrderItemVO implements Serializable {
     private String itemId;
     private String itemImg;
     private String itemName;
-    private String itemspecid;
+    private String itemSpecId;
     private String itemSpecName;
     private Integer price;
     private Integer buyCounts;

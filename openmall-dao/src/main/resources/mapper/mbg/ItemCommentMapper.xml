@@ -7,14 +7,14 @@
     <result column="item_id" jdbcType="VARCHAR" property="itemId" />
     <result column="item_name" jdbcType="VARCHAR" property="itemName" />
     <result column="item_spec_id" jdbcType="VARCHAR" property="itemSpecId" />
-    <result column="item_sepc_name" jdbcType="VARCHAR" property="itemSepcName" />
+    <result column="item_spec_name" jdbcType="VARCHAR" property="itemSpecName" />
     <result column="comment_level" jdbcType="INTEGER" property="commentLevel" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, item_id, item_name, item_spec_id, item_sepc_name, comment_level, content, 
+    id, user_id, item_id, item_name, item_spec_id, item_spec_name, comment_level, content, 
     created_time, updated_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -29,11 +29,11 @@
   </delete>
   <insert id="insert" parameterType="com.sciatta.openmall.dao.pojo.po.mbg.ItemComment">
     insert into item_comments (id, user_id, item_id, 
-      item_name, item_spec_id, item_sepc_name, 
+      item_name, item_spec_id, item_spec_name, 
       comment_level, content, created_time, 
       updated_time)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, 
-      #{itemName,jdbcType=VARCHAR}, #{itemSpecId,jdbcType=VARCHAR}, #{itemSepcName,jdbcType=VARCHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{itemSpecId,jdbcType=VARCHAR}, #{itemSpecName,jdbcType=VARCHAR}, 
       #{commentLevel,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
@@ -55,8 +55,8 @@
       <if test="itemSpecId != null">
         item_spec_id,
       </if>
-      <if test="itemSepcName != null">
-        item_sepc_name,
+      <if test="itemSpecName != null">
+        item_spec_name,
       </if>
       <if test="commentLevel != null">
         comment_level,
@@ -87,8 +87,8 @@
       <if test="itemSpecId != null">
         #{itemSpecId,jdbcType=VARCHAR},
       </if>
-      <if test="itemSepcName != null">
-        #{itemSepcName,jdbcType=VARCHAR},
+      <if test="itemSpecName != null">
+        #{itemSpecName,jdbcType=VARCHAR},
       </if>
       <if test="commentLevel != null">
         #{commentLevel,jdbcType=INTEGER},
@@ -119,8 +119,8 @@
       <if test="itemSpecId != null">
         item_spec_id = #{itemSpecId,jdbcType=VARCHAR},
       </if>
-      <if test="itemSepcName != null">
-        item_sepc_name = #{itemSepcName,jdbcType=VARCHAR},
+      <if test="itemSpecName != null">
+        item_spec_name = #{itemSpecName,jdbcType=VARCHAR},
       </if>
       <if test="commentLevel != null">
         comment_level = #{commentLevel,jdbcType=INTEGER},
@@ -143,7 +143,7 @@
       item_id = #{itemId,jdbcType=VARCHAR},
       item_name = #{itemName,jdbcType=VARCHAR},
       item_spec_id = #{itemSpecId,jdbcType=VARCHAR},
-      item_sepc_name = #{itemSepcName,jdbcType=VARCHAR},
+      item_spec_name = #{itemSpecName,jdbcType=VARCHAR},
       comment_level = #{commentLevel,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
