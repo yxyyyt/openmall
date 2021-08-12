@@ -9,6 +9,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.OrderItem;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
@@ -112,4 +113,6 @@ public abstract class OrderConverter {
     public abstract OrderStatusItemDTO orderStatusItemToOrderStatusItemDTO(OrderStatusItem orderStatusItem);
     
     public abstract List<OrderStatusItemDTO> orderStatusItemListToOrderStatusItemDTOList(List<OrderStatusItem> orderStatusItemList);
+    
+    public abstract List<OrderItemDTO> orderItemListToOrderItemDTOList (List<OrderItem> orderItemList);
 }

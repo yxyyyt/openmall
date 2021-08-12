@@ -15,5 +15,7 @@ public class OrderDTO implements Serializable {
     private static final long serialVersionUID = -3650235366887826546L;
     
     private String orderId;
+    private Integer isComment;
+    private Integer isDelete;
     private MerchantOrderDTO merchantOrderDTO;
 }

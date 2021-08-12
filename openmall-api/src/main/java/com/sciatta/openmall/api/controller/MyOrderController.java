@@ -13,6 +13,7 @@ import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.support.PagedContext;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +91,8 @@ public class MyOrderController {
     
     @PostMapping("confirmReceive")
     public JSONResult confirmReceive(@RequestParam String orderId, @RequestParam String userId) {
-        if (orderNotExist(userId, orderId)) {
+        OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
+        if (ObjectUtils.isEmpty(orderDTO)) {
             return JSONResult.errorUsingMessage("订单不存在");
         }
         
@@ -104,7 +106,8 @@ public class MyOrderController {
     
     @PostMapping("/delete")
     public JSONResult delete(@RequestParam String orderId, @RequestParam String userId) {
-        if (orderNotExist(userId, orderId)) {
+        OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
+        if (ObjectUtils.isEmpty(orderDTO)) {
             return JSONResult.errorUsingMessage("订单不存在");
         }
         
@@ -114,10 +117,5 @@ public class MyOrderController {
         }
         
         return JSONResult.success();
-    }
-    
-    private boolean orderNotExist(String orderId, String userId) {
-        OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
-        return orderDTO == null;
     }
 }

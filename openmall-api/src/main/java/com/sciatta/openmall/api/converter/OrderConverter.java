@@ -1,8 +1,10 @@
 package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
+import com.sciatta.openmall.api.pojo.vo.OrderItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
+import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
@@ -29,4 +31,6 @@ public abstract class OrderConverter {
     public abstract OrderStatusItemVO orderStatusItemDTOToOrderStatusItemVO(OrderStatusItemDTO orderStatusItemDTO);
     
     public abstract List<OrderStatusItemVO> orderStatusItemDTOListToOrderStatusItemVOList(List<OrderStatusItemDTO> orderStatusItemDTOList);
+    
+    public abstract List<OrderItemVO> orderItemDTOListToOrderItemVOList(List<OrderItemDTO> orderItemDTOList);
 }

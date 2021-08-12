@@ -24,7 +24,7 @@
         post_amount, pay_method, left_msg, extend, is_comment, is_delete, created_time, updated_time
     </sql>
 
-    <select id="selectByOrderIdAndUserId" resultType="com.sciatta.openmall.dao.pojo.po.mbg.Order">
+    <select id="selectByOrderIdAndUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from orders
