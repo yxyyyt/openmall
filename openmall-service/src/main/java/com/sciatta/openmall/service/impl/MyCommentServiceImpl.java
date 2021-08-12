@@ -4,13 +4,16 @@ import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderStatusMapper;
+import com.sciatta.openmall.dao.pojo.po.ext.ImageItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.Order;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.service.MyCommentService;
 import com.sciatta.openmall.service.converter.ItemCommentConverter;
 import com.sciatta.openmall.service.converter.MyOrderConverter;
+import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
+import com.sciatta.openmall.service.support.PagedContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,5 +52,13 @@ public class MyCommentServiceImpl implements MyCommentService {
         // 更新评论时间
         OrderStatus orderStatus = MyOrderConverter.INSTANCE.toCommentOrderStatus(orderId, new Date());
         orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
+    }
+    
+    @Override
+    public List<ImageItemCommentDTO> queryComments(String userId, PagedContext pagedContext) {
+        List<ImageItemComment> imageItemCommentList =
+                pagedContext.startPage(() -> itemCommentMapper.selectItemCommentsByUserId(userId), false);
+        
+        return MyOrderConverter.INSTANCE.imageItemCommentListToImageItemCommentDTOList(imageItemCommentList);
     }
 }

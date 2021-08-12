@@ -1,6 +1,8 @@
 package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.query.OrderItemCommentApiQuery;
+import com.sciatta.openmall.api.pojo.vo.ImageItemCommentVO;
+import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -16,5 +18,8 @@ import java.util.List;
 public abstract class CommentConverter {
     public static CommentConverter INSTANCE = Mappers.getMapper(CommentConverter.class);
     
-    public abstract List<OrderItemCommentServiceQuery> orderItemCommentApiQueryListToOrderItemCommentServiceQueryList(List<OrderItemCommentApiQuery> orderItemCommentApiQueryList);
+    public abstract List<OrderItemCommentServiceQuery> orderItemCommentApiQueryListToOrderItemCommentServiceQueryList(
+            List<OrderItemCommentApiQuery> orderItemCommentApiQueryList);
+    
+    public abstract List<ImageItemCommentVO> imageItemCommentDTOListToImageItemCommentVOList(List<ImageItemCommentDTO> imageItemCommentDTOList);
 }

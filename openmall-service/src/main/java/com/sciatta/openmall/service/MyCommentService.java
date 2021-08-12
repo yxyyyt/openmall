@@ -1,6 +1,8 @@
 package com.sciatta.openmall.service;
 
+import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
+import com.sciatta.openmall.service.support.PagedContext;
 
 import java.util.List;
 
@@ -12,4 +14,6 @@ import java.util.List;
 public interface MyCommentService {
     void saveComments(String orderId, String userId,
                       List<OrderItemCommentServiceQuery> commentList);
+    
+    List<ImageItemCommentDTO> queryComments(String userId, PagedContext pagedContext);
 }

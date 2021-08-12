@@ -23,6 +23,16 @@
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
     </resultMap>
 
+    <resultMap id="ImageItemCommentResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.ImageItemComment">
+        <id column="commentId" jdbcType="VARCHAR" property="commentId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="itemId" jdbcType="VARCHAR" property="itemId"/>
+        <result column="itemName" jdbcType="VARCHAR" property="itemName"/>
+        <result column="specName" jdbcType="VARCHAR" property="specName"/>
+        <result column="itemImg" jdbcType="VARCHAR" property="itemImg"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id, user_id, item_id, item_name, item_spec_id, item_spec_name, comment_level, content,
         created_time, updated_time
@@ -74,4 +84,20 @@
             )
         </foreach>
     </insert>
+
+    <select id="selectItemCommentsByUserId" resultMap="ImageItemCommentResultMap">
+        SELECT
+        ic.id as commentId,
+        ic.content as content,
+        ic.created_time as createdTime,
+        ic.item_id as itemId,
+        ic.item_name as itemName,
+        ic.item_spec_name as specName,
+        ii.url as itemImg
+        FROM
+        item_comments ic
+        LEFT JOIN item_images ii ON ic.item_id = ii.item_id
+        WHERE ic.user_id = #{userId} AND ii.is_main = 1
+        ORDER BY ic.created_time desc
+    </select>
 </mapper>
