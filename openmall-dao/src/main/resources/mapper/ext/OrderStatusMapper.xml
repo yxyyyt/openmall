@@ -22,7 +22,7 @@
         <result column="isComment" property="isComment"/>
 
         <collection property="subOrderItemList" select="selectSubItems" column="orderId"
-                    ofType="com.sciatta.openmall.dao.pojo.po.mbg.OrderItem" >
+                    ofType="com.sciatta.openmall.dao.pojo.po.mbg.OrderItem">
             <result column="itemId" property="itemId"/>
             <result column="itemName" property="itemName"/>
             <result column="itemImg" property="itemImg"/>
@@ -112,5 +112,34 @@
         from order_items oi
         where oi.order_id = #{orderId,jdbcType=VARCHAR}
     </select>
+
+    <update id="updateByPrimaryKeyAndOriginalOrderStatusSelective">
+        update order_statuses
+        <set>
+            <if test="orderStatus.orderStatus != null">
+                order_status = #{orderStatus.orderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus.createdTime != null">
+                created_time = #{orderStatus.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.payTime != null">
+                pay_time = #{orderStatus.payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.deliverTime != null">
+                deliver_time = #{orderStatus.deliverTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.successTime != null">
+                success_time = #{orderStatus.successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.closeTime != null">
+                close_time = #{orderStatus.closeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.commentTime != null">
+                comment_time = #{orderStatus.commentTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR} and order_status =
+        #{originalOrderStatus,jdbcType=VARCHAR}
+    </update>
 
 </mapper>

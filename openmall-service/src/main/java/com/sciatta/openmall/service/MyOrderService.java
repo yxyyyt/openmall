@@ -18,7 +18,7 @@ public interface MyOrderService {
     List<OrderStatusDTO> queryOrdersTrend(String userId, PagedContext pagedContext);
     
     /**
-     * 查询订单关联的所有商品，注意此处由于使用分页的原因需要使用级联查询
+     * 查询订单关联的所有商品，注意此处由于使用分页的原因需要使用级联即时查询
      *
      * @param userId       用户外键
      * @param orderStatus  订单状态
@@ -26,4 +26,8 @@ public interface MyOrderService {
      * @return OrderStatusItemDTO集合
      */
     List<OrderStatusItemDTO> queryOrders(String userId, Integer orderStatus, PagedContext pagedContext);
+    
+    boolean updateReceiveOrderStatus(String orderId);
+    
+    boolean deleteOrderByOrderIdAndUserId(String orderId, String userId);
 }

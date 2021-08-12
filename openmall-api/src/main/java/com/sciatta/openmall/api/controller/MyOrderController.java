@@ -7,6 +7,8 @@ import com.sciatta.openmall.api.pojo.vo.OrderStatusItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.service.MyOrderService;
+import com.sciatta.openmall.service.OrderService;
+import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
@@ -28,9 +30,11 @@ import java.util.List;
 @RequestMapping("myorders")
 public class MyOrderController {
     private final MyOrderService myOrderService;
+    private final OrderService orderService;
     
-    public MyOrderController(MyOrderService myOrderService) {
+    public MyOrderController(MyOrderService myOrderService, OrderService orderService) {
         this.myOrderService = myOrderService;
+        this.orderService = orderService;
     }
     
     @PostMapping("statusCounts")
@@ -82,5 +86,38 @@ public class MyOrderController {
                 = OrderConverter.INSTANCE.orderStatusItemDTOListToOrderStatusItemVOList(orderStatusItemDTOList);
         
         return JSONResult.success(pagedContext.getPagedGridResult(orderStatusItemVOList));
+    }
+    
+    @PostMapping("confirmReceive")
+    public JSONResult confirmReceive(@RequestParam String orderId, @RequestParam String userId) {
+        if (orderNotExist(userId, orderId)) {
+            return JSONResult.errorUsingMessage("订单不存在");
+        }
+        
+        boolean result = myOrderService.updateReceiveOrderStatus(orderId);
+        if (!result) {
+            return JSONResult.errorUsingMessage("订单确认收货失败！");
+        }
+        
+        return JSONResult.success();
+    }
+    
+    @PostMapping("/delete")
+    public JSONResult delete(@RequestParam String orderId, @RequestParam String userId) {
+        if (orderNotExist(userId, orderId)) {
+            return JSONResult.errorUsingMessage("订单不存在");
+        }
+        
+        boolean result = myOrderService.deleteOrderByOrderIdAndUserId(orderId, userId);
+        if (!result) {
+            return JSONResult.errorUsingMessage("订单删除失败！");
+        }
+        
+        return JSONResult.success();
+    }
+    
+    private boolean orderNotExist(String orderId, String userId) {
+        OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
+        return orderDTO == null;
     }
 }

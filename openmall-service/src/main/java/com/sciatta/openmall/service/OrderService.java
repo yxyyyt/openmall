@@ -14,4 +14,6 @@ public interface OrderService {
     OrderDTO createOrder(OrderCreateServiceQuery orderCreateServiceQuery);
     
     OrderStatusDTO queryOrderStatusByOrderId(String orderId);
+    
+    OrderDTO queryOrderByOrderIdAndUserId(String orderId, String userId);
 }

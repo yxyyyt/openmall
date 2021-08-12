@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.dao.mapper.ext.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Order">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="receiver_name" jdbcType="VARCHAR" property="receiverName"/>
+        <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile"/>
+        <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress"/>
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
+        <result column="real_pay_amount" jdbcType="INTEGER" property="realPayAmount"/>
+        <result column="post_amount" jdbcType="INTEGER" property="postAmount"/>
+        <result column="pay_method" jdbcType="INTEGER" property="payMethod"/>
+        <result column="left_msg" jdbcType="VARCHAR" property="leftMsg"/>
+        <result column="extend" jdbcType="VARCHAR" property="extend"/>
+        <result column="is_comment" jdbcType="INTEGER" property="isComment"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, receiver_name, receiver_mobile, receiver_address, total_amount, real_pay_amount,
+        post_amount, pay_method, left_msg, extend, is_comment, is_delete, created_time, updated_time
+    </sql>
+
+    <select id="selectByOrderIdAndUserId" resultType="com.sciatta.openmall.dao.pojo.po.mbg.Order">
+        select
+        <include refid="Base_Column_List"/>
+        from orders
+        where id = #{orderId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByPrimaryKeyAndUserIdSelective">
+        update orders
+        <set>
+            <if test="order.userId != null">
+                user_id = #{order.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="order.receiverName != null">
+                receiver_name = #{order.receiverName,jdbcType=VARCHAR},
+            </if>
+            <if test="order.receiverMobile != null">
+                receiver_mobile = #{order.receiverMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="order.receiverAddress != null">
+                receiver_address = #{order.receiverAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="order.totalAmount != null">
+                total_amount = #{order.totalAmount,jdbcType=INTEGER},
+            </if>
+            <if test="order.realPayAmount != null">
+                real_pay_amount = #{order.realPayAmount,jdbcType=INTEGER},
+            </if>
+            <if test="order.postAmount != null">
+                post_amount = #{order.postAmount,jdbcType=INTEGER},
+            </if>
+            <if test="order.payMethod != null">
+                pay_method = #{order.payMethod,jdbcType=INTEGER},
+            </if>
+            <if test="order.leftMsg != null">
+                left_msg = #{order.leftMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="order.extend != null">
+                extend = #{order.extend,jdbcType=VARCHAR},
+            </if>
+            <if test="order.isComment != null">
+                is_comment = #{order.isComment,jdbcType=INTEGER},
+            </if>
+            <if test="order.isDelete != null">
+                is_delete = #{order.isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="order.createdTime != null">
+                created_time = #{order.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.updatedTime != null">
+                updated_time = #{order.updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{orderId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
+    </update>
+</mapper>

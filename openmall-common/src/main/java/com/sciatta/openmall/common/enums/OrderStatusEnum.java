@@ -5,7 +5,7 @@ package com.sciatta.openmall.common.enums;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * OrderStatusCode
  */
-public enum OrderStatusCode {
+public enum OrderStatusEnum {
     WAIT_PAY(10, "待付款"),
     WAIT_DELIVER(20, "已付款，待发货"),
     WAIT_RECEIVE(30, "已发货，待收货"),
@@ -15,7 +15,7 @@ public enum OrderStatusCode {
     public final Integer type;
     public final String value;
     
-    OrderStatusCode(Integer type, String value) {
+    OrderStatusEnum(Integer type, String value) {
         this.type = type;
         this.value = value;
     }

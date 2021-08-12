@@ -109,4 +109,10 @@ public class OrderServiceImpl implements OrderService {
         
         return OrderConverter.INSTANCE.orderStatusToOrderStatusDTO(orderStatus);
     }
+    
+    @Override
+    public OrderDTO queryOrderByOrderIdAndUserId(String orderId, String userId) {
+        Order order = orderMapper.selectByOrderIdAndUserId(orderId, userId);
+        return OrderConverter.INSTANCE.orderToOrderDTO(order);
+    }
 }

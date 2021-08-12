@@ -1,6 +1,6 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.common.enums.OrderStatusCode;
+import com.sciatta.openmall.common.enums.OrderStatusEnum;
 import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem;
 import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
@@ -89,7 +89,7 @@ public abstract class OrderConverter {
         OrderStatus orderStatus = new OrderStatus();
         
         orderStatus.setOrderId(order.getId());
-        orderStatus.setOrderStatus(OrderStatusCode.WAIT_PAY.type);
+        orderStatus.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
         orderStatus.setCreatedTime(new Date());
         
         return orderStatus;
