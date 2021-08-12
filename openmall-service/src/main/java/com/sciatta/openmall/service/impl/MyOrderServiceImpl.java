@@ -3,6 +3,7 @@ package com.sciatta.openmall.service.impl;
 import com.sciatta.openmall.common.enums.OrderStatusCode;
 import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.dao.mapper.ext.OrderStatusMapper;
+import com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery;
 import com.sciatta.openmall.service.MyOrderService;
@@ -10,11 +11,11 @@ import com.sciatta.openmall.service.converter.MyOrderConverter;
 import com.sciatta.openmall.service.converter.OrderConverter;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.support.PagedContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,5 +62,16 @@ public class MyOrderServiceImpl implements MyOrderService {
                 () -> orderStatusMapper.selectOrderStatus(orderStatusDaoQuery), false);
         
         return OrderConverter.INSTANCE.orderStatusListToOrderStatusDTOList(orderStatusList);
+    }
+    
+    @Override
+    public List<OrderStatusItemDTO> queryOrders(String userId, Integer orderStatus, PagedContext pagedContext) {
+        OrderStatusDaoQuery orderStatusDaoQuery = MyOrderConverter.INSTANCE.toOrderStatusDaoQuery(userId, YesOrNo.NO.type,
+                CollectionUtils.arrayToList(orderStatus == null ? new Integer[]{} : new Integer[]{orderStatus}));
+        
+        List<OrderStatusItem> orderStatusItemList = pagedContext.startPage(
+                () -> orderStatusMapper.selectOrderStatusItem(orderStatusDaoQuery), false);
+        
+        return OrderConverter.INSTANCE.orderStatusItemListToOrderStatusItemDTOList(orderStatusItemList);
     }
 }

@@ -2,6 +2,7 @@ package com.sciatta.openmall.service.converter;
 
 import com.sciatta.openmall.common.enums.OrderStatusCode;
 import com.sciatta.openmall.common.enums.YesOrNo;
+import com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem;
 import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
 import com.sciatta.openmall.dao.pojo.po.mbg.Order;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderItem;
@@ -9,6 +10,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -106,4 +108,8 @@ public abstract class OrderConverter {
     public abstract OrderStatusDTO orderStatusToOrderStatusDTO(OrderStatus orderStatus);
     
     public abstract List<OrderStatusDTO> orderStatusListToOrderStatusDTOList(List<OrderStatus> orderStatusList);
+    
+    public abstract OrderStatusItemDTO orderStatusItemToOrderStatusItemDTO(OrderStatusItem orderStatusItem);
+    
+    public abstract List<OrderStatusItemDTO> orderStatusItemListToOrderStatusItemDTOList(List<OrderStatusItem> orderStatusItemList);
 }

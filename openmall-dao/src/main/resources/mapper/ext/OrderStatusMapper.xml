@@ -12,6 +12,27 @@
         <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime"/>
     </resultMap>
 
+    <resultMap id="OrderStatusItemResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem">
+        <id column="orderId" property="orderId"/>
+        <result column="createdTime" property="createdTime"/>
+        <result column="payMethod" property="payMethod"/>
+        <result column="realPayAmount" property="realPayAmount"/>
+        <result column="postAmount" property="postAmount"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="isComment" property="isComment"/>
+
+        <collection property="subOrderItemList" select="selectSubItems" column="orderId"
+                    ofType="com.sciatta.openmall.dao.pojo.po.mbg.OrderItem" >
+            <result column="itemId" property="itemId"/>
+            <result column="itemName" property="itemName"/>
+            <result column="itemImg" property="itemImg"/>
+            <result column="itemSpecId" property="itemSpecId"/>
+            <result column="itemSpecName" property="itemSpecName"/>
+            <result column="buyCounts" property="buyCounts"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List">
         order_id, order_status, created_time, pay_time, deliver_time, success_time, close_time,
         comment_time
@@ -52,6 +73,44 @@
             </foreach>
         </if>
         ORDER BY os.order_id DESC
+    </select>
+
+    <select id="selectOrderStatusItem" parameterType="com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery"
+            resultMap="OrderStatusItemResultMap">
+        SELECT
+        o.id as orderId,
+        o.created_time as createdTime,
+        o.pay_method as payMethod,
+        o.real_pay_amount as realPayAmount,
+        o.post_amount as postAmount,
+        os.order_status as orderStatus,
+        o.is_comment as isComment
+        FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE
+        o.user_id = #{userId,jdbcType=VARCHAR}
+        <if test="isDelete != null">
+            AND o.is_delete = #{isDelete,jdbcType=INTEGER}
+        </if>
+        <if test="orderStatuses != null and orderStatuses.size() > 0">
+            AND os.order_status IN
+            <foreach collection="orderStatuses" index="index" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+        ORDER BY o.updated_time ASC
+    </select>
+
+    <select id="selectSubItems" parameterType="String" resultType="com.sciatta.openmall.dao.pojo.po.mbg.OrderItem">
+        select
+        oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+        from order_items oi
+        where oi.order_id = #{orderId,jdbcType=VARCHAR}
     </select>
 
 </mapper>
