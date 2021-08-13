@@ -1,12 +1,15 @@
 package com.sciatta.openmall.service.impl;
 
+import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.dao.mapper.ext.UserMapper;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.converter.UserConverter;
+import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +51,20 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
         
         return UserConverter.INSTANCE.userToUserRegisterDTO(user);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public UserDTO queryUserByUserId(String userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        
+        return UserConverter.INSTANCE.userToUserDTO(user);
+    }
+    
+    @Override
+    public boolean updateUserByUserId(String userId, UserServiceQuery userServiceQuery) {
+        
+        return userMapper.updateByPrimaryKeySelective(UserConverter.INSTANCE.userServiceQueryToUser(userId, userServiceQuery))
+                == YesOrNo.YES.type;
     }
 }

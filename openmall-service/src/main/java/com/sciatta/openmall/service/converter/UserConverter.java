@@ -3,9 +3,11 @@ package com.sciatta.openmall.service.converter;
 import com.sciatta.openmall.common.enums.Sex;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
+import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.n3r.idworker.Sid;
@@ -41,4 +43,8 @@ public abstract class UserConverter {
     }
     
     public abstract UserRegisterDTO userToUserRegisterDTO(User user);
+    
+    public abstract UserDTO userToUserDTO(User user);
+    
+    public abstract User userServiceQueryToUser(String id, UserServiceQuery userServiceQuery);
 }

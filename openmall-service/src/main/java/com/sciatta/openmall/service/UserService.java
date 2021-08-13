@@ -1,8 +1,10 @@
 package com.sciatta.openmall.service;
 
+import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 
 /**
  * Created by yangxiaoyu on 2021/7/29<br>
@@ -29,8 +31,13 @@ public interface UserService {
     
     /**
      * 创建用户
+     *
      * @param userRegisterServiceQuery userRegisterServiceQuery
      * @return UserRegisterDTO
      */
     UserRegisterDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery);
+    
+    UserDTO queryUserByUserId(String userId);
+    
+    boolean updateUserByUserId(String userId, UserServiceQuery userServiceQuery);
 }

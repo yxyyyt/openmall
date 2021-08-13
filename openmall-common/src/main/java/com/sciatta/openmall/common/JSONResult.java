@@ -1,5 +1,13 @@
 package com.sciatta.openmall.common;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import static com.sciatta.openmall.common.JSONResult.JSONResultStatus.*;
 
 /**
@@ -44,6 +52,14 @@ public class JSONResult {
     }
     
     public static JSONResult errorUsingData(Object data) {
+        Map<String, String> errorMap = new HashMap<>();
+        if (data instanceof BindingResult) {
+            List<FieldError> fieldErrors = ((BindingResult) data).getFieldErrors();
+            for (FieldError next : fieldErrors) {
+                errorMap.put(next.getField(), next.getDefaultMessage());
+            }
+            data = errorMap;
+        }
         return new JSONResult(ERROR_USING_DATA, "ERROR", data);
     }
     
