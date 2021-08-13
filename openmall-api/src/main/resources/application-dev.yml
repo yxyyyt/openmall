@@ -10,3 +10,8 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+openmall:
+  upload:
+    image-user-face-location: /Users/yangxiaoyu/work/test/openmall/images/faces
+    image-server-url: http://localhost:8088/faces

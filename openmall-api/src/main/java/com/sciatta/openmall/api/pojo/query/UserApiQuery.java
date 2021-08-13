@@ -1,5 +1,6 @@
 package com.sciatta.openmall.api.pojo.query;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
@@ -10,6 +11,7 @@ import java.util.Date;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * UserApiQuery
  */
+@Data
 public class UserApiQuery {
     
     @NotBlank(message = "用户昵称不能为空")

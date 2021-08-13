@@ -22,4 +22,6 @@ public abstract class UserConverter {
     public abstract UserServiceQuery userApiQueryToUserServiceQuery(UserApiQuery userApiQuery);
     
     public abstract UserCookieVO userDTOToUserCookieVO(UserDTO userDTO);
+    
+    public abstract UserServiceQuery userFaceUrlToUserServiceQuery(String face);
 }
