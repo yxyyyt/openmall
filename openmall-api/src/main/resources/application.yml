@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: dev # 激活环境配置，dev开发环境，test测试环境，prod生产环境
   datasource:
     type: com.zaxxer.hikari.HikariDataSource    # 数据源类型：HikariCP
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql驱动

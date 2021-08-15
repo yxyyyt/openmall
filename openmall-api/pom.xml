@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>openmall-api</artifactId>
+    <!-- [1-5] 发布war包 -->
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

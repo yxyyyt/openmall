@@ -41,6 +41,8 @@
         <mybatis-generator.version>1.4.0</mybatis-generator.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <idworker-client.version>1.5</idworker-client.version>
+
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -147,15 +149,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- 打war包移除内置tomcat -->
-            <!--
+            <!-- [2-5] 打war包移除内置tomcat
             <exclusions>
                 <exclusion>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
-            </exclusions>
-            -->
+            </exclusions> -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -221,6 +221,23 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!-- [3-5] servlet
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency> -->
     </dependencies>
 
+    <build>
+        <finalName>openmall-api</finalName>
+        <plugins>
+            <!-- [4-5] maven-war-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
