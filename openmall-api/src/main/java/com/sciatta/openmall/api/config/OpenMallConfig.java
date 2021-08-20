@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Configuration;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * OpenMallConfig
  */
-@Data
 @Configuration
 @ConfigurationProperties(prefix = "openmall")
+@Data
 public class OpenMallConfig {
+    private String sid;
     private UploadConfig upload = new UploadConfig();
     
     @Data

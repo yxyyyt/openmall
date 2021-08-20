@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: dev # 激活环境配置，dev开发环境，test测试环境，prod生产环境
+    active: test # 激活环境配置，dev开发环境，test测试环境，prod生产环境
   datasource:
     type: com.zaxxer.hikari.HikariDataSource    # 数据源类型：HikariCP
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql驱动
@@ -30,3 +30,6 @@ mybatis:
 pagehelper: # 分页插件配置
   helperDialect: mysql
   supportMethodsArguments: true
+
+openmall:
+  sid: 336b56d13f7744e98ebe4bca03f8aa40
