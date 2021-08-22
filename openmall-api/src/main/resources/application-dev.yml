@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.10:3306/openmall?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    url: jdbc:mysql://node10:3306/openmall?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
     username: root
     password: root
 
@@ -12,6 +12,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 openmall:
+  log:
+    file-path: /Users/yangxiaoyu/work/test/openmall/api/logs
+    level: debug
   upload:
     image-user-face-location: /Users/yangxiaoyu/work/test/openmall/images/faces
     image-server-url: http://localhost:8088/faces

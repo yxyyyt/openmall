@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: test # 激活环境配置，dev开发环境，test测试环境，prod生产环境
+    active: dev # 激活环境配置，dev开发环境，test测试环境，prod生产环境
   datasource:
     type: com.zaxxer.hikari.HikariDataSource    # 数据源类型：HikariCP
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql驱动
@@ -33,3 +33,16 @@ pagehelper: # 分页插件配置
 
 openmall:
   sid: 336b56d13f7744e98ebe4bca03f8aa40
+  log:
+    # 日志格式化输出
+    # %d 日期
+    # %thread 线程名
+    # %-5level level从左显示5个字符宽度
+    # %logger{50} Class的完全限定名称，数字表示限制字符长度
+    # %msg 日志消息
+    # %n 表示换行符
+    pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50} - %msg%n"
+    # 日志文件保留天数
+    max-history: 60
+    # 日志文件最大文件大小
+    max-file-size: 100MB

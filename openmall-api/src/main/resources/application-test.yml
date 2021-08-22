@@ -12,6 +12,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 生产环境不需要打印
 
 openmall:
+  log:
+    file-path: /openmall/install/openmall/api/logs
+    level: debug
   upload:
     image-user-face-location: /openmall/images/faces
     image-server-url: http://node20:8088/faces

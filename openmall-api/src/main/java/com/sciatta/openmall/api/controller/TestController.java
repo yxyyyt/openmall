@@ -1,6 +1,7 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.config.OpenMallConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import java.net.UnknownHostException;
  * 测试
  */
 @RestController
+@Slf4j
 public class TestController {
     
     private final OpenMallConfig openMallConfig;
@@ -37,6 +39,8 @@ public class TestController {
                     .append("HostName { " + localHost.getHostName() + " } ")
                     .append("Sid { " + openMallConfig.getSid() + " }");
         }
+        
+        log.debug(testMessage.toString());
         
         return testMessage.toString();
     }
