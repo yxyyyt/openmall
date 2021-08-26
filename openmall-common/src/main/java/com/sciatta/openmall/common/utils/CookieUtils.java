@@ -1,5 +1,6 @@
 package com.sciatta.openmall.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import java.util.Locale;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * CookieUtils
  */
+@Slf4j
 public class CookieUtils {
     private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
     
@@ -250,6 +252,7 @@ public class CookieUtils {
         
         if (request != null) {  // 设置域名的cookie
             String domainName = getDomainName(request);
+            log.debug("generate domain name is {}", domainName);
             if (!"localhost".equals(domainName.toLowerCase(Locale.ROOT))) {
                 cookie.setDomain(domainName);
             }
@@ -283,12 +286,16 @@ public class CookieUtils {
             
             final String[] domains = serverName.split("\\.");
             int len = domains.length;
+            
+            // Rfc6265CookieProcessor 校验域名，不能以 . 或 - 开头
             if (len > 3 && !isIp(serverName)) {
-                // www.xxx.com.cn
-                domainName = "." + domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
+                // xxx.yyy.com.cn -> .yyy.com.cn
+                // domainName = "." + domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
+                domainName = domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
             } else if (len <= 3 && len > 1) {
-                // xxx.com or xxx.cn
-                domainName = "." + domains[len - 2] + "." + domains[len - 1];
+                // xxx.yyy.com or xxx.com -> .yyy.com or .xxx.com
+                // domainName = "." + domains[len - 2] + "." + domains[len - 1];
+                domainName = domains[len - 2] + "." + domains[len - 1];
             } else {
                 domainName = serverName;
             }
