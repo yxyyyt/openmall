@@ -6,6 +6,11 @@ spring:
     url: jdbc:mysql://node10:3306/openmall?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
     username: root
     password: root
+  redis:
+    cluster:
+      nodes: 192.168.1.10:6379,192.168.1.11:6379,192.168.1.12:6379,192.168.1.20:6379,192.168.1.21:6379,192.168.1.22:6379
+    database: 0
+    password: openmall
 
 mybatis:
   configuration:

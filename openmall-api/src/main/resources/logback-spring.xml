@@ -123,9 +123,9 @@
     <springProfile name="dev">
         <root level="${logLevel}">
             <appender-ref ref="console"/>
-            <appender-ref ref="debugAppender"/>
-            <appender-ref ref="infoAppender"/>
-            <appender-ref ref="errorAppender"/>
+<!--            <appender-ref ref="debugAppender"/>-->
+<!--            <appender-ref ref="infoAppender"/>-->
+<!--            <appender-ref ref="errorAppender"/>-->
         </root>
     </springProfile>
 
