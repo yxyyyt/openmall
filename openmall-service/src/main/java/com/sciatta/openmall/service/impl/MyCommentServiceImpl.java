@@ -13,7 +13,7 @@ import com.sciatta.openmall.service.converter.ItemCommentConverter;
 import com.sciatta.openmall.service.converter.MyOrderConverter;
 import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
-import com.sciatta.openmall.service.support.PagedContext;
+import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

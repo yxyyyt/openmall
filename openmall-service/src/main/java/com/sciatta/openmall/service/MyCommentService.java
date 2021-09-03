@@ -2,7 +2,7 @@ package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
-import com.sciatta.openmall.service.support.PagedContext;
+import com.sciatta.openmall.service.support.paged.PagedContext;
 
 import java.util.List;
 

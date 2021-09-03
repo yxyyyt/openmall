@@ -14,7 +14,7 @@ import com.sciatta.openmall.service.converter.OrderConverter;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
-import com.sciatta.openmall.service.support.PagedContext;
+import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

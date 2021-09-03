@@ -1,4 +1,4 @@
-package com.sciatta.openmall.service.support;
+package com.sciatta.openmall.service.support.paged;
 
 import lombok.Data;
 

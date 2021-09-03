@@ -6,17 +6,13 @@ import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
 import com.sciatta.openmall.api.pojo.vo.SearchItemVO;
 import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.PagedConstants;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.*;
-import com.sciatta.openmall.service.support.PagedContext;
+import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.sciatta.openmall.common.constants.PagedConstants.PAGE_SIZE;
-import static com.sciatta.openmall.common.constants.PagedConstants.PAGE_START;
 
 /**
  * Created by yangxiaoyu on 2021/8/4<br>

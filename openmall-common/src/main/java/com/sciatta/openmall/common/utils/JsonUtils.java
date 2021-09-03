@@ -34,12 +34,12 @@ public class JsonUtils {
     }
     
     /**
-     * 将json字符串转化对象
+     * 将json字符串转化pojo
      *
      * @param jsonData json字符串
      * @param beanType 待转换对象类型
      * @param <T>      待转换对象类型泛型
-     * @return 转化对象
+     * @return 转化pojo
      */
     public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
         try {
@@ -51,12 +51,12 @@ public class JsonUtils {
     }
     
     /**
-     * 将json字符串转化对象list
+     * 将json字符串转化list
      *
      * @param jsonData json字符串
      * @param beanType 待转换对象类型
      * @param <T>      待转换对象类型泛型
-     * @return 转化对象list
+     * @return 转化list
      */
     public static <T> List<T> jsonToList(String jsonData, Class<T> beanType) {
         JavaType javaType = MAPPER.getTypeFactory().constructParametricType(List.class, beanType);
@@ -68,5 +68,4 @@ public class JsonUtils {
         
         return null;
     }
-    
 }

@@ -4,7 +4,7 @@ import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.pojo.query.SearchCatItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
-import com.sciatta.openmall.service.support.PagedContext;
+import com.sciatta.openmall.service.support.paged.PagedContext;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.sciatta.openmall.service.support;
+package com.sciatta.openmall.service.support.paged;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
