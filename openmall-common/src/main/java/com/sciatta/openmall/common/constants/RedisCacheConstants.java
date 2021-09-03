@@ -6,5 +6,9 @@ package com.sciatta.openmall.common.constants;
  * RedisCacheConstants
  */
 public class RedisCacheConstants {
-    public static final String CAROUSEL = "carousel";
+    public static final String CAROUSELS = "carousels";
+    
+    public static final String CATEGORIES = "categories";
+    
+    public static final String SUB_CATEGORIES = "subCategories";
 }

@@ -1,4 +1,4 @@
-package com.sciatta.openmall.api.support.cache;
+package com.sciatta.openmall.service.support.cache;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,4 +18,18 @@ public @interface Cache {
     Class<?> toClass();
     
     boolean isList() default false;
+    
+    /**
+     * 默认过期时间是24小时，单位秒
+     *
+     * @return 过期时间
+     */
+    long timeout() default 60 * 60 * 24;
+    
+    /**
+     * 无效数据默认过期时间是5分钟，单位秒
+     *
+     * @return 过期时间
+     */
+    long invalidTimeout() default 60 * 5;
 }
