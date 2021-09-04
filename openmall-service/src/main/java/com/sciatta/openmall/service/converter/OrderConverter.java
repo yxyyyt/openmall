@@ -13,6 +13,8 @@ import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -29,6 +31,7 @@ import java.util.List;
  * OrderConverter
  */
 @Mapper
+@Slf4j
 public abstract class OrderConverter {
     public static OrderConverter INSTANCE = Mappers.getMapper(OrderConverter.class);
     
@@ -58,8 +61,10 @@ public abstract class OrderConverter {
         return order;
     }
     
-    public List<OrderItem> toOrderItems(List<ShopCartItem> shopCartItemList, Order order) {
-        int buyCounts = 1;  // TODO redis get data
+    public List<OrderItem> toOrderItems(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                                        List<ShopCartAddServiceQuery> paidShopCartList,
+                                        List<ShopCartItem> shopCartItemList,
+                                        Order order) {
         List<OrderItem> orderItemList = new ArrayList<>();
         
         for (ShopCartItem shopCartItem : shopCartItemList) {
@@ -70,7 +75,7 @@ public abstract class OrderConverter {
             orderItem.setItemId(shopCartItem.getItemId());
             orderItem.setItemName(shopCartItem.getItemName());
             orderItem.setItemImg(shopCartItem.getItemImgUrl());
-            orderItem.setBuyCounts(buyCounts);
+            orderItem.setBuyCounts(getBuyCountsFromShopCart(shopCartAddServiceQueryList, paidShopCartList, shopCartItem.getSpecId()));
             orderItem.setItemSpecId(shopCartItem.getSpecId());
             orderItem.setItemSpecName(shopCartItem.getSpecName());
             orderItem.setPrice(shopCartItem.getPriceDiscount());
@@ -78,12 +83,25 @@ public abstract class OrderConverter {
             
             // 统计Order总价格和实际总价格
             order.setTotalAmount((order.getTotalAmount() == null ? 0 : order.getTotalAmount())
-                    + shopCartItem.getPriceNormal() * buyCounts);
+                    + shopCartItem.getPriceNormal() * orderItem.getBuyCounts());
             order.setRealPayAmount((order.getRealPayAmount() == null ? 0 : order.getRealPayAmount())
-                    + shopCartItem.getPriceDiscount() * buyCounts);
+                    + shopCartItem.getPriceDiscount() * orderItem.getBuyCounts());
         }
         
         return orderItemList;
+    }
+    
+    private Integer getBuyCountsFromShopCart(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                                             List<ShopCartAddServiceQuery> paidShopCartList,
+                                             String itemSpecId) {
+        for (ShopCartAddServiceQuery shopCartAddServiceQuery : shopCartAddServiceQueryList) {
+            if (shopCartAddServiceQuery.getSpecId().equals(itemSpecId)) {
+                paidShopCartList.add(shopCartAddServiceQuery);  // 购物车中已支付的商品
+                return shopCartAddServiceQuery.getBuyCounts();
+            }
+        }
+        log.error(itemSpecId + " not in shop cart");
+        throw new IllegalStateException(itemSpecId + " not in shop cart");
     }
     
     public OrderStatus toOrderStatus(Order order) {
@@ -114,5 +132,5 @@ public abstract class OrderConverter {
     
     public abstract List<OrderStatusItemDTO> orderStatusItemListToOrderStatusItemDTOList(List<OrderStatusItem> orderStatusItemList);
     
-    public abstract List<OrderItemDTO> orderItemListToOrderItemDTOList (List<OrderItem> orderItemList);
+    public abstract List<OrderItemDTO> orderItemListToOrderItemDTOList(List<OrderItem> orderItemList);
 }

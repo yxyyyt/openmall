@@ -1,4 +1,4 @@
-package com.sciatta.openmall.api.pojo.query;
+package com.sciatta.openmall.service.pojo.query;
 
 import lombok.Data;
 
@@ -7,11 +7,11 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/9<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ShopCartAddApiQuery
+ * ShopCartAddServiceQuery
  */
 @Data
-public class ShopCartAddApiQuery implements Serializable {
-    private static final long serialVersionUID = -2310205691860958186L;
+public class ShopCartAddServiceQuery implements Serializable {
+    private static final long serialVersionUID = -350908879281100647L;
     
     private String itemId;
     private String itemImgUrl;

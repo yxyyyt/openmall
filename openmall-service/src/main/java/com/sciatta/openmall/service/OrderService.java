@@ -4,6 +4,7 @@ import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
  * 订单服务
  */
 public interface OrderService {
-    OrderDTO createOrder(OrderCreateServiceQuery orderCreateServiceQuery);
+    OrderDTO createOrder(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                         List<ShopCartAddServiceQuery> paidShopCartList,
+                         OrderCreateServiceQuery orderCreateServiceQuery);
     
     OrderStatusDTO queryOrderStatusByOrderId(String orderId);
     

@@ -14,6 +14,7 @@ import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,13 +52,15 @@ public class OrderServiceImpl implements OrderService {
     
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderDTO createOrder(OrderCreateServiceQuery orderCreateServiceQuery) {
+    public OrderDTO createOrder(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                                List<ShopCartAddServiceQuery> paidShopCartList,
+                                OrderCreateServiceQuery orderCreateServiceQuery) {
         
         // 创建订单
         Order order = doCreateOrder(orderCreateServiceQuery);
         
         // 创建订单商品，关联更新Order总价格和实际总价格
-        List<OrderItem> orderItemList = doCreateOrderItems(orderCreateServiceQuery, order);
+        List<OrderItem> orderItemList = doCreateOrderItems(shopCartAddServiceQueryList, paidShopCartList, orderCreateServiceQuery, order);
         
         // 创建订单状态
         OrderStatus orderStatus = doCreateOrderStatus(orderCreateServiceQuery, order);
@@ -90,14 +93,17 @@ public class OrderServiceImpl implements OrderService {
         return OrderConverter.INSTANCE.toOrder(orderCreateServiceQuery, userAddress);
     }
     
-    private List<OrderItem> doCreateOrderItems(OrderCreateServiceQuery orderCreateServiceQuery, Order order) {
+    private List<OrderItem> doCreateOrderItems(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                                               List<ShopCartAddServiceQuery> paidShopCartList,
+                                               OrderCreateServiceQuery orderCreateServiceQuery,
+                                               Order order) {
         
         List<String> idList = CollectionUtils.arrayToList(
                 orderCreateServiceQuery.getItemSpecIds().split(","));
         
         List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
         
-        return OrderConverter.INSTANCE.toOrderItems(shopCartItemList, order);
+        return OrderConverter.INSTANCE.toOrderItems(shopCartAddServiceQueryList, paidShopCartList, shopCartItemList, order);
     }
     
     private OrderStatus doCreateOrderStatus(OrderCreateServiceQuery orderCreateServiceQuery, Order order) {

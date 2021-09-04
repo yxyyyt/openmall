@@ -1,18 +1,28 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.OrderConverter;
+import com.sciatta.openmall.api.converter.ShopCartConverter;
 import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
+import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
+import com.sciatta.openmall.common.constants.CookieConstants;
+import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.common.enums.PayMethod;
+import com.sciatta.openmall.common.utils.CookieUtils;
+import com.sciatta.openmall.common.utils.JsonUtils;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
+import com.sciatta.openmall.service.support.cache.CacheService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangxiaoyu on 2021/8/10<br>
@@ -23,9 +33,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
+    private final CacheService cacheService;
     
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, CacheService cacheService) {
         this.orderService = orderService;
+        this.cacheService = cacheService;
     }
     
     @PostMapping("/create")
@@ -37,12 +49,16 @@ public class OrderController {
             return JSONResult.errorUsingMessage("支付方式不支持！");
         }
         
+        // 从缓存获得购物车
+        List<ShopCartAddServiceQuery> shopCartAddServiceQueryList = getShopCart(orderCreateApiQuery);
+        List<ShopCartAddServiceQuery> paidShopCartList = new ArrayList<>();
+        
         // 创建订单
         OrderCreateServiceQuery orderCreateServiceQuery = OrderConverter.INSTANCE.orderCreateApiQueryToOrderCreateServiceQuery(orderCreateApiQuery);
-        OrderDTO orderDTO = orderService.createOrder(orderCreateServiceQuery);
+        OrderDTO orderDTO = orderService.createOrder(shopCartAddServiceQueryList, paidShopCartList, orderCreateServiceQuery);
         
         // 创建订单以后，移除购物车中已结算（已提交）的商品
-        // TODO 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
+        setShopCart(orderCreateApiQuery, shopCartAddServiceQueryList, paidShopCartList, request, response);
         
         // 向支付中心发送当前订单，用于保存支付中心的订单数据
         // TODO 支付中心
@@ -59,4 +75,31 @@ public class OrderController {
         return JSONResult.success(orderStatusVO);
     }
     
+    private List<ShopCartAddServiceQuery> getShopCart(OrderCreateApiQuery orderCreateApiQuery) {
+        String shopCart = cacheService.get(getKey(orderCreateApiQuery));
+        List<ShopCartAddApiQuery> shopCartAddApiQueryList = JsonUtils.jsonToList(shopCart, ShopCartAddApiQuery.class);
+        
+        return ShopCartConverter.INSTANCE.shopCartAddApiQueryListToShopCartAddServiceQueryList(shopCartAddApiQueryList);
+    }
+    
+    private void setShopCart(OrderCreateApiQuery orderCreateApiQuery,
+                             List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
+                             List<ShopCartAddServiceQuery> paidShopCartList,
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
+        shopCartAddServiceQueryList.removeAll(paidShopCartList);    // 删除购物车中已支付商品
+        
+        List<ShopCartAddApiQuery> shopCartAddApiQueryList =
+                ShopCartConverter.INSTANCE.shopCartAddServiceQueryListToShopCartAddApiQueryList(shopCartAddServiceQueryList);
+        
+        String result = JsonUtils.objectToJson(shopCartAddApiQueryList);
+        
+        // 更新缓存
+        CookieUtils.setCookie(request, response, CookieConstants.COOKIE_SHOP_CART, result, true);
+        cacheService.set(getKey(orderCreateApiQuery), result);
+    }
+    
+    private String getKey(OrderCreateApiQuery orderCreateApiQuery) {
+        return RedisCacheConstants.SHOP_CART + ":" + orderCreateApiQuery.getUserId();
+    }
 }
