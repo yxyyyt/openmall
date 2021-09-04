@@ -32,4 +32,6 @@ public @interface Cache {
      * @return 过期时间
      */
     long invalidTimeout() default 60 * 5;
+    
+    String processor() default "simpleCacheProcessor";
 }

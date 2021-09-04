@@ -11,4 +11,6 @@ public class RedisCacheConstants {
     public static final String CATEGORIES = "categories";
     
     public static final String SUB_CATEGORIES = "subCategories";
+    
+    public static final String SHOP_CART = "shopCart";
 }

@@ -1,15 +1,17 @@
 package com.sciatta.openmall.service.support.cache.impl;
 
-import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.utils.JsonUtils;
 import com.sciatta.openmall.service.support.cache.Cache;
-import com.sciatta.openmall.service.support.cache.CacheService;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
+import com.sciatta.openmall.service.support.cache.CacheExtend;
+import com.sciatta.openmall.service.support.cache.CacheProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -26,58 +28,46 @@ import java.util.List;
 @Slf4j
 @Aspect
 @Component
-public class RedisCacheAspect {
-    private final CacheService cacheService;
-    
-    public RedisCacheAspect(CacheService cacheService) {
-        this.cacheService = cacheService;
-    }
+public class RedisCacheAspect implements ApplicationContextAware {
+    private ApplicationContext applicationContext;
     
     @Around("@annotation(com.sciatta.openmall.service.support.cache.Cache) && @annotation(cache)")
     public Object setCache(ProceedingJoinPoint pjp, Cache cache) throws Throwable {
-        // 解析生成key
-        String key = resolveKey(pjp, cache);
         
-        Class<?> toClass = cache.toClass();
-        boolean isList = cache.isList();
-        long timeout = cache.timeout();
-        long invalidTimeout = cache.invalidTimeout();
+        // 获得CacheProcessor
+        CacheProcessor cacheProcessor = applicationContext.getBean(cache.processor(), CacheProcessor.class);
+        if (ObjectUtils.isEmpty(cacheProcessor)) {
+            log.error("Not obtained cacheProcessor: " + cache.processor());
+            throw new Throwable("Not obtained cacheProcessor: " + cache.processor());
+        }
+        log.debug("obtain cache processor: " + cache.processor());
+        
+        // 解析方法参数
+        ResolveParameterWrap resolveParameterWrap = resolveParameter(pjp, cache);
+        
+        String key = resolveParameterWrap.key;
         
         // 获取缓存
-        String value = cacheService.get(key);
+        String value = (String) cacheProcessor.hit(key);
         
-        // 命中
+        // 命中处理
         if (StringUtils.hasText(value)) {
-            log.debug("get cache {} = {}", key, value);
-            
-            Object data;
-            if (isList) {
-                data = JsonUtils.jsonToList(value, toClass);
-            } else {
-                data = JsonUtils.jsonToPojo(value, toClass);
-            }
-            return JSONResult.success(data);
+            return cacheProcessor.hitProcess(key, value, cache, resolveParameterWrap.extend);
         }
         
-        // 执行目标方法
-        JSONResult jsonResult = (JSONResult) pjp.proceed();
+        // 未命中执行目标方法
+        Object result = pjp.proceed();
         
-        // 设置缓存
-        value = JsonUtils.objectToJson(jsonResult.getData());
-        if (ObjectUtils.isEmpty(jsonResult.getData())) {
-            // 防止缓存穿透恶意攻击
-            cacheService.set(key, value, invalidTimeout);
-            log.warn("set invalid cache {} = {}", key, value);
-        } else {
-            cacheService.set(key, JsonUtils.objectToJson(jsonResult.getData()), timeout);
-            log.debug("set cache {} = {}", key, value);
-        }
-        
-        return jsonResult;
+        // 未命中处理
+        return cacheProcessor.missProcess(key, result, cache);
     }
     
-    private String resolveKey(ProceedingJoinPoint pjp, Cache cache) {
+    private ResolveParameterWrap resolveParameter(ProceedingJoinPoint pjp, Cache cache) {
+        
+        ResolveParameterWrap resolveParameterWrap = new ResolveParameterWrap();
+        
         List<ChildKeyWrap> childKeyWraps = new ArrayList<>();
+        List<Object> cacheExtends = new ArrayList<>();
         
         Object[] args = pjp.getArgs();
         MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -94,14 +84,20 @@ public class RedisCacheAspect {
                     childKeyWrap.arg = args[i];
                     
                     childKeyWraps.add(childKeyWrap);
-                    break;
+                }
+                
+                if (annotation instanceof CacheExtend) {
+                    cacheExtends.add(args[i]);
                 }
             }
         }
         
         childKeyWraps.sort(ChildKeyWrap::compareTo);
         
-        return generateKey(cache, childKeyWraps);
+        resolveParameterWrap.key = generateKey(cache, childKeyWraps);
+        resolveParameterWrap.extend = cacheExtends.toArray();
+        
+        return resolveParameterWrap;
     }
     
     private String generateKey(Cache cache, List<ChildKeyWrap> childKeyWraps) {
@@ -112,6 +108,10 @@ public class RedisCacheAspect {
         return sb.toString();
     }
     
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
     
     private static class ChildKeyWrap implements Comparable<ChildKeyWrap> {
         int index;
@@ -122,5 +122,10 @@ public class RedisCacheAspect {
         public int compareTo(ChildKeyWrap o) {
             return cacheChildKey.order() - o.cacheChildKey.order();
         }
+    }
+    
+    private static class ResolveParameterWrap {
+        String key;
+        Object[] extend;
     }
 }

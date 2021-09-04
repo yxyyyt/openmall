@@ -4,14 +4,19 @@ import com.sciatta.openmall.api.converter.ItemConverter;
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
 import com.sciatta.openmall.api.pojo.vo.ShopCartItemVO;
 import com.sciatta.openmall.common.JSONResult;
+import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.ShopCartItemDTO;
+import com.sciatta.openmall.service.support.cache.Cache;
+import com.sciatta.openmall.service.support.cache.CacheChildKey;
+import com.sciatta.openmall.service.support.cache.CacheExtend;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +35,9 @@ public class ShopCartController {
     }
     
     @PostMapping("add")
-    public JSONResult add(@RequestParam String userId,
-                          @RequestBody ShopCartAddApiQuery shopCartAddApiQuery,
+    @Cache(key = RedisCacheConstants.SHOP_CART, toClass = ShopCartAddApiQuery.class, timeout = -1, isList = true, processor = "shopCartCacheProcessor")
+    public JSONResult add(@RequestParam @CacheChildKey(order = 0) String userId,
+                          @RequestBody @CacheExtend ShopCartAddApiQuery shopCartAddApiQuery,
                           HttpServletRequest request,
                           HttpServletResponse response) {
         
@@ -41,8 +47,10 @@ public class ShopCartController {
             return JSONResult.errorUsingMessage("用户不能为空");
         }
         
-        // TODO TO redis
-        return JSONResult.success();
+        List<ShopCartAddApiQuery> shopCart = new ArrayList<>();
+        shopCart.add(shopCartAddApiQuery);
+        
+        return JSONResult.success(shopCart);
     }
     
     @GetMapping("refresh")
