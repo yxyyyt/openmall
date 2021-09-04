@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.sciatta.openmall.common.constants.CookieConstants.COOKIE_USERNAME;
+import static com.sciatta.openmall.common.constants.CookieConstants.*;
 
 /**
  * Created by yangxiaoyu on 2021/7/29<br>
@@ -117,8 +117,9 @@ public class PassportController {
     public JSONResult logout(@RequestParam String userId,
                              HttpServletRequest request,
                              HttpServletResponse response) {
-        // 清除客户端Cookie
+        // 清除Cookie
         CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
+        CookieUtils.deleteCookie(request, response, COOKIE_SHOP_CART);
         
         return JSONResult.success();
     }
