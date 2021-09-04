@@ -7,4 +7,5 @@ package com.sciatta.openmall.common.constants;
  */
 public final class CookieConstants {
     public static final String COOKIE_USERNAME = "user";
+    public static final String COOKIE_SHOP_CART = "shopcart";
 }

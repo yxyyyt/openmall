@@ -43,7 +43,7 @@ public abstract class AbstractCacheProcessor implements CacheProcessor {
     protected abstract Object afterHitProcess(String key, Object data, Cache cache, Object... extend);
     
     @Override
-    public Object missProcess(String key, Object result, Cache cache) {
+    public Object missProcess(String key, Object result, Cache cache, Object... extend) {
         JSONResult jsonResult = (JSONResult) result;
         
         String value = JsonUtils.objectToJson(jsonResult.getData());

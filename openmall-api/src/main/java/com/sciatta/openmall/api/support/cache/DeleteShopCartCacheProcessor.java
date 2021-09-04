@@ -43,7 +43,7 @@ public class DeleteShopCartCacheProcessor extends AbstractCacheProcessor {
     }
     
     @Override
-    public Object missProcess(String key, Object result, Cache cache) {
+    public Object missProcess(String key, Object result, Cache cache, Object... extend) {
         return afterMissProcess(JSONResult.success());
     }
     

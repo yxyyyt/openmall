@@ -6,6 +6,7 @@ import com.sciatta.openmall.api.pojo.query.UserLoginApiQuery;
 import com.sciatta.openmall.api.pojo.query.UserRegisterApiQuery;
 import com.sciatta.openmall.api.pojo.vo.UserLoginVO;
 import com.sciatta.openmall.api.pojo.vo.UserRegisterVO;
+import com.sciatta.openmall.api.support.cache.LoginShopCartCacheHelper;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.JsonUtils;
@@ -30,9 +31,11 @@ import static com.sciatta.openmall.common.constants.CookieConstants.COOKIE_USERN
 @RequestMapping("passport")
 public class PassportController {
     private final UserService userService;
+    private final LoginShopCartCacheHelper loginShopCartCacheHelper;
     
-    public PassportController(UserService userService) {
+    public PassportController(UserService userService, LoginShopCartCacheHelper loginShopCartCacheHelper) {
         this.userService = userService;
+        this.loginShopCartCacheHelper = loginShopCartCacheHelper;
     }
     
     @PostMapping("login")
@@ -60,34 +63,7 @@ public class PassportController {
         CookieUtils.setCookie(request, response, COOKIE_USERNAME,
                 JsonUtils.objectToJson(userLoginVO), true);
         
-        return JSONResult.success();
-    }
-    
-    @PostMapping("logout")
-    public JSONResult logout(@RequestParam String userId,
-                             HttpServletRequest request,
-                             HttpServletResponse response) {
-        // 清除客户端Cookie
-        CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
-        
-        return JSONResult.success();
-    }
-    
-    @GetMapping("usernameIsExist")
-    public JSONResult usernameIsExist(@RequestParam String username) {
-        // 判断用户名不能为空
-        if (!StringUtils.hasText(username)) {
-            return JSONResult.errorUsingMessage("用户名不能为空");
-        }
-        
-        // 查询用户名是否存在
-        boolean isExist = userService.queryUsernameIsExist(username);
-        if (isExist) {
-            return JSONResult.errorUsingMessage("用户名已经存在");
-        }
-        
-        // 用户名没有重复
-        return JSONResult.success();
+        return loginShopCartCacheHelper.processCache(userLoginVO.getId(), request, response);
     }
     
     @PostMapping("/register")
@@ -134,6 +110,33 @@ public class PassportController {
         CookieUtils.setCookie(request, response, COOKIE_USERNAME,
                 JsonUtils.objectToJson(userRegisterVO), true);
         
+        return loginShopCartCacheHelper.processCache(userRegisterVO.getId(), request, response);
+    }
+    
+    @PostMapping("logout")
+    public JSONResult logout(@RequestParam String userId,
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
+        // 清除客户端Cookie
+        CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
+        
+        return JSONResult.success();
+    }
+    
+    @GetMapping("usernameIsExist")
+    public JSONResult usernameIsExist(@RequestParam String username) {
+        // 判断用户名不能为空
+        if (!StringUtils.hasText(username)) {
+            return JSONResult.errorUsingMessage("用户名不能为空");
+        }
+        
+        // 查询用户名是否存在
+        boolean isExist = userService.queryUsernameIsExist(username);
+        if (isExist) {
+            return JSONResult.errorUsingMessage("用户名已经存在");
+        }
+        
+        // 用户名没有重复
         return JSONResult.success();
     }
 }

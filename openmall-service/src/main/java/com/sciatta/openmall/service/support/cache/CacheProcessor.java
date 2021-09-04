@@ -10,5 +10,5 @@ public interface CacheProcessor {
     
     Object hitProcess(String key, String value, Cache cache, Object... extend);
     
-    Object missProcess(String key, Object result, Cache cache);
+    Object missProcess(String key, Object result, Cache cache, Object... extend);
 }

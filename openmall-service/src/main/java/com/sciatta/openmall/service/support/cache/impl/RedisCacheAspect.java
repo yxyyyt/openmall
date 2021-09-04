@@ -32,7 +32,7 @@ public class RedisCacheAspect implements ApplicationContextAware {
     private ApplicationContext applicationContext;
     
     @Around("@annotation(com.sciatta.openmall.service.support.cache.Cache) && @annotation(cache)")
-    public Object setCache(ProceedingJoinPoint pjp, Cache cache) throws Throwable {
+    public Object set(ProceedingJoinPoint pjp, Cache cache) throws Throwable {
         
         // 获得CacheProcessor
         CacheProcessor cacheProcessor = applicationContext.getBean(cache.processor(), CacheProcessor.class);
@@ -59,7 +59,7 @@ public class RedisCacheAspect implements ApplicationContextAware {
         Object result = pjp.proceed();
         
         // 未命中处理
-        return cacheProcessor.missProcess(key, result, cache);
+        return cacheProcessor.missProcess(key, result, cache, resolveParameterWrap.extend);
     }
     
     private ResolveParameterWrap resolveParameter(ProceedingJoinPoint pjp, Cache cache) {
