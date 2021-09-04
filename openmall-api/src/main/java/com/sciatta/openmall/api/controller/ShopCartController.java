@@ -35,7 +35,11 @@ public class ShopCartController {
     }
     
     @PostMapping("add")
-    @Cache(key = RedisCacheConstants.SHOP_CART, toClass = ShopCartAddApiQuery.class, timeout = -1, isList = true, processor = "shopCartCacheProcessor")
+    @Cache(key = RedisCacheConstants.SHOP_CART,
+            toClass = ShopCartAddApiQuery.class,
+            timeout = RedisCacheConstants.NEVER_EXPIRE,
+            isList = true,
+            processor = "addShopCartCacheProcessor")
     public JSONResult add(@RequestParam @CacheChildKey(order = 0) String userId,
                           @RequestBody @CacheExtend ShopCartAddApiQuery shopCartAddApiQuery,
                           HttpServletRequest request,
@@ -62,8 +66,13 @@ public class ShopCartController {
     }
     
     @PostMapping("del")
-    public JSONResult delete(@RequestParam String userId,
-                             @RequestParam String itemSpecId,
+    @Cache(key = RedisCacheConstants.SHOP_CART,
+            toClass = ShopCartAddApiQuery.class,
+            timeout = RedisCacheConstants.NEVER_EXPIRE,
+            isList = true,
+            processor = "deleteShopCartCacheProcessor")
+    public JSONResult delete(@RequestParam @CacheChildKey(order = 0) String userId,
+                             @RequestParam @CacheExtend String itemSpecId,
                              HttpServletRequest request,
                              HttpServletResponse response) {
         
@@ -73,7 +82,6 @@ public class ShopCartController {
             return JSONResult.errorUsingMessage("用户或商品规格不能为空");
         }
         
-        // TODO TO redis
         return JSONResult.success();
     }
 }

@@ -1,5 +1,6 @@
 package com.sciatta.openmall.service.support.cache.impl;
 
+import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.service.support.cache.CacheService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,18 @@ public class RedisCacheService implements CacheService {
     
     @Override
     public void set(String key, String value, long timeout) {
-        redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+        set(key, value, timeout, TimeUnit.SECONDS);
     }
     
     @Override
     public void set(String key, String value, long timeout, TimeUnit timeUnit) {
+        if (timeout == RedisCacheConstants.NEVER_EXPIRE) {
+            set(key, value);    // 永不过期
+            return;
+        }
+        
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
-    
     
     @Override
     public void set(String key, String value) {

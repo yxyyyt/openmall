@@ -12,44 +12,43 @@ import java.util.List;
 /**
  * Created by yangxiaoyu on 2021/9/4<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ShopCartCacheProcessor
+ * DeleteShopCartCacheProcessor
  */
 @Component
-public class ShopCartCacheProcessor extends AbstractCacheProcessor {
-    protected ShopCartCacheProcessor(CacheService cacheService) {
+public class DeleteShopCartCacheProcessor extends AbstractCacheProcessor {
+    protected DeleteShopCartCacheProcessor(CacheService cacheService) {
         super(cacheService);
     }
     
     @Override
     protected Object afterHitProcess(String key, Object data, Cache cache, Object... extend) {
-        boolean isHaving = false;
         List<ShopCartAddApiQuery> shopCart = (List<ShopCartAddApiQuery>) data;
-        ShopCartAddApiQuery newItem = (ShopCartAddApiQuery) extend[0];
+        String itemSpecId = (String) extend[0];
+        ShopCartAddApiQuery removeItem = null;
         
         for (ShopCartAddApiQuery test : shopCart) {
             String specId = test.getSpecId();
-            if (specId.equals(newItem.getSpecId())) {
-                test.setBuyCounts(test.getBuyCounts() + newItem.getBuyCounts());
-                isHaving = true;
+            if (specId.equals(itemSpecId)) {
+                removeItem = test;
+                break;
             }
         }
-        if (!isHaving) {
-            shopCart.add(newItem);
-        }
+        
+        shopCart.remove(removeItem);    // 删除移除的商品
         
         // 更新redis中购物车数据
-        if (cache.timeout() == -1) {
-            // 永不过期
-            cacheService.set(key, JsonUtils.objectToJson(shopCart));
-        } else {
-            cacheService.set(key, JsonUtils.objectToJson(shopCart), cache.timeout());
-        }
+        cacheService.set(key, JsonUtils.objectToJson(shopCart), cache.timeout());
         
         return JSONResult.success();
     }
     
     @Override
+    public Object missProcess(String key, Object result, Cache cache) {
+        return afterMissProcess(JSONResult.success());
+    }
+    
+    @Override
     protected Object afterMissProcess(JSONResult jsonResult) {
-        return JSONResult.success();
+        return jsonResult;
     }
 }

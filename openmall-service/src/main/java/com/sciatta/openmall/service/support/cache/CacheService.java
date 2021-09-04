@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public interface CacheService {
     
     /**
-     * 增加缓存，同时设置过期时间，单位秒
+     * 增加缓存，同时设置过期时间，单位秒；当过期时间是-1时，永不过期
      *
      * @param key     key
      * @param value   value
@@ -21,7 +21,7 @@ public interface CacheService {
     void set(String key, String value, long timeout);
     
     /**
-     * 增加缓存，同时设置过期时间
+     * 增加缓存，同时设置过期时间；当过期时间是-1时，永不过期
      *
      * @param key      key
      * @param value    value
@@ -31,7 +31,7 @@ public interface CacheService {
     void set(String key, String value, long timeout, TimeUnit timeUnit);
     
     /**
-     * 增加缓存
+     * 增加缓存；过期时间永不过期
      *
      * @param key   key
      * @param value value

@@ -52,12 +52,7 @@ public abstract class AbstractCacheProcessor implements CacheProcessor {
             cacheService.set(key, value, cache.invalidTimeout());
             log.warn("set invalid cache {}={} timeout={}", key, value, cache.invalidTimeout());
         } else {
-            if (cache.timeout() == -1) {
-                // 永不过期
-                cacheService.set(key, JsonUtils.objectToJson(jsonResult.getData()));
-            } else {
-                cacheService.set(key, JsonUtils.objectToJson(jsonResult.getData()), cache.timeout());
-            }
+            cacheService.set(key, value, cache.timeout());
             log.debug("set cache {}={} timeout={}", key, value, cache.timeout());
         }
         
