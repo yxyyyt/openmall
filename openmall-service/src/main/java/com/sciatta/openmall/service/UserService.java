@@ -1,8 +1,6 @@
 package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
-import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
-import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 
@@ -19,7 +17,7 @@ public interface UserService {
      * @param password 用户密码
      * @return UserLoginDTO
      */
-    UserLoginDTO queryUserForLogin(String username, String password);
+    UserDTO queryUserForLogin(String username, String password);
     
     /**
      * 查询用户名是否存在
@@ -35,7 +33,7 @@ public interface UserService {
      * @param userRegisterServiceQuery userRegisterServiceQuery
      * @return UserRegisterDTO
      */
-    UserRegisterDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery);
+    UserDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery);
     
     UserDTO queryUserByUserId(String userId);
     

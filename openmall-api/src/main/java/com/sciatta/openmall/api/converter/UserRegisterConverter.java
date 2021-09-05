@@ -1,8 +1,6 @@
 package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.query.UserRegisterApiQuery;
-import com.sciatta.openmall.api.pojo.vo.UserRegisterVO;
-import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -18,6 +16,4 @@ public abstract class UserRegisterConverter {
     public static UserRegisterConverter INSTANCE = Mappers.getMapper(UserRegisterConverter.class);
     
     public abstract UserRegisterServiceQuery userRegisterApiQueryToUserRegisterServiceQuery(UserRegisterApiQuery userRegisterApiQuery);
-    
-    public abstract UserRegisterVO userRegisterDTOToUserRegisterVO(UserRegisterDTO userRegisterDTO);
 }

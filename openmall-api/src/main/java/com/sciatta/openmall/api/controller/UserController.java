@@ -7,12 +7,15 @@ import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.api.pojo.vo.UserVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CookieConstants;
+import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.common.utils.JsonUtils;
+import com.sciatta.openmall.common.utils.SidUtils;
 import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
+import com.sciatta.openmall.service.support.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ObjectUtils;
@@ -26,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 
+import static com.sciatta.openmall.common.constants.CookieConstants.COOKIE_USERNAME;
+
 /**
  * Created by yangxiaoyu on 2021/8/13<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
@@ -37,10 +42,12 @@ import java.io.*;
 public class UserController {
     private final UserService userService;
     private final OpenMallConfig openMallConfig;
+    private final CacheService cacheService;
     
-    public UserController(UserService userService, OpenMallConfig openMallConfig) {
+    public UserController(UserService userService, OpenMallConfig openMallConfig, CacheService cacheService) {
         this.userService = userService;
         this.openMallConfig = openMallConfig;
+        this.cacheService = cacheService;
     }
     
     @GetMapping("query")
@@ -71,7 +78,8 @@ public class UserController {
         UserDTO userDTO = userService.queryUserByUserId(userId);
         UserCookieVO userCookieVO = UserConverter.INSTANCE.userDTOToUserCookieVO(userDTO);
         
-        CookieUtils.setCookie(request, response, CookieConstants.COOKIE_USERNAME, JsonUtils.objectToJson(userCookieVO), true);
+        // 设置缓存
+        setUserCache(userCookieVO, request, response);
         
         return JSONResult.success();
     }
@@ -127,9 +135,30 @@ public class UserController {
         
         UserDTO userDTO = userService.queryUserByUserId(userId);
         UserCookieVO userCookieVO = UserConverter.INSTANCE.userDTOToUserCookieVO(userDTO);
-        CookieUtils.setCookie(request, response, CookieConstants.COOKIE_USERNAME, JsonUtils.objectToJson(userCookieVO), true);
+        
+        // 设置缓存
+        setUserCache(userCookieVO, request, response);
         
         return JSONResult.success();
+    }
+    
+    private void setUserCache(UserCookieVO userCookieVO, HttpServletRequest request, HttpServletResponse response) {
+        String userTokenKey = getUserTokenKey(userCookieVO.getId());
+        String userTokenValue = getUserTokenValue();
+        
+        userCookieVO.setUserUniqueToken(userTokenValue);
+        
+        // 设置缓存
+        cacheService.set(userTokenKey, userTokenValue);
+        CookieUtils.setCookie(request, response, COOKIE_USERNAME, JsonUtils.objectToJson(userCookieVO), true);
+    }
+    
+    private String getUserTokenKey(String userId) {
+        return RedisCacheConstants.USER_TOKEN + ":" + userId;
+    }
+    
+    private String getUserTokenValue() {
+        return SidUtils.generateUUID();
     }
     
     private static class FilePath {
@@ -229,6 +258,5 @@ public class UserController {
                 super(message);
             }
         }
-        
     }
 }

@@ -4,8 +4,6 @@ import com.sciatta.openmall.common.enums.Sex;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
-import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
-import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.mapstruct.Mapper;
@@ -26,8 +24,6 @@ import static com.sciatta.openmall.common.constants.PictureConstants.USER_FACE;
 public abstract class UserConverter {
     public static UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
     
-    public abstract UserLoginDTO userToUserLoginDTO(User user);
-    
     public User userRegisterServiceQueryToUser(UserRegisterServiceQuery userRegisterServiceQuery) {
         User user = new User();
         user.setId(Sid.nextShort());    // Sid是分布式自增ID，基于snowflake算法
@@ -41,8 +37,6 @@ public abstract class UserConverter {
         user.setUpdatedTime(new Date());
         return user;
     }
-    
-    public abstract UserRegisterDTO userToUserRegisterDTO(User user);
     
     public abstract UserDTO userToUserDTO(User user);
     

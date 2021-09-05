@@ -19,4 +19,5 @@ public class UserCookieVO implements Serializable {
     private String realname;
     private String face;
     private Integer sex;
+    private String userUniqueToken;
 }

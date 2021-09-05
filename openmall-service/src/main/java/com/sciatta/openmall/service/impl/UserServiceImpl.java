@@ -6,8 +6,6 @@ import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.converter.UserConverter;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
-import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
-import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.springframework.stereotype.Service;
@@ -30,10 +28,10 @@ public class UserServiceImpl implements UserService {
     
     @Transactional(readOnly = true)
     @Override
-    public UserLoginDTO queryUserForLogin(String username, String password) {
+    public UserDTO queryUserForLogin(String username, String password) {
         User user = userMapper.selectByUsernameAndPassword(username, DigestUtils.md5DigestAsHex(password.getBytes()));
         
-        return UserConverter.INSTANCE.userToUserLoginDTO(user);
+        return UserConverter.INSTANCE.userToUserDTO(user);
     }
     
     @Transactional(readOnly = true)
@@ -45,12 +43,12 @@ public class UserServiceImpl implements UserService {
     
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public UserRegisterDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery) {
+    public UserDTO createUser(UserRegisterServiceQuery userRegisterServiceQuery) {
         User user = UserConverter.INSTANCE.userRegisterServiceQueryToUser(userRegisterServiceQuery);
         
         userMapper.insert(user);
         
-        return UserConverter.INSTANCE.userToUserRegisterDTO(user);
+        return UserConverter.INSTANCE.userToUserDTO(user);
     }
     
     @Override
