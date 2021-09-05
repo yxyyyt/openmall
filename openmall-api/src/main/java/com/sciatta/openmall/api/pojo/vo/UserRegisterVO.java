@@ -18,4 +18,5 @@ public class UserRegisterVO implements Serializable {
     private String nickname;
     private String realname;
     private Integer sex;
+    private String userUniqueToken;
 }

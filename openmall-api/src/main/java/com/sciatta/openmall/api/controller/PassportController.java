@@ -8,12 +8,15 @@ import com.sciatta.openmall.api.pojo.vo.UserLoginVO;
 import com.sciatta.openmall.api.pojo.vo.UserRegisterVO;
 import com.sciatta.openmall.api.support.cache.LoginShopCartCacheHelper;
 import com.sciatta.openmall.common.JSONResult;
+import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.JsonUtils;
+import com.sciatta.openmall.common.utils.SidUtils;
 import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.pojo.dto.UserLoginDTO;
 import com.sciatta.openmall.service.pojo.dto.UserRegisterDTO;
 import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
+import com.sciatta.openmall.service.support.cache.CacheService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,10 +35,12 @@ import static com.sciatta.openmall.common.constants.CookieConstants.*;
 public class PassportController {
     private final UserService userService;
     private final LoginShopCartCacheHelper loginShopCartCacheHelper;
+    private final CacheService cacheService;
     
-    public PassportController(UserService userService, LoginShopCartCacheHelper loginShopCartCacheHelper) {
+    public PassportController(UserService userService, LoginShopCartCacheHelper loginShopCartCacheHelper, CacheService cacheService) {
         this.userService = userService;
         this.loginShopCartCacheHelper = loginShopCartCacheHelper;
+        this.cacheService = cacheService;
     }
     
     @PostMapping("login")
@@ -59,9 +64,8 @@ public class PassportController {
         
         UserLoginVO userLoginVO = UserLoginConverter.INSTANCE.userLoginDTOtoUserLoginVO(userLoginDTO);
         
-        // 设置客户端Cookie
-        CookieUtils.setCookie(request, response, COOKIE_USERNAME,
-                JsonUtils.objectToJson(userLoginVO), true);
+        // 设置缓存
+        setUserCache(userLoginVO, request, response);
         
         return loginShopCartCacheHelper.processCache(userLoginVO.getId(), request, response);
     }
@@ -106,9 +110,8 @@ public class PassportController {
         
         UserRegisterVO userRegisterVO = UserRegisterConverter.INSTANCE.userRegisterDTOToUserRegisterVO(userRegisterDTO);
         
-        // 设置客户端Cookie
-        CookieUtils.setCookie(request, response, COOKIE_USERNAME,
-                JsonUtils.objectToJson(userRegisterVO), true);
+        // 设置缓存
+        setUserCache(userRegisterVO, request, response);
         
         return loginShopCartCacheHelper.processCache(userRegisterVO.getId(), request, response);
     }
@@ -117,9 +120,8 @@ public class PassportController {
     public JSONResult logout(@RequestParam String userId,
                              HttpServletRequest request,
                              HttpServletResponse response) {
-        // 清除Cookie
-        CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
-        CookieUtils.deleteCookie(request, response, COOKIE_SHOP_CART);
+        // 清除缓存
+        clearUserCache(userId, request, response);
         
         return JSONResult.success();
     }
@@ -139,5 +141,42 @@ public class PassportController {
         
         // 用户名没有重复
         return JSONResult.success();
+    }
+    
+    private void setUserCache(UserLoginVO userLoginVO, HttpServletRequest request, HttpServletResponse response) {
+        String userTokenKey = getUserTokenKey(userLoginVO.getId());
+        String userTokenValue = getUserTokenValue();
+        
+        userLoginVO.setUserUniqueToken(userTokenValue);
+        
+        // 设置缓存
+        cacheService.set(userTokenKey, userTokenValue);
+        CookieUtils.setCookie(request, response, COOKIE_USERNAME, JsonUtils.objectToJson(userLoginVO), true);
+    }
+    
+    private void setUserCache(UserRegisterVO userRegisterVO, HttpServletRequest request, HttpServletResponse response) {
+        String userTokenKey = getUserTokenKey(userRegisterVO.getId());
+        String userTokenValue = getUserTokenValue();
+        
+        userRegisterVO.setUserUniqueToken(userTokenValue);
+        
+        // 设置缓存
+        cacheService.set(userTokenKey, userTokenValue);
+        CookieUtils.setCookie(request, response, COOKIE_USERNAME, JsonUtils.objectToJson(userRegisterVO), true);
+    }
+    
+    private void clearUserCache(String userId, HttpServletRequest request, HttpServletResponse response) {
+        CookieUtils.deleteCookie(request, response, COOKIE_USERNAME);
+        CookieUtils.deleteCookie(request, response, COOKIE_SHOP_CART);
+        
+        cacheService.del(getUserTokenKey(userId));
+    }
+    
+    private String getUserTokenKey(String userId) {
+        return RedisCacheConstants.USER_TOKEN + ":" + userId;
+    }
+    
+    private String getUserTokenValue() {
+        return SidUtils.generateUUID();
     }
 }

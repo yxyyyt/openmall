@@ -1,9 +1,11 @@
 package com.sciatta.openmall.api.config;
 
+import com.sciatta.openmall.api.intercepter.UserTokenInterceptor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,9 +18,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     
     private final OpenMallConfig openMallConfig;
+    private final UserTokenInterceptor userTokenInterceptor;
     
-    public WebMvcConfig(OpenMallConfig openMallConfig) {
+    public WebMvcConfig(OpenMallConfig openMallConfig, UserTokenInterceptor userTokenInterceptor) {
         this.openMallConfig = openMallConfig;
+        this.userTokenInterceptor = userTokenInterceptor;
     }
     
     
@@ -34,6 +38,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
+    }
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userTokenInterceptor)
+                .addPathPatterns("/mycomments/*")
+                .addPathPatterns("/myorders/*")
+                .addPathPatterns("/orders/*")
+                .addPathPatterns("/shopCart/add")
+                .addPathPatterns("/shopCart/del")
+                .addPathPatterns("/address/*")
+                .addPathPatterns("/user/*");
     }
 }
 
