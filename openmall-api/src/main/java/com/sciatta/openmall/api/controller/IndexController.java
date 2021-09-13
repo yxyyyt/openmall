@@ -6,9 +6,8 @@ import com.sciatta.openmall.api.pojo.vo.CarouselVO;
 import com.sciatta.openmall.api.pojo.vo.CategoryItemVO;
 import com.sciatta.openmall.api.pojo.vo.CategoryVO;
 import com.sciatta.openmall.api.pojo.vo.SubCategoryVO;
-import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.service.CarouselService;
 import com.sciatta.openmall.service.CategoryService;
@@ -16,6 +15,7 @@ import com.sciatta.openmall.service.pojo.dto.CarouselDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
 import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
 import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
+import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -44,7 +44,7 @@ public class IndexController {
     }
     
     @GetMapping("carousels")
-    @Cache(key = RedisCacheConstants.CAROUSELS, toClass = CarouselVO.class, isList = true)
+    @Cache(key = CacheConstants.CAROUSELS, toClass = CarouselVO.class, isList = true)
     public JSONResult carousels() {
         List<CarouselDTO> carouselDTOList = carouselService.queryAll(YesOrNo.YES.type);
         List<CarouselVO> carouselVOList = CarouselConverter.INSTANCE.carouselDTOListToCarouselVOList(carouselDTOList);
@@ -53,7 +53,7 @@ public class IndexController {
     }
     
     @GetMapping("categories")
-    @Cache(key = RedisCacheConstants.CATEGORIES, toClass = CategoryVO.class, isList = true)
+    @Cache(key = CacheConstants.CATEGORIES, toClass = CategoryVO.class, isList = true)
     public JSONResult categories() {
         List<CategoryDTO> categoryDTOList = categoryService.queryAllRootLevel();
         List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.categoryDTOListToCategoryVOList(categoryDTOList);
@@ -62,7 +62,7 @@ public class IndexController {
     }
     
     @GetMapping("subCategories/{parentId}")
-    @Cache(key = RedisCacheConstants.SUB_CATEGORIES, toClass = SubCategoryVO.class, isList = true)
+    @Cache(key = CacheConstants.SUB_CATEGORIES, toClass = SubCategoryVO.class, isList = true)
     public JSONResult subCategories(@PathVariable @CacheChildKey(order = 0) Integer parentId) {
         
         if (parentId == null) {

@@ -1,6 +1,7 @@
-package com.sciatta.openmall.api.support.cache;
+package com.sciatta.openmall.api.support.cache.processor.impl;
 
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
+import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CookieConstants;
 import com.sciatta.openmall.common.utils.CookieUtils;

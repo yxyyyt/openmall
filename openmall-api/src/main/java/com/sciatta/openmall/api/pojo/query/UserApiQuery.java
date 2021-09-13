@@ -27,7 +27,7 @@ public class UserApiQuery {
     
     private Date birthday;
     
-    @Pattern(regexp = "^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\\d{8})$", message = "手机号格式不正确")
+    @Pattern(regexp = "^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\\d{8})$", message = "手机号格式不正确")  // TODO delete +
     private String mobile;
     
     @Email

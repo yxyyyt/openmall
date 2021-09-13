@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/7/30<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * 用户登录VO
+ * UserCookieVO
  */
 @Data
 public class UserCookieVO implements Serializable {

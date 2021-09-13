@@ -33,7 +33,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
 
-        <spring-boot-dependencies.version>2.1.5.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
         <mybatis.version>2.1.0</mybatis.version>
         <pagehelper.version>1.2.12</pagehelper.version>
         <swagger.version>2.4.0</swagger.version>
@@ -41,8 +41,6 @@
         <mybatis-generator.version>1.4.0</mybatis-generator.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <idworker-client.version>1.5</idworker-client.version>
-
-        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -157,6 +155,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
         <!-- mysql -->
         <dependency>
             <groupId>mysql</groupId>
@@ -207,10 +209,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!-- hibernate-validator -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
 </project>

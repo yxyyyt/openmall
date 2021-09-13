@@ -1,6 +1,7 @@
 package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.query.UserApiQuery;
+import com.sciatta.openmall.api.pojo.query.UserQuery;
 import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.api.pojo.vo.UserVO;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
@@ -21,7 +22,9 @@ public abstract class UserConverter {
     
     public abstract UserServiceQuery userApiQueryToUserServiceQuery(UserApiQuery userApiQuery);
     
-    public abstract UserCookieVO userDTOToUserCookieVO(UserDTO userDTO);
+    public abstract UserCookieVO convert(UserDTO userDTO);
     
     public abstract UserServiceQuery userFaceUrlToUserServiceQuery(String face);
+    
+    public abstract com.sciatta.openmall.service.pojo.query.UserQuery convert(UserQuery userQuery);
 }

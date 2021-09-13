@@ -1,14 +1,14 @@
-package com.sciatta.openmall.api.pojo.query;
+package com.sciatta.openmall.service.pojo.query;
 
 import lombok.Data;
 
 /**
- * Created by yangxiaoyu on 2021/7/16<br>
+ * Created by yangxiaoyu on 2021/7/30<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * 用户登录请求
+ * 用户请求
  */
 @Data
-public class UserLoginApiQuery {
+public class UserQuery {
     private String username;
     private String password;
 }

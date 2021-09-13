@@ -1,5 +1,6 @@
-package com.sciatta.openmall.api.support.cache;
+package com.sciatta.openmall.api.support.cache.processor.impl;
 
+import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheService;

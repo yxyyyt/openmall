@@ -4,7 +4,7 @@ import com.sciatta.openmall.common.enums.Sex;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
-import com.sciatta.openmall.service.pojo.query.UserRegisterServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserQuery;
 import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -24,12 +24,12 @@ import static com.sciatta.openmall.common.constants.PictureConstants.USER_FACE;
 public abstract class UserConverter {
     public static UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
     
-    public User userRegisterServiceQueryToUser(UserRegisterServiceQuery userRegisterServiceQuery) {
+    public User userRegisterServiceQueryToUser(UserQuery userQuery) {
         User user = new User();
         user.setId(Sid.nextShort());    // Sid是分布式自增ID，基于snowflake算法
-        user.setUsername(userRegisterServiceQuery.getUsername());
-        user.setPassword(DigestUtils.md5DigestAsHex(userRegisterServiceQuery.getPassword().getBytes()));
-        user.setNickname(userRegisterServiceQuery.getUsername());
+        user.setUsername(userQuery.getUsername());
+        user.setPassword(DigestUtils.md5DigestAsHex(userQuery.getPassword().getBytes()));
+        user.setNickname(userQuery.getUsername());
         user.setFace(USER_FACE);
         user.setSex(Sex.secret.type);
         user.setBirthday(DateUtils.stringToDate("1900-01-01"));
@@ -38,7 +38,7 @@ public abstract class UserConverter {
         return user;
     }
     
-    public abstract UserDTO userToUserDTO(User user);
+    public abstract UserDTO convert(User user);
     
     public abstract User userServiceQueryToUser(String id, UserServiceQuery userServiceQuery);
 }

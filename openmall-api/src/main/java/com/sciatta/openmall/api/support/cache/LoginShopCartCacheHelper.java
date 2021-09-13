@@ -2,7 +2,7 @@ package com.sciatta.openmall.api.support.cache;
 
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
 import com.sciatta.openmall.service.support.cache.CacheExtend;
@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class LoginShopCartCacheHelper {
-    @Cache(key = RedisCacheConstants.SHOP_CART,
+    @Cache(key = CacheConstants.SHOP_CART,
             toClass = ShopCartAddApiQuery.class,
-            timeout = RedisCacheConstants.NEVER_EXPIRE,
+            timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "loginShopCartCacheProcessor")
     public JSONResult processCache(

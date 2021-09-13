@@ -2,7 +2,7 @@ package com.sciatta.openmall.api.intercepter;
 
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.HeaderConstants;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.common.utils.JsonUtils;
 import com.sciatta.openmall.service.support.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +78,6 @@ public class UserTokenInterceptor implements HandlerInterceptor {
     }
     
     private String getUserTokenKey(String userId) {
-        return RedisCacheConstants.USER_TOKEN + ":" + userId;
+        return CacheConstants.USER_TOKEN + ":" + userId;
     }
 }

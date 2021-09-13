@@ -1,6 +1,7 @@
-package com.sciatta.openmall.api.support.cache;
+package com.sciatta.openmall.api.support.cache.processor.impl;
 
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
+import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.utils.JsonUtils;
 import com.sciatta.openmall.service.support.cache.Cache;
@@ -12,30 +13,29 @@ import java.util.List;
 /**
  * Created by yangxiaoyu on 2021/9/4<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * AddShopCartCacheProcessor
+ * DeleteShopCartCacheProcessor
  */
 @Component
-public class AddShopCartCacheProcessor extends AbstractCacheProcessor {
-    protected AddShopCartCacheProcessor(CacheService cacheService) {
+public class DeleteShopCartCacheProcessor extends AbstractCacheProcessor {
+    protected DeleteShopCartCacheProcessor(CacheService cacheService) {
         super(cacheService);
     }
     
     @Override
     protected Object afterHitProcess(String key, Object data, Cache cache, Object... extend) {
-        boolean isHaving = false;
         List<ShopCartAddApiQuery> shopCart = (List<ShopCartAddApiQuery>) data;
-        ShopCartAddApiQuery newItem = (ShopCartAddApiQuery) extend[0];
+        String itemSpecId = (String) extend[0];
+        ShopCartAddApiQuery removeItem = null;
         
         for (ShopCartAddApiQuery test : shopCart) {
             String specId = test.getSpecId();
-            if (specId.equals(newItem.getSpecId())) {
-                test.setBuyCounts(test.getBuyCounts() + newItem.getBuyCounts());
-                isHaving = true;
+            if (specId.equals(itemSpecId)) {
+                removeItem = test;
+                break;
             }
         }
-        if (!isHaving) {
-            shopCart.add(newItem);
-        }
+        
+        shopCart.remove(removeItem);    // 删除移除的商品
         
         // 更新redis中购物车数据
         cacheService.set(key, JsonUtils.objectToJson(shopCart), cache.timeout());
@@ -44,7 +44,12 @@ public class AddShopCartCacheProcessor extends AbstractCacheProcessor {
     }
     
     @Override
+    public Object missProcess(String key, Object result, Cache cache, Object... extend) {
+        return afterMissProcess(JSONResult.success());
+    }
+    
+    @Override
     protected Object afterMissProcess(JSONResult jsonResult) {
-        return JSONResult.success();
+        return jsonResult;
     }
 }

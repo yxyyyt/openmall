@@ -3,9 +3,9 @@ package com.sciatta.openmall.common.constants;
 /**
  * Created by yangxiaoyu on 2021/9/3<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * RedisCacheConstants
+ * 缓存常量
  */
-public class RedisCacheConstants {
+public class CacheConstants {
     public static final long NEVER_EXPIRE = -1;
     
     public static final String CAROUSELS = "carousels";

@@ -4,7 +4,7 @@ import com.sciatta.openmall.api.converter.ItemConverter;
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
 import com.sciatta.openmall.api.pojo.vo.ShopCartItemVO;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.ShopCartItemDTO;
 import com.sciatta.openmall.service.support.cache.Cache;
@@ -35,9 +35,9 @@ public class ShopCartController {
     }
     
     @PostMapping("add")
-    @Cache(key = RedisCacheConstants.SHOP_CART,
+    @Cache(key = CacheConstants.SHOP_CART,
             toClass = ShopCartAddApiQuery.class,
-            timeout = RedisCacheConstants.NEVER_EXPIRE,
+            timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "addShopCartCacheProcessor")
     public JSONResult add(@RequestParam @CacheChildKey(order = 0) String userId,
@@ -66,9 +66,9 @@ public class ShopCartController {
     }
     
     @PostMapping("del")
-    @Cache(key = RedisCacheConstants.SHOP_CART,
+    @Cache(key = CacheConstants.SHOP_CART,
             toClass = ShopCartAddApiQuery.class,
-            timeout = RedisCacheConstants.NEVER_EXPIRE,
+            timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "deleteShopCartCacheProcessor")
     public JSONResult delete(@RequestParam @CacheChildKey(order = 0) String userId,

@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by yangxiaoyu on 2021/7/29<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * 用户信息DTO
+ * UserDTO
  */
 @Data
 public class UserDTO implements Serializable {

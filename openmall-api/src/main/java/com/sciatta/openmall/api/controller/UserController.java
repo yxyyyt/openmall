@@ -6,8 +6,7 @@ import com.sciatta.openmall.api.pojo.query.UserApiQuery;
 import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.api.pojo.vo.UserVO;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.CookieConstants;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.common.utils.JsonUtils;
@@ -76,7 +75,7 @@ public class UserController {
         }
         
         UserDTO userDTO = userService.queryUserByUserId(userId);
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.userDTOToUserCookieVO(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
         
         // 设置缓存
         setUserCache(userCookieVO, request, response);
@@ -134,7 +133,7 @@ public class UserController {
         }
         
         UserDTO userDTO = userService.queryUserByUserId(userId);
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.userDTOToUserCookieVO(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
         
         // 设置缓存
         setUserCache(userCookieVO, request, response);
@@ -154,7 +153,7 @@ public class UserController {
     }
     
     private String getUserTokenKey(String userId) {
-        return RedisCacheConstants.USER_TOKEN + ":" + userId;
+        return CacheConstants.USER_TOKEN + ":" + userId;
     }
     
     private String getUserTokenValue() {

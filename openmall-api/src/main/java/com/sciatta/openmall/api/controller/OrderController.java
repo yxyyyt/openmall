@@ -6,8 +6,8 @@ import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
 import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
+import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.common.constants.CookieConstants;
-import com.sciatta.openmall.common.constants.RedisCacheConstants;
 import com.sciatta.openmall.common.enums.PayMethod;
 import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.JsonUtils;
@@ -100,6 +100,6 @@ public class OrderController {
     }
     
     private String getKey(OrderCreateApiQuery orderCreateApiQuery) {
-        return RedisCacheConstants.SHOP_CART + ":" + orderCreateApiQuery.getUserId();
+        return CacheConstants.SHOP_CART + ":" + orderCreateApiQuery.getUserId();
     }
 }
