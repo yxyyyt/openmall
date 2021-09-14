@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.CarouselMapper">
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Carousel">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="background_color" jdbcType="VARCHAR" property="backgroundColor"/>
-        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
-        <result column="cat_id" jdbcType="VARCHAR" property="catId"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="sort" jdbcType="INTEGER" property="sort"/>
-        <result column="is_show" jdbcType="INTEGER" property="isShow"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, image_url, background_color, item_id, cat_id, type, sort, is_show, create_time,
-        update_time
-    </sql>
 
-    <select id="selectByIsShow" resultMap="BaseResultMap">
+    <select id="selectByIsShow" resultMap="com.sciatta.openmall.dao.mapper.mbg.CarouselMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.CarouselMapper.Base_Column_List"/>
         from carousels
         where is_show = #{isShow,jdbcType=INTEGER} order by sort desc
     </select>

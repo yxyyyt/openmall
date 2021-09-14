@@ -1,38 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.CategoryMapper">
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Category">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
-        <result column="logo" jdbcType="VARCHAR" property="logo"/>
-        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
-        <result column="cat_image" jdbcType="VARCHAR" property="catImage"/>
-        <result column="bg_color" jdbcType="VARCHAR" property="bgColor"/>
-    </resultMap>
 
-    <resultMap id="SubCategoryResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.SubCategory">
+    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.Category">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="parentId" jdbcType="INTEGER" property="parentId"/>
-        <collection property="subCategories" ofType="com.sciatta.openmall.dao.pojo.po.ext.SubCategory">
+        <result column="logo" jdbcType="VARCHAR" property="logo" />
+        <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+        <result column="catImage" jdbcType="VARCHAR" property="catImage" />
+        <result column="bgColor" jdbcType="VARCHAR" property="bgColor" />
+        <collection property="subCategories" ofType="com.sciatta.openmall.dao.pojo.po.ext.Category">
             <id column="subId" jdbcType="INTEGER" property="id"/>
             <result column="subName" jdbcType="VARCHAR" property="name"/>
             <result column="subType" jdbcType="INTEGER" property="type"/>
             <result column="subParentId" jdbcType="INTEGER" property="parentId"/>
         </collection>
-    </resultMap>
-
-    <resultMap id="CategoryItemResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.CategoryItem">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
-        <result column="catImage" jdbcType="VARCHAR" property="catImage"/>
-        <result column="bgColor" jdbcType="VARCHAR" property="bgColor"/>
-        <collection property="itemFlattenings" ofType="com.sciatta.openmall.dao.pojo.po.ext.ItemFlattening">
+        <collection property="items" ofType="com.sciatta.openmall.dao.pojo.po.ext.Item">
             <id column="itemId" jdbcType="VARCHAR" property="id"/>
             <result column="itemName" jdbcType="VARCHAR" property="itemName"/>
             <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
@@ -40,18 +25,14 @@
         </collection>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id, name, type, parent_id, logo, slogan, cat_image, bg_color
-    </sql>
-
     <select id="selectByType" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.CategoryMapper.Base_Column_List"/>
         from categories
         where type = #{type,jdbcType=INTEGER}
     </select>
 
-    <select id="selectSubCategoriesByParentId" resultMap="SubCategoryResultMap">
+    <select id="selectSubCategoriesByParentId" resultMap="BaseResultMap">
         SELECT
         p.id as id,
         p.`name` as `name`,
@@ -67,7 +48,7 @@
         p.parent_id = #{parentId}
     </select>
 
-    <select id="selectSixItemsByParentId" resultMap="CategoryItemResultMap">
+    <select id="selectSixItemsByParentId" resultMap="BaseResultMap">
         SELECT
         c.id as id,
         c.`name` as `name`,

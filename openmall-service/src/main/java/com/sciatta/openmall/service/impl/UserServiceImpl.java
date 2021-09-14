@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public UserDTO createUser(UserQuery userQuery) {
-        User user = UserConverter.INSTANCE.userRegisterServiceQueryToUser(userQuery);
+        User user = UserConverter.INSTANCE.convert(userQuery);
         
         userMapper.insert(user);
         

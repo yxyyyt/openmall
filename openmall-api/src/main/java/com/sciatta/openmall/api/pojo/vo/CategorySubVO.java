@@ -12,7 +12,7 @@ import java.util.List;
  * 子商品种类DTO，描述二级和三级分类
  */
 @Data
-public class SubCategoryVO implements Serializable {
+public class CategorySubVO implements Serializable {
     private static final long serialVersionUID = -1313390306547211213L;
     
     private Integer id;
@@ -20,5 +20,5 @@ public class SubCategoryVO implements Serializable {
     private Integer type;
     private Integer parentId;
     
-    private List<SubCategoryVO> subCategories = new ArrayList<>();
+    private List<CategorySubVO> subCategories = new ArrayList<>();
 }

@@ -3,6 +3,8 @@ package com.sciatta.openmall.service.pojo.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangxiaoyu on 2021/7/31<br>
@@ -16,5 +18,14 @@ public class CategoryDTO implements Serializable {
     
     private Integer id;
     private String name;
+    private Integer type;
     private String logo;
+    private String slogan;
+    private String catImage;
+    private String bgColor;
+    private Integer parentId;
+    
+    private List<CategoryDTO> subCategories = new ArrayList<>();
+    
+    private List<ItemDTO> items = new ArrayList<>();
 }

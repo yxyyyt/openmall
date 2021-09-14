@@ -1,4 +1,4 @@
-package com.sciatta.openmall.api.intercepter;
+package com.sciatta.openmall.api.support.intercepter;
 
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.HeaderConstants;

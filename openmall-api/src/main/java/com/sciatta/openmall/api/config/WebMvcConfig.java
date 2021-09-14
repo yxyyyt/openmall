@@ -1,6 +1,6 @@
 package com.sciatta.openmall.api.config;
 
-import com.sciatta.openmall.api.intercepter.UserTokenInterceptor;
+import com.sciatta.openmall.api.support.intercepter.UserTokenInterceptor;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

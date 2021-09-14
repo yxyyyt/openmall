@@ -1,4 +1,4 @@
-package com.sciatta.openmall.dao;
+package com.sciatta.openmall.dao.generator;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

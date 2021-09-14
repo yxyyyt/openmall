@@ -26,6 +26,6 @@ public class CarouselServiceImpl implements CarouselService {
     public List<CarouselDTO> queryAll(Integer isShow) {
         List<Carousel> carouselList = carouselMapper.selectByIsShow(isShow);
         
-        return CarouselConverter.INSTANCE.carouselListToCarouselDTOList(carouselList);
+        return CarouselConverter.INSTANCE.convert(carouselList);
     }
 }

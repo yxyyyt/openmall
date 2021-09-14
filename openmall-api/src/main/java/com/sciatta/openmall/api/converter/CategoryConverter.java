@@ -1,13 +1,11 @@
 package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.vo.CategoryItemVO;
+import com.sciatta.openmall.api.pojo.vo.CategorySubVO;
 import com.sciatta.openmall.api.pojo.vo.CategoryVO;
-import com.sciatta.openmall.api.pojo.vo.ItemFlatteningVO;
-import com.sciatta.openmall.api.pojo.vo.SubCategoryVO;
+import com.sciatta.openmall.api.pojo.vo.ItemURLVO;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
-import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
-import com.sciatta.openmall.service.pojo.dto.ItemFlatteningDTO;
-import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
+import com.sciatta.openmall.service.pojo.dto.ItemDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -24,22 +22,21 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract List<CategoryVO> categoryDTOListToCategoryVOList(List<CategoryDTO> categoryDTOList);
+    public abstract List<CategoryVO> convertToCategoryVOList(List<CategoryDTO> categoryDTOList);
     
-    public abstract List<SubCategoryVO> subCategoryDTOListToSubCategoryVOList(List<SubCategoryDTO> subCategoryDTOList);
+    public abstract List<CategorySubVO> convertToCategorySubVOList(List<CategoryDTO> categoryDTOList);
     
+    // 只映射不同的属性
     @Mappings({
             @Mapping(source = "id", target = "itemId"),
-            @Mapping(source = "itemName", target = "itemName"),
             @Mapping(source = "url", target = "itemUrl")
     })
-    public abstract ItemFlatteningVO itemFlatteningDTOToItemFlatteningVO(ItemFlatteningDTO itemFlatteningDTO);
+    public abstract ItemURLVO convert(ItemDTO itemDTO); // 自定义转换对象中的依赖
     
     @Mappings({
-            @Mapping(source = "name", target = "rootCatName"),
-            @Mapping(source = "itemFlattenings", target = "simpleItemList")
+            @Mapping(source = "name", target = "rootCatName")
     })
-    public abstract CategoryItemVO categoryItemDTOToCategoryItemVO(CategoryItemDTO categoryItemDTO);
+    public abstract CategoryItemVO convert(CategoryDTO categoryDTO);    // 自定义转换集合中的对象
     
-    public abstract List<CategoryItemVO> categoryItemDTOListToCategoryItemVOList(List<CategoryItemDTO> categoryItemDTOList);
+    public abstract List<CategoryItemVO> convert(List<CategoryDTO> categoryDTOList);    // 集合中的对象如果属性完全相同的话，就不需要映射
 }

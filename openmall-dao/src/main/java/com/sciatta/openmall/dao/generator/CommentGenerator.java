@@ -1,4 +1,4 @@
-package com.sciatta.openmall.dao;
+package com.sciatta.openmall.dao.generator;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

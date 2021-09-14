@@ -1,11 +1,7 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.dao.pojo.po.ext.CategoryItem;
-import com.sciatta.openmall.dao.pojo.po.ext.SubCategory;
-import com.sciatta.openmall.dao.pojo.po.mbg.Category;
+import com.sciatta.openmall.dao.pojo.po.ext.Category;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
-import com.sciatta.openmall.service.pojo.dto.CategoryItemDTO;
-import com.sciatta.openmall.service.pojo.dto.SubCategoryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -20,9 +16,5 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract List<CategoryDTO> categoryListToCategoryDTOList(List<Category> categoryList);
-    
-    public abstract List<SubCategoryDTO> subCategoryListToSubCategoryDTOList(List<SubCategory> subCategoryList);
-    
-    public abstract List<CategoryItemDTO> categoryItemListToCategoryItemDTOList (List<CategoryItem> categoryItemList);
+    public abstract List<CategoryDTO> convert(List<Category> categoryList);
 }

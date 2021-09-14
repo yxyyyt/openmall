@@ -1,4 +1,4 @@
-package com.sciatta.openmall.api.exception;
+package com.sciatta.openmall.api.support.exception;
 
 import com.sciatta.openmall.common.JSONResult;
 import lombok.extern.slf4j.Slf4j;

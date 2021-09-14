@@ -24,7 +24,7 @@ import static com.sciatta.openmall.common.constants.PictureConstants.USER_FACE;
 public abstract class UserConverter {
     public static UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
     
-    public User userRegisterServiceQueryToUser(UserQuery userQuery) {
+    public User convert(UserQuery userQuery) {
         User user = new User();
         user.setId(Sid.nextShort());    // Sid是分布式自增ID，基于snowflake算法
         user.setUsername(userQuery.getUsername());

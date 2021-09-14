@@ -1,6 +1,5 @@
 package com.sciatta.openmall.service.pojo.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +14,7 @@ import java.util.Date;
 public class ItemDTO implements Serializable {
     private static final long serialVersionUID = -1058139665502712958L;
     
+    // Item
     private String id;
     private String itemName;
     private Integer catId;
@@ -22,4 +22,8 @@ public class ItemDTO implements Serializable {
     private Integer sellCounts;
     private Integer onOffStatus;
     private String content;
+    private Date createdTime;
+    
+    // ItemImage
+    private String url;
 }
