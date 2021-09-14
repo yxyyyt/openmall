@@ -1,29 +1,21 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class ItemImage implements Serializable {
-    @ApiModelProperty(value = "商品图片主键")
     private String id;
 
-    @ApiModelProperty(value = "商品外键")
     private String itemId;
 
-    @ApiModelProperty(value = "图片地址")
     private String url;
 
-    @ApiModelProperty(value = "图片顺序，从小到大")
     private Integer sort;
 
-    @ApiModelProperty(value = "是否主图 1：是，0：否")
     private Integer isMain;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;

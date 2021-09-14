@@ -1,36 +1,26 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ItemSpec implements Serializable {
-    @ApiModelProperty(value = "商品规格注解")
     private String id;
 
-    @ApiModelProperty(value = "商品外键")
     private String itemId;
 
-    @ApiModelProperty(value = "规格名称")
     private String name;
 
-    @ApiModelProperty(value = "库存")
     private Integer stock;
 
-    @ApiModelProperty(value = "折扣力度")
     private BigDecimal discounts;
 
-    @ApiModelProperty(value = "优惠价")
     private Integer priceDiscount;
 
-    @ApiModelProperty(value = "原价")
     private Integer priceNormal;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;

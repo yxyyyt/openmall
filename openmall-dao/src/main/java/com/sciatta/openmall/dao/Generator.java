@@ -2,6 +2,8 @@ package com.sciatta.openmall.dao;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.JDBCConnectionConfiguration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
@@ -23,9 +25,7 @@ public class Generator {
             InvalidConfigurationException, SQLException, InterruptedException {
         
         // MBG 执行过程中的警告信息
-        List<String> warnings = new ArrayList<String>();
-        // 当生成的代码重复时，覆盖原代码
-        boolean overwrite = true;
+        List<String> warnings = new ArrayList<>();
         // 逆向工程配
         Configuration config;
         
@@ -35,7 +35,9 @@ public class Generator {
             config = cp.parseConfiguration(is);
         }
         
-        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        debugConfig(config);
+        
+        DefaultShellCallback callback = new DefaultShellCallback(true); // 参数为true时，当生成的代码重复时，覆盖原代码
         // 创建 MBG
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         // 执行生成代码
@@ -45,5 +47,25 @@ public class Generator {
         for (String warning : warnings) {
             System.out.println(warning);
         }
+    }
+    
+    private static void debugConfig(Configuration config) {
+        for (Context context : config.getContexts()) {
+            debugContext(context);
+        }
+    }
+    
+    private static void debugContext(Context context) {
+        debugJDBCConnectionConfiguration(context.getJdbcConnectionConfiguration());
+    }
+    
+    private static void debugJDBCConnectionConfiguration(JDBCConnectionConfiguration configuration) {
+        StringBuilder stringBuilder = new StringBuilder("JDBCConnectionConfiguration::");
+        stringBuilder.append("driverClass=").append(configuration.getDriverClass()).append(", ")
+                .append("connectionURL=").append(configuration.getConnectionURL()).append(", ")
+                .append("userId=").append(configuration.getUserId()).append(", ")
+                .append("password=").append(configuration.getPassword());
+        
+        System.out.println("JDBCConnectionConfiguration::" + stringBuilder);
     }
 }

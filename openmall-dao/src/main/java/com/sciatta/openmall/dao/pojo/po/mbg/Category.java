@@ -1,31 +1,22 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    @ApiModelProperty(value = "商品分类主键")
     private Integer id;
 
-    @ApiModelProperty(value = "分类名称")
     private String name;
 
-    @ApiModelProperty(value = "分类类型")
     private Integer type;
 
-    @ApiModelProperty(value = "商品分类外键")
     private Integer parentId;
 
-    @ApiModelProperty(value = "图标")
     private String logo;
 
-    @ApiModelProperty(value = "口号")
     private String slogan;
 
-    @ApiModelProperty(value = "分类图")
     private String catImage;
 
-    @ApiModelProperty(value = "背景颜色")
     private String bgColor;
 
     private static final long serialVersionUID = 1L;

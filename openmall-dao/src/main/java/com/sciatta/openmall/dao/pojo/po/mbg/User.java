@@ -1,44 +1,31 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-    @ApiModelProperty(value = "用户主键")
     private String id;
 
-    @ApiModelProperty(value = "用户名")
     private String username;
 
-    @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "昵称")
     private String nickname;
 
-    @ApiModelProperty(value = "真实姓名")
     private String realname;
 
-    @ApiModelProperty(value = "头像")
     private String face;
 
-    @ApiModelProperty(value = "手机号")
     private String mobile;
 
-    @ApiModelProperty(value = "邮箱地址")
     private String email;
 
-    @ApiModelProperty(value = "性别 1：男 0：女 2：保密")
     private Integer sex;
 
-    @ApiModelProperty(value = "生日")
     private Date birthday;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;

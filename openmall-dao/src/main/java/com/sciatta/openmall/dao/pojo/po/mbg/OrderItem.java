@@ -1,34 +1,24 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 public class OrderItem implements Serializable {
-    @ApiModelProperty(value = "订单商品主键")
     private String id;
 
-    @ApiModelProperty(value = "订单外键")
     private String orderId;
 
-    @ApiModelProperty(value = "商品外键")
     private String itemId;
 
-    @ApiModelProperty(value = "商品图片")
     private String itemImg;
 
-    @ApiModelProperty(value = "商品名称")
     private String itemName;
 
-    @ApiModelProperty(value = "商品规格外键")
     private String itemSpecId;
 
-    @ApiModelProperty(value = "商品规格名称")
     private String itemSpecName;
 
-    @ApiModelProperty(value = "成交价格")
     private Integer price;
 
-    @ApiModelProperty(value = "购买数量")
     private Integer buyCounts;
 
     private static final long serialVersionUID = 1L;

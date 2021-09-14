@@ -1,44 +1,31 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class UserAddress implements Serializable {
-    @ApiModelProperty(value = "用户地址主键")
     private String id;
 
-    @ApiModelProperty(value = "用户外键")
     private String userId;
 
-    @ApiModelProperty(value = "收件人姓名")
     private String receiver;
 
-    @ApiModelProperty(value = "收件人手机号")
     private String mobile;
 
-    @ApiModelProperty(value = "省份")
     private String province;
 
-    @ApiModelProperty(value = "城市")
     private String city;
 
-    @ApiModelProperty(value = "区县")
     private String district;
 
-    @ApiModelProperty(value = "详细地址")
     private String detail;
 
-    @ApiModelProperty(value = "扩展字段")
     private String extend;
 
-    @ApiModelProperty(value = "是否默认地址")
     private Integer isDefault;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;

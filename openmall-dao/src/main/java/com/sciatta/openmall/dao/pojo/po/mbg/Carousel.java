@@ -1,38 +1,27 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Carousel implements Serializable {
-    @ApiModelProperty(value = "轮播图主键")
     private String id;
 
-    @ApiModelProperty(value = "图片地址")
     private String imageUrl;
 
-    @ApiModelProperty(value = "背景色")
     private String backgroundColor;
 
-    @ApiModelProperty(value = "商品外键")
     private String itemId;
 
-    @ApiModelProperty(value = "商品分类外键")
     private String catId;
 
-    @ApiModelProperty(value = "轮播图类型，可以根据商品主键或者分类进行页面跳转 1：商品 2：分类")
     private Integer type;
 
-    @ApiModelProperty(value = "轮播图展示顺序")
     private Integer sort;
 
-    @ApiModelProperty(value = "是否展示")
     private Integer isShow;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;

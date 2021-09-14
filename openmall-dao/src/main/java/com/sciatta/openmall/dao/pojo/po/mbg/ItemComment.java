@@ -1,38 +1,27 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class ItemComment implements Serializable {
-    @ApiModelProperty(value = "商品评价主键")
     private String id;
 
-    @ApiModelProperty(value = "用户外键")
     private String userId;
 
-    @ApiModelProperty(value = "商品外键")
     private String itemId;
 
-    @ApiModelProperty(value = "商品名称")
     private String itemName;
 
-    @ApiModelProperty(value = "商品规格外键 可为空")
     private String itemSpecId;
 
-    @ApiModelProperty(value = "商品规格名称 可为空")
     private String itemSpecName;
 
-    @ApiModelProperty(value = "评价等级 1：好评 2：中评 3：差评")
     private Integer commentLevel;
 
-    @ApiModelProperty(value = "评价内容")
     private String content;
 
-    @ApiModelProperty(value = "创建时间")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;

@@ -1,53 +1,37 @@
 package com.sciatta.openmall.dao.pojo.po.mbg;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Order implements Serializable {
-    @ApiModelProperty(value = "订单主键（订单编号）")
     private String id;
 
-    @ApiModelProperty(value = "用户外键")
     private String userId;
 
-    @ApiModelProperty(value = "收货人快照")
     private String receiverName;
 
-    @ApiModelProperty(value = "收货人手机号快照")
     private String receiverMobile;
 
-    @ApiModelProperty(value = "收货地址快照")
     private String receiverAddress;
 
-    @ApiModelProperty(value = "订单总价格")
     private Integer totalAmount;
 
-    @ApiModelProperty(value = "实际支付总价格")
     private Integer realPayAmount;
 
-    @ApiModelProperty(value = "邮费 默认为零，代表包邮")
     private Integer postAmount;
 
-    @ApiModelProperty(value = "支付方式")
     private Integer payMethod;
 
-    @ApiModelProperty(value = "买家留言")
     private String leftMsg;
 
-    @ApiModelProperty(value = "扩展字段")
     private String extend;
 
-    @ApiModelProperty(value = "买家是否评价 1：已评价 0：未评价")
     private Integer isComment;
 
-    @ApiModelProperty(value = "逻辑删除状态 1：删除 0：未删除")
     private Integer isDelete;
 
-    @ApiModelProperty(value = "创建时间（成交时间）")
     private Date createdTime;
 
-    @ApiModelProperty(value = "更新时间")
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;
