@@ -5,7 +5,7 @@ import com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderStatusMapper;
 import com.sciatta.openmall.dao.pojo.po.ext.ImageItemComment;
-import com.sciatta.openmall.dao.pojo.po.mbg.ItemComment;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.Order;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.service.MyCommentService;

@@ -21,5 +21,5 @@ public class CategoryItemVO implements Serializable {
     private String catImage;
     private String bgColor;
     
-    private List<ItemURLVO> items = new ArrayList<>();
+    private List<ItemUrlVO> items = new ArrayList<>();
 }

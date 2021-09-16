@@ -1,4 +1,4 @@
-package com.sciatta.openmall.dao.pojo.po.ext;
+package com.sciatta.openmall.api.pojo.vo;
 
 import lombok.Data;
 
@@ -7,15 +7,21 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/7<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * SearchItem
+ * ItemSearchVO
  */
 @Data
-public class SearchItem implements Serializable {
-    private static final long serialVersionUID = 4810106174116115942L;
+public class ItemSearchVO implements Serializable {
     
+    private static final long serialVersionUID = -8978342781520812508L;
+    
+    // Item
     private String itemId;
     private String itemName;
     private int sellCounts;
+    
+    // ItemImage
     private String imgUrl;
+    
+    // ItemSpec
     private int price;
 }

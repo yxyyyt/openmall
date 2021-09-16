@@ -26,4 +26,7 @@ public class ItemDTO implements Serializable {
     
     // ItemImage
     private String url;
+    
+    // ItemSpec
+    private Integer priceDiscount;
 }

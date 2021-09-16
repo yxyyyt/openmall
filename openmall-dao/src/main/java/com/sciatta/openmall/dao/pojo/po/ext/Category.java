@@ -20,7 +20,9 @@ public class Category extends com.sciatta.openmall.dao.pojo.po.mbg.Category impl
     
     private static final long serialVersionUID = -3188533113046221192L;
     
+    // Category
     private List<Category> subCategories = new ArrayList<>();
     
+    // Item
     private List<Item> items = new ArrayList<>();
 }

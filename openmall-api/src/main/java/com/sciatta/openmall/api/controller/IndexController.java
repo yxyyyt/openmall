@@ -17,12 +17,13 @@ import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -31,13 +32,14 @@ import java.util.List;
  * 首页
  */
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("index")
 public class IndexController {
     private final CarouselService carouselService;
     private final CategoryService categoryService;
     
-    public IndexController(CarouselService carouselService, CategoryService categoryService, StringRedisTemplate redisTemplate) {
+    public IndexController(CarouselService carouselService, CategoryService categoryService) {
         this.carouselService = carouselService;
         this.categoryService = categoryService;
     }
@@ -55,28 +57,24 @@ public class IndexController {
     @Cache(key = CacheConstants.CATEGORIES, toClass = CategoryVO.class, isList = true)
     public JSONResult categories() {
         List<CategoryDTO> categoryDTOList = categoryService.queryAllRootLevel();
-        List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.convertToCategoryVOList(categoryDTOList);
+        List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.convertToCategoryVO(categoryDTOList);
         
         return JSONResult.success(categoryVOList);
     }
     
     @GetMapping("subCategories/{parentId}")
     @Cache(key = CacheConstants.SUB_CATEGORIES, toClass = CategorySubVO.class, isList = true)
-    public JSONResult subCategories(
-            @PathVariable @CacheChildKey(order = 0) @NotNull(message = "分类不能为空") Integer parentId) {
-        
+    public JSONResult subCategories(@PathVariable @CacheChildKey(order = 0) Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySubCategoriesByParentId(parentId);
-        List<CategorySubVO> categorySubVOList = CategoryConverter.INSTANCE.convertToCategorySubVOList(categoryDTOList);
+        List<CategorySubVO> categorySubVOList = CategoryConverter.INSTANCE.convertToCategorySubVO(categoryDTOList);
         
         return JSONResult.success(categorySubVOList);
     }
     
     @GetMapping("/sixItems/{parentId}")
-    public JSONResult sixItems(
-            @PathVariable @NotNull(message = "分类不能为空") Integer parentId) {
-        
+    public JSONResult sixItems(@PathVariable Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySixItemsByParentId(parentId);
-        List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.convert(categoryDTOList);
+        List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.convertToCategoryItemVO(categoryDTOList);
         
         return JSONResult.success(categoryItemVOList);
     }

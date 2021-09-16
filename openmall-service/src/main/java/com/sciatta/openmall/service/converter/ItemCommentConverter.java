@@ -1,6 +1,6 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.dao.pojo.po.mbg.ItemComment;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -1,14 +1,12 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.dao.pojo.po.ext.SearchItem;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
-import com.sciatta.openmall.dao.pojo.po.ext.UserItemComment;
-import com.sciatta.openmall.dao.pojo.po.mbg.Item;
+import com.sciatta.openmall.dao.pojo.po.ext.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemParam;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec;
 import com.sciatta.openmall.service.pojo.dto.*;
-import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -23,19 +21,19 @@ import java.util.List;
 public abstract class ItemConverter {
     public static ItemConverter INSTANCE = Mappers.getMapper(ItemConverter.class);
     
-    public abstract ItemDTO itemToItemDTO(Item item);
+    public abstract ItemDTO convert(Item item);
     
-    public abstract List<ItemImageDTO> itemImageListToItemImageDTOList(List<ItemImage> itemImageList);
+    public abstract List<ItemImageDTO> convertToItemImageDTO(List<ItemImage> itemImageList);
     
-    public abstract List<ItemSpecDTO> itemSpecListToItemSpecDTOList(List<ItemSpec> itemSpecList);
+    public abstract List<ItemSpecDTO> convertToItemSpecDTO(List<ItemSpec> itemSpecList);
     
-    public abstract ItemParamDTO itemParamToItemParamDTO(ItemParam itemParam);
+    public abstract ItemParamDTO convert(ItemParam itemParam);
     
-    public abstract List<UserItemCommentDTO> userItemCommentListToUserItemCommentDTOList(List<UserItemComment> userItemCommentList);
+    public abstract List<ItemCommentDTO> convertToItemCommentDTO(List<ItemComment> itemCommentList);
     
-    public abstract CommentLevelCountsDTO toCommentLevelCountsDTO(Integer goodCounts, Integer normalCounts, Integer badCounts, Integer totalCounts);
+    public abstract ItemCommentLevelCountDTO convert(Integer goodCounts, Integer normalCounts, Integer badCounts, Integer totalCounts);
     
-    public abstract List<SearchItemDTO> searchItemListToSearchItemDTOList(List<SearchItem> searchItemList);
+    public abstract List<ItemDTO> convertToItemDTO(List<Item> itemList);
     
     public abstract List<ShopCartItemDTO> shopCartItemListToShopCartItemDTOList(List<ShopCartItem> shopCartItemList);
 }

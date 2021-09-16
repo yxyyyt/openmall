@@ -17,4 +17,7 @@ public class Item extends com.sciatta.openmall.dao.pojo.po.mbg.Item {
     
     // ItemImage
     private String url;
+    
+    // ItemSpec
+    private Integer priceDiscount;
 }

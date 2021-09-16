@@ -1,4 +1,4 @@
-package com.sciatta.openmall.api.pojo.vo;
+package com.sciatta.openmall.service.pojo.dto;
 
 import lombok.Data;
 
@@ -7,12 +7,11 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/5<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * CommentLevelCountsVO
+ * ItemCommentLevelCountDTO
  */
 @Data
-public class CommentLevelCountsVO implements Serializable {
-    
-    private static final long serialVersionUID = -727270174679232161L;
+public class ItemCommentLevelCountDTO implements Serializable {
+    private static final long serialVersionUID = -5132680731068443418L;
     
     public Integer totalCounts;
     public Integer goodCounts;

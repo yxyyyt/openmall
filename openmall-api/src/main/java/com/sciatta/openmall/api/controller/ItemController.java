@@ -1,17 +1,19 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.ItemConverter;
-import com.sciatta.openmall.api.pojo.vo.CommentLevelCountsVO;
-import com.sciatta.openmall.api.pojo.vo.ItemInfoVO;
-import com.sciatta.openmall.api.pojo.vo.SearchItemVO;
-import com.sciatta.openmall.api.pojo.vo.UserItemCommentVO;
+import com.sciatta.openmall.api.pojo.vo.ItemCommentLevelCountVO;
+import com.sciatta.openmall.api.pojo.vo.ItemCommentUserVO;
+import com.sciatta.openmall.api.pojo.vo.ItemSearchVO;
+import com.sciatta.openmall.api.pojo.vo.ItemWrapVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.support.paged.PagedContext;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -19,6 +21,7 @@ import java.util.List;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * 商品详情
  */
+@Validated
 @RestController
 @RequestMapping("items")
 public class ItemController {
@@ -29,101 +32,85 @@ public class ItemController {
     }
     
     @GetMapping("info/{itemId}")
-    public JSONResult info(@PathVariable String itemId) {
-        
-        if (!StringUtils.hasText(itemId)) {
-            return JSONResult.errorUsingMessage("商品不存在");
-        }
+    public JSONResult info(@PathVariable @NotBlank(message = "商品标识不能为空") String itemId) {
         
         ItemDTO itemDTO = itemService.queryItemById(itemId);
         List<ItemImageDTO> itemImageDTOList = itemService.queryItemImagesByItemId(itemId);
         List<ItemSpecDTO> itemSpecDTOList = itemService.queryItemSpecsByItemId(itemId);
         ItemParamDTO itemParamDTO = itemService.queryItemParamByItemId(itemId);
         
-        ItemInfoVO itemInfoVO = ItemConverter.INSTANCE.toItemInfoVO(
-                itemDTO,
-                itemImageDTOList,
-                itemSpecDTOList,
-                itemParamDTO);
+        ItemWrapVO itemWrapVO = ItemConverter.INSTANCE.convert(itemDTO, itemImageDTOList, itemSpecDTOList, itemParamDTO);
         
-        
-        return JSONResult.success(itemInfoVO);
+        return JSONResult.success(itemWrapVO);
     }
     
     @GetMapping("commentLevelCounts")
-    public JSONResult commentLevelCounts(@RequestParam String itemId) {
-        if (!StringUtils.hasText(itemId)) {
-            return JSONResult.errorUsingMessage("商品不存在");
-        }
+    public JSONResult commentLevelCounts(@RequestParam @NotBlank(message = "商品标识不能为空") String itemId) {
         
-        CommentLevelCountsDTO commentLevelCountsDTO = itemService.queryCommentLevelCounts(itemId);
+        ItemCommentLevelCountDTO itemCommentLevelCountDTO = itemService.queryCommentLevelCounts(itemId);
         
-        CommentLevelCountsVO commentLevelCountsVO = ItemConverter.INSTANCE.commentLevelCountsDTOToCommentLevelCountsVO(commentLevelCountsDTO);
+        ItemCommentLevelCountVO itemCommentLevelCountVO = ItemConverter.INSTANCE.convert(itemCommentLevelCountDTO);
         
-        return JSONResult.success(commentLevelCountsVO);
+        return JSONResult.success(itemCommentLevelCountVO);
     }
     
     @GetMapping("comments")
-    public JSONResult comments(@RequestParam String itemId, @RequestParam Integer level,
-                               @RequestParam Integer page, @RequestParam Integer pageSize) {
-        
-        if (!StringUtils.hasText(itemId)) {
-            return JSONResult.errorUsingMessage("商品不存在");
-        }
+    public JSONResult comments(
+            @RequestParam @NotBlank(message = "商品标识不能为空") String itemId,
+            @RequestParam @NotNull(message = "评论级别不能为空") Integer level,
+            @RequestParam Integer page,
+            @RequestParam Integer pageSize) {
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
         
-        List<UserItemCommentDTO> userItemCommentDTOList = itemService.queryUserItemComments(
+        List<ItemCommentDTO> itemCommentDTOList = itemService.queryUserItemComments(
                 ItemConverter.INSTANCE.toUserItemCommentServiceQuery(itemId, level),
                 pagedContext
         );
         
         // 转换，nickname脱敏
-        List<UserItemCommentVO> userItemCommentVOList = ItemConverter.INSTANCE.userItemCommentDTOListToUserItemCommentVOList(userItemCommentDTOList);
+        List<ItemCommentUserVO> itemCommentUserVOList = ItemConverter.INSTANCE.convertToItemCommentUserVO(itemCommentDTOList);
         
-        return JSONResult.success(pagedContext.getPagedGridResult(userItemCommentVOList));
+        return JSONResult.success(pagedContext.getPagedGridResult(itemCommentUserVOList));
     }
     
     @GetMapping("search")
-    public JSONResult search(@RequestParam String keywords, @RequestParam String sort,
-                             @RequestParam Integer page, @RequestParam Integer pageSize) {
-        if (!StringUtils.hasText(keywords)) {
-            return JSONResult.errorUsingMessage("商品不存在");
-        }
+    public JSONResult search(
+            @RequestParam @NotBlank(message = "商品关键字不能为空") String keywords,
+            @RequestParam @NotBlank(message = "商品排序不能为空") String sort,
+            @RequestParam Integer page,
+            @RequestParam Integer pageSize) {
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
         
-        List<SearchItemDTO> searchItemDTOList = itemService.querySearchItems(
-                ItemConverter.INSTANCE.toSearchItemsServiceQuery(keywords, sort),
-                pagedContext
-        );
+        List<ItemDTO> itemDTOList = itemService.querySearchItems(keywords, sort, pagedContext);
         
-        List<SearchItemVO> searchItemVOList = ItemConverter.INSTANCE.searchItemDTOListToSearchItemVOList(searchItemDTOList);
+        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.convertToItemSearchVO(itemDTOList);
         
-        return JSONResult.success(pagedContext.getPagedGridResult(searchItemVOList));
+        return JSONResult.success(pagedContext.getPagedGridResult(itemSearchVOList));
     }
     
     @GetMapping("catItems")
-    public JSONResult catItems(@RequestParam Integer catId, @RequestParam String sort,
-                               @RequestParam Integer page, @RequestParam Integer pageSize) {
+    public JSONResult catItems(
+            @RequestParam @NotNull(message = "分类标识不能为空") Integer catId,
+            @RequestParam @NotBlank(message = "商品排序不能为空") String sort,
+            @RequestParam Integer page,
+            @RequestParam Integer pageSize) {
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
         
-        List<SearchItemDTO> searchItemDTOList = itemService.querySearchCatItems(
-                ItemConverter.INSTANCE.toSearchCatItemsServiceQuery(catId, sort),
-                pagedContext
-        );
+        List<ItemDTO> itemDTOList = itemService.querySearchCatItems(catId, sort, pagedContext);
         
-        List<SearchItemVO> searchItemVOList = ItemConverter.INSTANCE.searchItemDTOListToSearchItemVOList(searchItemDTOList);
+        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.convertToItemSearchVO(itemDTOList);
         
-        return JSONResult.success(pagedContext.getPagedGridResult(searchItemVOList));
+        return JSONResult.success(pagedContext.getPagedGridResult(itemSearchVOList));
     }
 }

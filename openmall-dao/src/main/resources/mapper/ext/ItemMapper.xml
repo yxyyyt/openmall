@@ -1,44 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.ItemMapper">
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.Item">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="item_name" jdbcType="VARCHAR" property="itemName"/>
-        <result column="cat_id" jdbcType="INTEGER" property="catId"/>
-        <result column="root_cat_id" jdbcType="INTEGER" property="rootCatId"/>
-        <result column="sell_counts" jdbcType="INTEGER" property="sellCounts"/>
-        <result column="on_off_status" jdbcType="INTEGER" property="onOffStatus"/>
-        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
-        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+
+    <resultMap id="ResultMapWithUrlAndPriceDiscount"
+               extends="com.sciatta.openmall.dao.mapper.mbg.ItemMapper.BaseResultMap"
+               type="com.sciatta.openmall.dao.pojo.po.ext.Item">
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="priceDiscount" jdbcType="INTEGER" property="priceDiscount"/>
     </resultMap>
 
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sciatta.openmall.dao.pojo.po.mbg.Item">
+    <resultMap id="ResultMapWithBLOBs" extends="com.sciatta.openmall.dao.mapper.mbg.ItemMapper.BaseResultMap"
+               type="com.sciatta.openmall.dao.pojo.po.ext.Item">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     </resultMap>
 
-    <resultMap id="SearchItemResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.SearchItem">
-        <result column="itemId" jdbcType="VARCHAR" property="itemId"/>
-        <result column="itemName" jdbcType="VARCHAR" property="itemName"/>
-        <result column="sellCounts" jdbcType="INTEGER" property="sellCounts"/>
-        <result column="imgUrl" jdbcType="VARCHAR" property="imgUrl"/>
-        <result column="price" jdbcType="INTEGER" property="price"/>
-    </resultMap>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.ItemMapper.Base_Column_List"/>
+        ,
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.ItemMapper.Blob_Column_List"/>
+        from items
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
 
-    <sql id="Base_Column_List">
-        id, item_name, cat_id, root_cat_id, sell_counts, on_off_status, created_time, updated_time
-    </sql>
-
-    <sql id="Blob_Column_List">
-        content
-    </sql>
-
-    <select id="searchItemsByKeywords" resultMap="SearchItemResultMap">
+    <select id="searchItemsByKeywords" resultMap="ResultMapWithUrlAndPriceDiscount">
         SELECT
-        i.id as itemId,
-        i.item_name as itemName,
-        i.sell_counts as sellCounts,
-        ii.url as imgUrl,
-        tempSpec.price_discount as price
+        i.id,
+        i.item_name,
+        i.sell_counts,
+        ii.url,
+        tempSpec.price_discount as priceDiscount
         FROM
         items i
         LEFT JOIN item_images ii on i.id = ii.item_id
@@ -63,13 +54,13 @@
         </choose>
     </select>
 
-    <select id="searchItemsByCatId" resultMap="SearchItemResultMap">
+    <select id="searchItemsByCatId" resultMap="ResultMapWithUrlAndPriceDiscount">
         SELECT
-        i.id as itemId,
-        i.item_name as itemName,
-        i.sell_counts as sellCounts,
-        ii.url as imgUrl,
-        tempSpec.price_discount as price
+        i.id,
+        i.item_name,
+        i.sell_counts,
+        ii.url,
+        tempSpec.price_discount as priceDiscount
         FROM
         items i
         LEFT JOIN item_images ii on i.id = ii.item_id

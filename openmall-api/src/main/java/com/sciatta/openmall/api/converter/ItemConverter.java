@@ -2,8 +2,6 @@ package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.vo.*;
 import com.sciatta.openmall.service.pojo.dto.*;
-import com.sciatta.openmall.service.pojo.query.SearchCatItemsServiceQuery;
-import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,26 +25,29 @@ public abstract class ItemConverter {
             @Mapping(source = "itemSpecDTOList", target = "itemSpecList"),
             @Mapping(source = "itemParamDTO", target = "itemParams")
     })
-    public abstract ItemInfoVO toItemInfoVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
-                                            List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
+    public abstract ItemWrapVO convert(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
+                                       List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
     
     public abstract UserItemCommentServiceQuery toUserItemCommentServiceQuery(String itemId, Integer level);
     
     @Mappings({
-            @Mapping(expression = "java(com.sciatta.openmall.common.utils.DesensitizationUtils.commonDisplay(userItemCommentDTO.getNickname()))", target = "nickname")
+            @Mapping(source = "itemSpecName", target = "specName"),
+            @Mapping(expression = "java(com.sciatta.openmall.common.utils.DesensitizationUtils.commonDisplay(itemCommentDTO.getNickname()))", target = "nickname")
     })
-    public abstract UserItemCommentVO userItemCommentDTOToUserItemCommentVO(UserItemCommentDTO userItemCommentDTO);
+    public abstract ItemCommentUserVO userItemCommentDTOToUserItemCommentVO(ItemCommentDTO itemCommentDTO);
     
+    public abstract List<ItemCommentUserVO> convertToItemCommentUserVO(List<ItemCommentDTO> itemCommentDTOList);
     
-    public abstract List<UserItemCommentVO> userItemCommentDTOListToUserItemCommentVOList(List<UserItemCommentDTO> userItemCommentDTOList);
+    public abstract ItemCommentLevelCountVO convert(ItemCommentLevelCountDTO itemCommentLevelCountDTO);
     
-    public abstract CommentLevelCountsVO commentLevelCountsDTOToCommentLevelCountsVO(CommentLevelCountsDTO commentLevelCountsDTO);
+    @Mappings({
+            @Mapping(source = "id", target = "itemId"),
+            @Mapping(source = "url", target = "imgUrl"),
+            @Mapping(source = "priceDiscount", target = "price")
+    })
+    public abstract ItemSearchVO convert(ItemDTO itemDTO);
     
-    public abstract SearchItemsServiceQuery toSearchItemsServiceQuery(String keywords, String sort);
-    
-    public abstract List<SearchItemVO> searchItemDTOListToSearchItemVOList(List<SearchItemDTO> searchItemDTOList);
-    
-    public abstract SearchCatItemsServiceQuery toSearchCatItemsServiceQuery(Integer catId, String sort);
+    public abstract List<ItemSearchVO> convertToItemSearchVO(List<ItemDTO> itemDTOList);
     
     public abstract List<ShopCartItemVO> shopCartItemDTOListToShopCartItemVOList(List<ShopCartItemDTO> shopCartItemDTOList);
 }

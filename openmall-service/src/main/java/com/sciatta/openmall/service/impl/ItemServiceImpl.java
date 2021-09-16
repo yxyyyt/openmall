@@ -2,18 +2,15 @@ package com.sciatta.openmall.service.impl;
 
 import com.sciatta.openmall.common.enums.CommentLevel;
 import com.sciatta.openmall.dao.mapper.ext.*;
-import com.sciatta.openmall.dao.pojo.po.ext.SearchItem;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
-import com.sciatta.openmall.dao.pojo.po.ext.UserItemComment;
-import com.sciatta.openmall.dao.pojo.po.mbg.Item;
+import com.sciatta.openmall.dao.pojo.po.ext.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemParam;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemSpec;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.converter.ItemConverter;
 import com.sciatta.openmall.service.pojo.dto.*;
-import com.sciatta.openmall.service.pojo.query.SearchCatItemsServiceQuery;
-import com.sciatta.openmall.service.pojo.query.SearchItemsServiceQuery;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
 import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.stereotype.Service;
@@ -51,71 +48,71 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO queryItemById(String id) {
         Item item = itemMapper.selectByPrimaryKey(id);
         
-        return ItemConverter.INSTANCE.itemToItemDTO(item);
+        return ItemConverter.INSTANCE.convert(item);
     }
     
     @Override
     public List<ItemImageDTO> queryItemImagesByItemId(String itemId) {
         List<ItemImage> itemImageList = itemImageMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.itemImageListToItemImageDTOList(itemImageList);
+        return ItemConverter.INSTANCE.convertToItemImageDTO(itemImageList);
     }
     
     @Override
     public List<ItemSpecDTO> queryItemSpecsByItemId(String itemId) {
         List<ItemSpec> itemSpecList = itemSpecMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.itemSpecListToItemSpecDTOList(itemSpecList);
+        return ItemConverter.INSTANCE.convertToItemSpecDTO(itemSpecList);
     }
     
     @Override
     public ItemParamDTO queryItemParamByItemId(String itemId) {
         ItemParam itemParam = itemParamMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.itemParamToItemParamDTO(itemParam);
+        return ItemConverter.INSTANCE.convert(itemParam);
     }
     
     @Override
-    public List<UserItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedContext pagedContext) {
+    public List<ItemCommentDTO> queryUserItemComments(UserItemCommentServiceQuery userItemCommentServiceQuery, PagedContext pagedContext) {
         
-        List<UserItemComment> userItemCommentList = pagedContext.startPage(
+        List<ItemComment> itemCommentList = pagedContext.startPage(
                 () -> itemCommentMapper.selectItemComments(userItemCommentServiceQuery.getItemId(), userItemCommentServiceQuery.getLevel()),
                 false
         );
         
-        return ItemConverter.INSTANCE.userItemCommentListToUserItemCommentDTOList(userItemCommentList);
+        return ItemConverter.INSTANCE.convertToItemCommentDTO(itemCommentList);
     }
     
     @Override
-    public CommentLevelCountsDTO queryCommentLevelCounts(String itemId) {
+    public ItemCommentLevelCountDTO queryCommentLevelCounts(String itemId) {
         Integer goodCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.GOOD.type);
         Integer normalCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.NORMAL.type);
         Integer badCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.BAD.type);
         
         Integer totalCounts = goodCounts + normalCounts + badCounts;
         
-        return ItemConverter.INSTANCE.toCommentLevelCountsDTO(goodCounts, normalCounts, badCounts, totalCounts);
+        return ItemConverter.INSTANCE.convert(goodCounts, normalCounts, badCounts, totalCounts);
     }
     
     @Override
-    public List<SearchItemDTO> querySearchItems(SearchItemsServiceQuery searchItemsServiceQuery, PagedContext pagedContext) {
+    public List<ItemDTO> querySearchItems(String keywords, String sort, PagedContext pagedContext) {
         
-        List<SearchItem> searchItemList = pagedContext.startPage(
-                () -> itemMapper.searchItemsByKeywords(searchItemsServiceQuery.getKeywords(), searchItemsServiceQuery.getSort()),
+        List<Item> itemList = pagedContext.startPage(
+                () -> itemMapper.searchItemsByKeywords(keywords, sort),
                 false
         );
         
-        return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
+        return ItemConverter.INSTANCE.convertToItemDTO(itemList);
     }
     
     @Override
-    public List<SearchItemDTO> querySearchCatItems(SearchCatItemsServiceQuery searchCatItemsServiceQuery, PagedContext pagedContext) {
-        List<SearchItem> searchItemList = pagedContext.startPage(
-                () -> itemMapper.searchItemsByCatId(searchCatItemsServiceQuery.getCatId(), searchCatItemsServiceQuery.getSort()),
+    public List<ItemDTO> querySearchCatItems(Integer catId, String sort, PagedContext pagedContext) {
+        List<Item> searchItemList = pagedContext.startPage(
+                () -> itemMapper.searchItemsByCatId(catId, sort),
                 false
         );
         
-        return ItemConverter.INSTANCE.searchItemListToSearchItemDTOList(searchItemList);
+        return ItemConverter.INSTANCE.convertToItemDTO(searchItemList);
     }
     
     @Override

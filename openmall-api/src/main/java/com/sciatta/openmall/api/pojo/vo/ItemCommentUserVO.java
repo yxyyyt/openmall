@@ -8,17 +8,20 @@ import java.util.Date;
 /**
  * Created by yangxiaoyu on 2021/8/4<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * UserItemCommentVO
+ * ItemCommentUserVO
  */
 @Data
-public class UserItemCommentVO implements Serializable {
+public class ItemCommentUserVO implements Serializable {
     
     private static final long serialVersionUID = -5816529236865230792L;
     
+    // ItemComment
     private Integer commentLevel;
     private String content;
     private String specName;
     private Date createdTime;
+    
+    // User
     private String userFace;
     private String nickname;
 }

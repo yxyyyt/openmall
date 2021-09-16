@@ -8,10 +8,10 @@ import java.util.Date;
 /**
  * Created by yangxiaoyu on 2021/8/2<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ItemURLVO
+ * ItemUrlVO
  */
 @Data
-public class ItemURLVO implements Serializable {
+public class ItemUrlVO implements Serializable {
     
     private static final long serialVersionUID = -7317265156860817339L;
     
