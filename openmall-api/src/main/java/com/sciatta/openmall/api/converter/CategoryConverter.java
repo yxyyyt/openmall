@@ -22,9 +22,9 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract List<CategoryVO> convertToCategoryVO(List<CategoryDTO> categoryDTOList);
+    public abstract List<CategoryVO> toCategoryVO(List<CategoryDTO> categoryDTOList);
     
-    public abstract List<CategorySubVO> convertToCategorySubVO(List<CategoryDTO> categoryDTOList);
+    public abstract List<CategorySubVO> toCategorySubVO(List<CategoryDTO> categoryDTOList);
     
     // 只映射不同的属性
     @Mappings({
@@ -32,14 +32,14 @@ public abstract class CategoryConverter {
             @Mapping(source = "url", target = "itemUrl")
     })
     // 自定义转换对象中的依赖
-    public abstract ItemUrlVO convert(ItemDTO itemDTO);
+    public abstract ItemUrlVO convertToItemUrlVO(ItemDTO itemDTO);
     
     @Mappings({
             @Mapping(source = "name", target = "rootCatName")
     })
     // 自定义转换集合中的对象
-    public abstract CategoryItemVO convert(CategoryDTO categoryDTO);
+    public abstract CategoryItemVO convertToCategoryItemVO(CategoryDTO categoryDTO);
     
     // 集合中的对象如果属性完全相同的话，就不需要映射
-    public abstract List<CategoryItemVO> convertToCategoryItemVO(List<CategoryDTO> categoryDTOList);
+    public abstract List<CategoryItemVO> toCategoryItemVO(List<CategoryDTO> categoryDTOList);
 }

@@ -28,5 +28,8 @@ public class ItemDTO implements Serializable {
     private String url;
     
     // ItemSpec
+    private String specId;
+    private String specName;
     private Integer priceDiscount;
+    private Integer priceNormal;
 }

@@ -100,10 +100,11 @@ public class OrderServiceImpl implements OrderService {
         
         List<String> idList = CollectionUtils.arrayToList(
                 orderCreateServiceQuery.getItemSpecIds().split(","));
+        //Todo
+        //List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
         
-        List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
-        
-        return OrderConverter.INSTANCE.toOrderItems(shopCartAddServiceQueryList, paidShopCartList, shopCartItemList, order);
+        //return OrderConverter.INSTANCE.toOrderItems(shopCartAddServiceQueryList, paidShopCartList, shopCartItemList, order);
+        return null; //TODO.....
     }
     
     private OrderStatus doCreateOrderStatus(OrderCreateServiceQuery orderCreateServiceQuery, Order order) {

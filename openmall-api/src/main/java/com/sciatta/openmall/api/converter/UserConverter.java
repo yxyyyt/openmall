@@ -18,13 +18,13 @@ import org.mapstruct.factory.Mappers;
 public abstract class UserConverter {
     public static UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
     
-    public abstract UserVO userDTOToUserVO(UserDTO userDTO);
+    public abstract UserVO toUserVO(UserDTO userDTO);
     
     public abstract UserServiceQuery userApiQueryToUserServiceQuery(UserApiQuery userApiQuery);
     
-    public abstract UserCookieVO convert(UserDTO userDTO);
+    public abstract UserCookieVO toUserCookieVO(UserDTO userDTO);
     
     public abstract UserServiceQuery userFaceUrlToUserServiceQuery(String face);
     
-    public abstract com.sciatta.openmall.service.pojo.query.UserQuery convert(UserQuery userQuery);
+    public abstract com.sciatta.openmall.service.pojo.query.UserQuery toUserQuery(UserQuery userQuery);
 }

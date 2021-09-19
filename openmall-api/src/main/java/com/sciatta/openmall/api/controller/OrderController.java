@@ -2,8 +2,8 @@ package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.OrderConverter;
 import com.sciatta.openmall.api.converter.ShopCartConverter;
-import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
-import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
+import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
+import com.sciatta.openmall.api.pojo.query.OrderCreateQuery;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CacheConstants;
@@ -41,24 +41,24 @@ public class OrderController {
     }
     
     @PostMapping("/create")
-    public JSONResult create(@RequestBody OrderCreateApiQuery orderCreateApiQuery,
+    public JSONResult create(@RequestBody OrderCreateQuery orderCreateQuery,
                              HttpServletRequest request, HttpServletResponse response) {
         
-        if (!orderCreateApiQuery.getPayMethod().equals(PayMethod.WEIXIN.type)
-                && !orderCreateApiQuery.getPayMethod().equals(PayMethod.ALIPAY.type)) {
+        if (!orderCreateQuery.getPayMethod().equals(PayMethod.WEIXIN.type)
+                && !orderCreateQuery.getPayMethod().equals(PayMethod.ALIPAY.type)) {
             return JSONResult.errorUsingMessage("支付方式不支持！");
         }
         
         // 从缓存获得购物车
-        List<ShopCartAddServiceQuery> shopCartAddServiceQueryList = getShopCart(orderCreateApiQuery);
+        List<ShopCartAddServiceQuery> shopCartAddServiceQueryList = getShopCart(orderCreateQuery);
         List<ShopCartAddServiceQuery> paidShopCartList = new ArrayList<>();
         
         // 创建订单
-        OrderCreateServiceQuery orderCreateServiceQuery = OrderConverter.INSTANCE.orderCreateApiQueryToOrderCreateServiceQuery(orderCreateApiQuery);
+        OrderCreateServiceQuery orderCreateServiceQuery = OrderConverter.INSTANCE.orderCreateApiQueryToOrderCreateServiceQuery(orderCreateQuery);
         OrderDTO orderDTO = orderService.createOrder(shopCartAddServiceQueryList, paidShopCartList, orderCreateServiceQuery);
         
         // 创建订单以后，移除购物车中已结算（已提交）的商品
-        setShopCart(orderCreateApiQuery, shopCartAddServiceQueryList, paidShopCartList, request, response);
+        setShopCart(orderCreateQuery, shopCartAddServiceQueryList, paidShopCartList, request, response);
         
         // 向支付中心发送当前订单，用于保存支付中心的订单数据
         // TODO 支付中心
@@ -75,31 +75,31 @@ public class OrderController {
         return JSONResult.success(orderStatusVO);
     }
     
-    private List<ShopCartAddServiceQuery> getShopCart(OrderCreateApiQuery orderCreateApiQuery) {
-        String shopCart = cacheService.get(getKey(orderCreateApiQuery));
-        List<ShopCartAddApiQuery> shopCartAddApiQueryList = JsonUtils.jsonToList(shopCart, ShopCartAddApiQuery.class);
+    private List<ShopCartAddServiceQuery> getShopCart(OrderCreateQuery orderCreateQuery) {
+        String shopCart = cacheService.get(getKey(orderCreateQuery));
+        List<ItemShopCartQuery> itemShopCartQueryList = JsonUtils.jsonToList(shopCart, ItemShopCartQuery.class);
         
-        return ShopCartConverter.INSTANCE.shopCartAddApiQueryListToShopCartAddServiceQueryList(shopCartAddApiQueryList);
+        return ShopCartConverter.INSTANCE.shopCartAddApiQueryListToShopCartAddServiceQueryList(itemShopCartQueryList);
     }
     
-    private void setShopCart(OrderCreateApiQuery orderCreateApiQuery,
+    private void setShopCart(OrderCreateQuery orderCreateQuery,
                              List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
                              List<ShopCartAddServiceQuery> paidShopCartList,
                              HttpServletRequest request,
                              HttpServletResponse response) {
         shopCartAddServiceQueryList.removeAll(paidShopCartList);    // 删除购物车中已支付商品
         
-        List<ShopCartAddApiQuery> shopCartAddApiQueryList =
+        List<ItemShopCartQuery> itemShopCartQueryList =
                 ShopCartConverter.INSTANCE.shopCartAddServiceQueryListToShopCartAddApiQueryList(shopCartAddServiceQueryList);
         
-        String result = JsonUtils.objectToJson(shopCartAddApiQueryList);
+        String result = JsonUtils.objectToJson(itemShopCartQueryList);
         
         // 更新缓存
         CookieUtils.setCookie(request, response, CookieConstants.COOKIE_SHOP_CART, result, true);
-        cacheService.set(getKey(orderCreateApiQuery), result);
+        cacheService.set(getKey(orderCreateQuery), result);
     }
     
-    private String getKey(OrderCreateApiQuery orderCreateApiQuery) {
-        return CacheConstants.SHOP_CART + ":" + orderCreateApiQuery.getUserId();
+    private String getKey(OrderCreateQuery orderCreateQuery) {
+        return CacheConstants.SHOP_CART + ":" + orderCreateQuery.getUserId();
     }
 }

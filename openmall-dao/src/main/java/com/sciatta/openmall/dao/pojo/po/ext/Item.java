@@ -19,5 +19,8 @@ public class Item extends com.sciatta.openmall.dao.pojo.po.mbg.Item {
     private String url;
     
     // ItemSpec
+    private String specId;
+    private String specName;
     private Integer priceDiscount;
+    private Integer priceNormal;
 }

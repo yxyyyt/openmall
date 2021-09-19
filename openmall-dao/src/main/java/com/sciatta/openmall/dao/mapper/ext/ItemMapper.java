@@ -14,5 +14,5 @@ public interface ItemMapper extends com.sciatta.openmall.dao.mapper.mbg.ItemMapp
     
     List<Item> searchItemsByCatId(@Param("catId") Integer catId, @Param("sort") String sort);
     
-    List<ShopCartItem> searchShopCartItemsBySpecIds(List<String> specIds);
+    List<Item> searchShopCartItemsBySpecIds(List<String> specIds);
 }

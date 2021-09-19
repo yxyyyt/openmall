@@ -49,7 +49,7 @@ public class PassportController {
             return JSONResult.errorUsingMessage("用户名或密码不正确");
         }
         
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置用户缓存
         userCacheHelper.setUserCache(userCookieVO, request, response);
@@ -73,9 +73,9 @@ public class PassportController {
         }
         
         // 注册
-        UserDTO userDTO = userService.createUser(UserConverter.INSTANCE.convert(userQuery));
+        UserDTO userDTO = userService.createUser(UserConverter.INSTANCE.toUserQuery(userQuery));
         
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置缓存
         userCacheHelper.setUserCache(userCookieVO, request, response);

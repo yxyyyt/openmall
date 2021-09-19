@@ -16,5 +16,5 @@ import java.util.List;
 public abstract class CategoryConverter {
     public static CategoryConverter INSTANCE = Mappers.getMapper(CategoryConverter.class);
     
-    public abstract List<CategoryDTO> convert(List<Category> categoryList);
+    public abstract List<CategoryDTO> toCategoryDTO(List<Category> categoryList);
 }

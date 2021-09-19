@@ -16,14 +16,12 @@ import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
 import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -48,7 +46,7 @@ public class IndexController {
     @Cache(key = CacheConstants.CAROUSELS, toClass = CarouselVO.class, isList = true)
     public JSONResult carousels() {
         List<CarouselDTO> carouselDTOList = carouselService.queryAll(YesOrNo.YES.type);
-        List<CarouselVO> carouselVOList = CarouselConverter.INSTANCE.convert(carouselDTOList);
+        List<CarouselVO> carouselVOList = CarouselConverter.INSTANCE.toCarouselVO(carouselDTOList);
         
         return JSONResult.success(carouselVOList);
     }
@@ -57,7 +55,7 @@ public class IndexController {
     @Cache(key = CacheConstants.CATEGORIES, toClass = CategoryVO.class, isList = true)
     public JSONResult categories() {
         List<CategoryDTO> categoryDTOList = categoryService.queryAllRootLevel();
-        List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.convertToCategoryVO(categoryDTOList);
+        List<CategoryVO> categoryVOList = CategoryConverter.INSTANCE.toCategoryVO(categoryDTOList);
         
         return JSONResult.success(categoryVOList);
     }
@@ -66,7 +64,7 @@ public class IndexController {
     @Cache(key = CacheConstants.SUB_CATEGORIES, toClass = CategorySubVO.class, isList = true)
     public JSONResult subCategories(@PathVariable @CacheChildKey(order = 0) Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySubCategoriesByParentId(parentId);
-        List<CategorySubVO> categorySubVOList = CategoryConverter.INSTANCE.convertToCategorySubVO(categoryDTOList);
+        List<CategorySubVO> categorySubVOList = CategoryConverter.INSTANCE.toCategorySubVO(categoryDTOList);
         
         return JSONResult.success(categorySubVOList);
     }
@@ -74,7 +72,7 @@ public class IndexController {
     @GetMapping("/sixItems/{parentId}")
     public JSONResult sixItems(@PathVariable Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySixItemsByParentId(parentId);
-        List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.convertToCategoryItemVO(categoryDTOList);
+        List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.toCategoryItemVO(categoryDTOList);
         
         return JSONResult.success(categoryItemVOList);
     }

@@ -52,7 +52,7 @@ public class UserController {
     @GetMapping("query")
     public JSONResult query(@RequestParam String userId) {
         UserDTO userDTO = userService.queryUserByUserId(userId);
-        UserVO userVO = UserConverter.INSTANCE.userDTOToUserVO(userDTO);
+        UserVO userVO = UserConverter.INSTANCE.toUserVO(userDTO);
         
         return JSONResult.success(userVO);
     }
@@ -75,7 +75,7 @@ public class UserController {
         }
         
         UserDTO userDTO = userService.queryUserByUserId(userId);
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置缓存
         setUserCache(userCookieVO, request, response);
@@ -133,7 +133,7 @@ public class UserController {
         }
         
         UserDTO userDTO = userService.queryUserByUserId(userId);
-        UserCookieVO userCookieVO = UserConverter.INSTANCE.convert(userDTO);
+        UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置缓存
         setUserCache(userCookieVO, request, response);

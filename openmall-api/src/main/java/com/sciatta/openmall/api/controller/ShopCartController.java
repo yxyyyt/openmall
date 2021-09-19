@@ -1,21 +1,22 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.ItemConverter;
-import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
-import com.sciatta.openmall.api.pojo.vo.ShopCartItemVO;
+import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
+import com.sciatta.openmall.api.pojo.vo.ItemShopCartVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CacheConstants;
 import com.sciatta.openmall.service.ItemService;
-import com.sciatta.openmall.service.pojo.dto.ShopCartItemDTO;
+import com.sciatta.openmall.service.pojo.dto.ItemDTO;
 import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheChildKey;
 import com.sciatta.openmall.service.support.cache.CacheExtend;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * 购物车
  */
+@Validated
 @RestController
 @RequestMapping("shopCart")
 @Slf4j
@@ -36,51 +38,46 @@ public class ShopCartController {
     
     @PostMapping("add")
     @Cache(key = CacheConstants.SHOP_CART,
-            toClass = ShopCartAddApiQuery.class,
+            toClass = ItemShopCartQuery.class,
             timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "addShopCartCacheProcessor")
-    public JSONResult add(@RequestParam @CacheChildKey(order = 0) String userId,
-                          @RequestBody @CacheExtend ShopCartAddApiQuery shopCartAddApiQuery,
-                          HttpServletRequest request,
-                          HttpServletResponse response) {
+    public JSONResult add(
+            @RequestParam @CacheChildKey(order = 0) @NotBlank(message = "用户标识不能为空") String userId,
+            @RequestBody @CacheExtend @Validated ItemShopCartQuery itemShopCartQuery,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         
-        log.debug("user {} add {} to shop cart", userId, shopCartAddApiQuery);
+        log.debug("user {} add {} to shop cart", userId, itemShopCartQuery);
         
-        if (!StringUtils.hasText(userId)) {
-            return JSONResult.errorUsingMessage("用户不能为空");
-        }
-        
-        List<ShopCartAddApiQuery> shopCart = new ArrayList<>();
-        shopCart.add(shopCartAddApiQuery);
+        List<ItemShopCartQuery> shopCart = new ArrayList<>();
+        shopCart.add(itemShopCartQuery);
         
         return JSONResult.success(shopCart);
     }
     
     @GetMapping("refresh")
-    public JSONResult refresh(@RequestParam String itemSpecIds) {
-        List<ShopCartItemDTO> shopCartItemDTOList = itemService.queryShopCartItemsBySpecIds(itemSpecIds);
+    public JSONResult refresh(
+            @RequestParam @NotBlank(message = "商品规格标识不能为空") String itemSpecIds) {
+        List<ItemDTO> itemDTOList = itemService.queryShopCartItemsBySpecIds(itemSpecIds);
         
-        List<ShopCartItemVO> shopCartItemVOList = ItemConverter.INSTANCE.shopCartItemDTOListToShopCartItemVOList(shopCartItemDTOList);
-        return JSONResult.success(shopCartItemVOList);
+        List<ItemShopCartVO> itemShopCartVOList = ItemConverter.INSTANCE.toItemShopCartVO(itemDTOList);
+        return JSONResult.success(itemShopCartVOList);
     }
     
     @PostMapping("del")
     @Cache(key = CacheConstants.SHOP_CART,
-            toClass = ShopCartAddApiQuery.class,
+            toClass = ItemShopCartQuery.class,
             timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "deleteShopCartCacheProcessor")
-    public JSONResult delete(@RequestParam @CacheChildKey(order = 0) String userId,
-                             @RequestParam @CacheExtend String itemSpecId,
-                             HttpServletRequest request,
-                             HttpServletResponse response) {
+    public JSONResult delete(
+            @RequestParam @CacheChildKey(order = 0) @NotBlank(message = "用户标识不能为空") String userId,
+            @RequestParam @CacheExtend @NotBlank(message = "商品规格不能为空") String itemSpecId,   // TODO itemSpecId验证不起作用
+            HttpServletRequest request,
+            HttpServletResponse response) {
         
         log.debug("user {} del {} from shop cart", userId, itemSpecId);
-        
-        if (!StringUtils.hasText(userId) || !StringUtils.hasText(itemSpecId)) {
-            return JSONResult.errorUsingMessage("用户或商品规格不能为空");
-        }
         
         return JSONResult.success();
     }

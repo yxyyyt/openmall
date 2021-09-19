@@ -1,6 +1,6 @@
 package com.sciatta.openmall.api.converter;
 
-import com.sciatta.openmall.api.pojo.query.OrderCreateApiQuery;
+import com.sciatta.openmall.api.pojo.query.OrderCreateQuery;
 import com.sciatta.openmall.api.pojo.vo.OrderItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
@@ -22,7 +22,7 @@ import java.util.List;
 public abstract class OrderConverter {
     public static OrderConverter INSTANCE = Mappers.getMapper(OrderConverter.class);
     
-    public abstract OrderCreateServiceQuery orderCreateApiQueryToOrderCreateServiceQuery(OrderCreateApiQuery orderCreateApiQuery);
+    public abstract OrderCreateServiceQuery orderCreateApiQueryToOrderCreateServiceQuery(OrderCreateQuery orderCreateQuery);
     
     public abstract OrderStatusVO orderStatusDTOToOrderStatusVO(OrderStatusDTO orderStatusDTO);
     

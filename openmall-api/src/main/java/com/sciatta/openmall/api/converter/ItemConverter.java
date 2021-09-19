@@ -3,9 +3,7 @@ package com.sciatta.openmall.api.converter;
 import com.sciatta.openmall.api.pojo.vo.*;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -25,8 +23,8 @@ public abstract class ItemConverter {
             @Mapping(source = "itemSpecDTOList", target = "itemSpecList"),
             @Mapping(source = "itemParamDTO", target = "itemParams")
     })
-    public abstract ItemWrapVO convert(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
-                                       List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
+    public abstract ItemWrapVO toItemWrapVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
+                                            List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
     
     public abstract UserItemCommentServiceQuery toUserItemCommentServiceQuery(String itemId, Integer level);
     
@@ -36,18 +34,28 @@ public abstract class ItemConverter {
     })
     public abstract ItemCommentUserVO userItemCommentDTOToUserItemCommentVO(ItemCommentDTO itemCommentDTO);
     
-    public abstract List<ItemCommentUserVO> convertToItemCommentUserVO(List<ItemCommentDTO> itemCommentDTOList);
+    public abstract List<ItemCommentUserVO> toItemCommentUserVO(List<ItemCommentDTO> itemCommentDTOList);
     
-    public abstract ItemCommentLevelCountVO convert(ItemCommentLevelCountDTO itemCommentLevelCountDTO);
+    public abstract ItemCommentLevelCountVO toItemCommentLevelCountVO(ItemCommentLevelCountDTO itemCommentLevelCountDTO);
     
     @Mappings({
             @Mapping(source = "id", target = "itemId"),
             @Mapping(source = "url", target = "imgUrl"),
             @Mapping(source = "priceDiscount", target = "price")
     })
-    public abstract ItemSearchVO convert(ItemDTO itemDTO);
+    @Named(value = "ItemSearchVO")
+    public abstract ItemSearchVO toItemSearchVO(ItemDTO itemDTO);
     
-    public abstract List<ItemSearchVO> convertToItemSearchVO(List<ItemDTO> itemDTOList);
+    @IterableMapping(qualifiedByName = "ItemSearchVO")
+    public abstract List<ItemSearchVO> toItemSearchVO(List<ItemDTO> itemDTOList);
     
-    public abstract List<ShopCartItemVO> shopCartItemDTOListToShopCartItemVOList(List<ShopCartItemDTO> shopCartItemDTOList);
+    @Mappings({
+            @Mapping(source = "id", target = "itemId"),
+            @Mapping(source = "url", target = "itemImgUrl")
+    })
+    @Named(value = "ItemShopCartVO")
+    public abstract ItemShopCartVO toItemShopCartVO(ItemDTO itemDTO);
+    
+    @IterableMapping(qualifiedByName = "ItemShopCartVO")
+    public abstract List<ItemShopCartVO> toItemShopCartVO(List<ItemDTO> itemDTOList);
 }

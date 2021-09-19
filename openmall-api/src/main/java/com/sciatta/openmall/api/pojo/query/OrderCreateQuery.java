@@ -7,10 +7,10 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/10<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * OrderCreateApiQuery
+ * OrderCreateQuery
  */
 @Data
-public class OrderCreateApiQuery implements Serializable {
+public class OrderCreateQuery implements Serializable {
     
     private static final long serialVersionUID = 5345810943670031697L;
     

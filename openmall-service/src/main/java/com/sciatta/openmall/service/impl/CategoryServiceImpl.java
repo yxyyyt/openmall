@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> queryAllRootLevel() {
         List<Category> categoryList = categoryMapper.selectByType(1); // 第一级商品种类
         
-        return CategoryConverter.INSTANCE.convert(categoryList);
+        return CategoryConverter.INSTANCE.toCategoryDTO(categoryList);
     }
     
     @Override
@@ -34,13 +34,13 @@ public class CategoryServiceImpl implements CategoryService {
         // 通过一级商品种类Id查询二级和三级商品种类
         List<Category> subCategoryList = categoryMapper.selectSubCategoriesByParentId(parentId);
         
-        return CategoryConverter.INSTANCE.convert(subCategoryList);
+        return CategoryConverter.INSTANCE.toCategoryDTO(subCategoryList);
     }
     
     @Override
     public List<CategoryDTO> querySixItemsByParentId(Integer parentId) {
         List<Category> categoryList = categoryMapper.selectSixItemsByParentId(parentId);
         
-        return CategoryConverter.INSTANCE.convert(categoryList);
+        return CategoryConverter.INSTANCE.toCategoryDTO(categoryList);
     }
 }

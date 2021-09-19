@@ -48,28 +48,28 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO queryItemById(String id) {
         Item item = itemMapper.selectByPrimaryKey(id);
         
-        return ItemConverter.INSTANCE.convert(item);
+        return ItemConverter.INSTANCE.toItemDTO(item);
     }
     
     @Override
     public List<ItemImageDTO> queryItemImagesByItemId(String itemId) {
         List<ItemImage> itemImageList = itemImageMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.convertToItemImageDTO(itemImageList);
+        return ItemConverter.INSTANCE.toItemImageDTO(itemImageList);
     }
     
     @Override
     public List<ItemSpecDTO> queryItemSpecsByItemId(String itemId) {
         List<ItemSpec> itemSpecList = itemSpecMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.convertToItemSpecDTO(itemSpecList);
+        return ItemConverter.INSTANCE.toItemSpecDTO(itemSpecList);
     }
     
     @Override
     public ItemParamDTO queryItemParamByItemId(String itemId) {
         ItemParam itemParam = itemParamMapper.selectByItemId(itemId);
         
-        return ItemConverter.INSTANCE.convert(itemParam);
+        return ItemConverter.INSTANCE.toItemParamDTO(itemParam);
     }
     
     @Override
@@ -80,7 +80,7 @@ public class ItemServiceImpl implements ItemService {
                 false
         );
         
-        return ItemConverter.INSTANCE.convertToItemCommentDTO(itemCommentList);
+        return ItemConverter.INSTANCE.toItemCommentDTO(itemCommentList);
     }
     
     @Override
@@ -91,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
         
         Integer totalCounts = goodCounts + normalCounts + badCounts;
         
-        return ItemConverter.INSTANCE.convert(goodCounts, normalCounts, badCounts, totalCounts);
+        return ItemConverter.INSTANCE.toItemCommentLevelCountDTO(goodCounts, normalCounts, badCounts, totalCounts);
     }
     
     @Override
@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
                 false
         );
         
-        return ItemConverter.INSTANCE.convertToItemDTO(itemList);
+        return ItemConverter.INSTANCE.toItemDTO(itemList);
     }
     
     @Override
@@ -112,11 +112,11 @@ public class ItemServiceImpl implements ItemService {
                 false
         );
         
-        return ItemConverter.INSTANCE.convertToItemDTO(searchItemList);
+        return ItemConverter.INSTANCE.toItemDTO(searchItemList);
     }
     
     @Override
-    public List<ShopCartItemDTO> queryShopCartItemsBySpecIds(String specIds) {
+    public List<ItemDTO> queryShopCartItemsBySpecIds(String specIds) {
         String[] ids = specIds.split(",");
         List<String> idList = CollectionUtils.arrayToList(ids);
         
@@ -124,8 +124,8 @@ public class ItemServiceImpl implements ItemService {
             return Collections.EMPTY_LIST;
         }
         
-        List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
+        List<Item> itemList = itemMapper.searchShopCartItemsBySpecIds(idList);
         
-        return ItemConverter.INSTANCE.shopCartItemListToShopCartItemDTOList(shopCartItemList);
+        return ItemConverter.INSTANCE.toItemDTO(itemList);
     }
 }

@@ -16,5 +16,5 @@ import java.util.List;
 public abstract class CarouselConverter {
     public static CarouselConverter INSTANCE = Mappers.getMapper(CarouselConverter.class);
     
-    public abstract List<CarouselDTO> convert(List<Carousel> carouselList);
+    public abstract List<CarouselDTO> toCarouselDTO(List<Carousel> carouselList);
 }

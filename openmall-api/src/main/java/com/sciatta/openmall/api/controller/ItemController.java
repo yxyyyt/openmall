@@ -39,7 +39,7 @@ public class ItemController {
         List<ItemSpecDTO> itemSpecDTOList = itemService.queryItemSpecsByItemId(itemId);
         ItemParamDTO itemParamDTO = itemService.queryItemParamByItemId(itemId);
         
-        ItemWrapVO itemWrapVO = ItemConverter.INSTANCE.convert(itemDTO, itemImageDTOList, itemSpecDTOList, itemParamDTO);
+        ItemWrapVO itemWrapVO = ItemConverter.INSTANCE.toItemWrapVO(itemDTO, itemImageDTOList, itemSpecDTOList, itemParamDTO);
         
         return JSONResult.success(itemWrapVO);
     }
@@ -49,7 +49,7 @@ public class ItemController {
         
         ItemCommentLevelCountDTO itemCommentLevelCountDTO = itemService.queryCommentLevelCounts(itemId);
         
-        ItemCommentLevelCountVO itemCommentLevelCountVO = ItemConverter.INSTANCE.convert(itemCommentLevelCountDTO);
+        ItemCommentLevelCountVO itemCommentLevelCountVO = ItemConverter.INSTANCE.toItemCommentLevelCountVO(itemCommentLevelCountDTO);
         
         return JSONResult.success(itemCommentLevelCountVO);
     }
@@ -72,7 +72,7 @@ public class ItemController {
         );
         
         // 转换，nickname脱敏
-        List<ItemCommentUserVO> itemCommentUserVOList = ItemConverter.INSTANCE.convertToItemCommentUserVO(itemCommentDTOList);
+        List<ItemCommentUserVO> itemCommentUserVOList = ItemConverter.INSTANCE.toItemCommentUserVO(itemCommentDTOList);
         
         return JSONResult.success(pagedContext.getPagedGridResult(itemCommentUserVOList));
     }
@@ -91,7 +91,7 @@ public class ItemController {
         
         List<ItemDTO> itemDTOList = itemService.querySearchItems(keywords, sort, pagedContext);
         
-        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.convertToItemSearchVO(itemDTOList);
+        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.toItemSearchVO(itemDTOList);
         
         return JSONResult.success(pagedContext.getPagedGridResult(itemSearchVOList));
     }
@@ -109,7 +109,7 @@ public class ItemController {
         
         List<ItemDTO> itemDTOList = itemService.querySearchCatItems(catId, sort, pagedContext);
         
-        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.convertToItemSearchVO(itemDTOList);
+        List<ItemSearchVO> itemSearchVOList = ItemConverter.INSTANCE.toItemSearchVO(itemDTOList);
         
         return JSONResult.success(pagedContext.getPagedGridResult(itemSearchVOList));
     }

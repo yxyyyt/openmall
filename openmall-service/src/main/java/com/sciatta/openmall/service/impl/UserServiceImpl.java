@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO queryUserForLogin(String username, String password) {
         User user = userMapper.selectByUsernameAndPassword(username, DigestUtils.md5DigestAsHex(password.getBytes()));
         
-        return UserConverter.INSTANCE.convert(user);
+        return UserConverter.INSTANCE.toUserDTO(user);
     }
     
     @Transactional(readOnly = true)
@@ -44,11 +44,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public UserDTO createUser(UserQuery userQuery) {
-        User user = UserConverter.INSTANCE.convert(userQuery);
+        User user = UserConverter.INSTANCE.toUser(userQuery);
         
         userMapper.insert(user);
         
-        return UserConverter.INSTANCE.convert(user);
+        return UserConverter.INSTANCE.toUserDTO(user);
     }
     
     @Override
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO queryUserByUserId(String userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         
-        return UserConverter.INSTANCE.convert(user);
+        return UserConverter.INSTANCE.toUserDTO(user);
     }
     
     @Override

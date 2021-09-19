@@ -2,10 +2,8 @@ package com.sciatta.openmall.api.config;
 
 import com.sciatta.openmall.api.support.intercepter.UserTokenInterceptor;
 import org.hibernate.validator.HibernateValidator;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,7 +15,7 @@ import javax.validation.ValidatorFactory;
 /**
  * Created by yangxiaoyu on 2021/8/13<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * 静态资源映射
+ * Web相关配置
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -30,21 +28,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
         this.userTokenInterceptor = userTokenInterceptor;
     }
     
-    
+    // ------------------------------------------------------------------------------------------
+    // 映射本地静态资源
+    // ------------------------------------------------------------------------------------------
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 相对路径处理
         // child 相对于 /base/ => /base/child
         // child 相对于 /base  => /child
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:" + openMallConfig.getUpload().getImageUserFaceLocation());  // 映射本地静态资源
+                .addResourceLocations("file:" + openMallConfig.getUpload().getImageUserFaceLocation());
     }
     
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
-    
+    // ------------------------------------------------------------------------------------------
+    // 用户认证
+    // ------------------------------------------------------------------------------------------
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(userTokenInterceptor)
@@ -58,13 +56,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
     
     // ------------------------------------------------------------------------------------------
-    
-    // 多个请求参数，只要有一个校验失败，后面的其他参数就不做校验；对@RequestParam和@RequestBody都起作用
+    // 请求参数验证
+    // ------------------------------------------------------------------------------------------
     @Bean
     public Validator validator() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .failFast(true) // failFast 只要出现校验失败的情况，就立即结束校验，不再进行后续校验
+                .failFast(true) // failFast 多个请求参数，只要有一个校验失败，后面的其他参数就不做校验，立即结束校验
                 .buildValidatorFactory();
         
         return validatorFactory.getValidator();

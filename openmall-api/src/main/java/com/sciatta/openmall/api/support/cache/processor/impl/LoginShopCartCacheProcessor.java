@@ -1,6 +1,6 @@
 package com.sciatta.openmall.api.support.cache.processor.impl;
 
-import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
+import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
 import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CookieConstants;
@@ -38,15 +38,15 @@ public class LoginShopCartCacheProcessor extends AbstractCacheProcessor {
         // redis不为空，cookie不为空，合并redis和cookie数据
         // redis不为空，cookie为空，cookie同步redis数据
         if (StringUtils.hasText(shopCartCookie)) {
-            List<ShopCartAddApiQuery> shopCartFromRedis = (List<ShopCartAddApiQuery>) data;
-            List<ShopCartAddApiQuery> shopCartFromCookie = JsonUtils.jsonToList(shopCartCookie, ShopCartAddApiQuery.class);
-            List<ShopCartAddApiQuery> pendingDelete = new ArrayList<>();
+            List<ItemShopCartQuery> shopCartFromRedis = (List<ItemShopCartQuery>) data;
+            List<ItemShopCartQuery> shopCartFromCookie = JsonUtils.jsonToList(shopCartCookie, ItemShopCartQuery.class);
+            List<ItemShopCartQuery> pendingDelete = new ArrayList<>();
             
             // redis和cookie都存在，cookie购买数量覆盖redis，以redis为准
             // redis存在，cookie不存在，以redis为准
             // redis不存在，cookie存在，以cookie为准
-            for (ShopCartAddApiQuery redisItem : shopCartFromRedis) {
-                for (ShopCartAddApiQuery cookieItem : shopCartFromCookie) {
+            for (ItemShopCartQuery redisItem : shopCartFromRedis) {
+                for (ItemShopCartQuery cookieItem : shopCartFromCookie) {
                     if (redisItem.getSpecId().equals(cookieItem.getSpecId())) {
                         redisItem.setBuyCounts(cookieItem.getBuyCounts());
                         pendingDelete.add(cookieItem);

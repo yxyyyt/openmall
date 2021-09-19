@@ -1,6 +1,6 @@
 package com.sciatta.openmall.api.support.cache.processor.impl;
 
-import com.sciatta.openmall.api.pojo.query.ShopCartAddApiQuery;
+import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
 import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.utils.JsonUtils;
@@ -23,11 +23,11 @@ public class DeleteShopCartCacheProcessor extends AbstractCacheProcessor {
     
     @Override
     protected Object afterHitProcess(String key, Object data, Cache cache, Object... extend) {
-        List<ShopCartAddApiQuery> shopCart = (List<ShopCartAddApiQuery>) data;
+        List<ItemShopCartQuery> shopCart = (List<ItemShopCartQuery>) data;
         String itemSpecId = (String) extend[0];
-        ShopCartAddApiQuery removeItem = null;
+        ItemShopCartQuery removeItem = null;
         
-        for (ShopCartAddApiQuery test : shopCart) {
+        for (ItemShopCartQuery test : shopCart) {
             String specId = test.getSpecId();
             if (specId.equals(itemSpecId)) {
                 removeItem = test;
