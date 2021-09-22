@@ -1,7 +1,6 @@
 package com.sciatta.openmall.api.converter;
 
-import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
-import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,7 +15,9 @@ import java.util.List;
 public abstract class ShopCartConverter {
     public static ShopCartConverter INSTANCE = Mappers.getMapper(ShopCartConverter.class);
     
-    public abstract List<ShopCartAddServiceQuery> shopCartAddApiQueryListToShopCartAddServiceQueryList(List<ItemShopCartQuery> itemShopCartQueryList);
+    public abstract List<ShopCartQuery> toServiceShopCartQuery(
+            List<com.sciatta.openmall.api.pojo.query.ShopCartQuery> shopCartQueryList);
     
-    public abstract List<ItemShopCartQuery> shopCartAddServiceQueryListToShopCartAddApiQueryList(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList);
+    public abstract List<com.sciatta.openmall.api.pojo.query.ShopCartQuery> toApiShopCartQuery(
+            List<ShopCartQuery> shopCartQueryList);
 }

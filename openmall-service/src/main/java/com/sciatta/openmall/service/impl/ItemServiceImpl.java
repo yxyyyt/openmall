@@ -3,7 +3,6 @@ package com.sciatta.openmall.service.impl;
 import com.sciatta.openmall.common.enums.CommentLevel;
 import com.sciatta.openmall.dao.mapper.ext.*;
 import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
-import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
 import com.sciatta.openmall.dao.pojo.po.ext.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemImage;
 import com.sciatta.openmall.dao.pojo.po.mbg.ItemParam;

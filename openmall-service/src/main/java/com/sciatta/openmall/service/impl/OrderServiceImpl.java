@@ -6,15 +6,15 @@ import com.sciatta.openmall.dao.mapper.ext.UserAddressMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderItemMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderMapper;
 import com.sciatta.openmall.dao.mapper.ext.OrderStatusMapper;
-import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
+import com.sciatta.openmall.dao.pojo.po.ext.Item;
 import com.sciatta.openmall.dao.pojo.po.mbg.*;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.converter.OrderConverter;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
-import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
-import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
+import com.sciatta.openmall.service.pojo.query.OrderQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,26 +52,46 @@ public class OrderServiceImpl implements OrderService {
     
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderDTO createOrder(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
-                                List<ShopCartAddServiceQuery> paidShopCartList,
-                                OrderCreateServiceQuery orderCreateServiceQuery) {
+    public OrderDTO createOrder(List<ShopCartQuery> shopCartQueryList,
+                                List<ShopCartQuery> shopCartPaidList,
+                                OrderQuery orderQuery) {
         
         // 创建订单
-        Order order = doCreateOrder(orderCreateServiceQuery);
+        Order order = doCreateOrder(orderQuery);
         
         // 创建订单商品，关联更新Order总价格和实际总价格
-        List<OrderItem> orderItemList = doCreateOrderItems(shopCartAddServiceQueryList, paidShopCartList, orderCreateServiceQuery, order);
+        List<OrderItem> orderItemList = doCreateOrderItems(shopCartQueryList, shopCartPaidList, orderQuery, order);
         
         // 创建订单状态
-        OrderStatus orderStatus = doCreateOrderStatus(orderCreateServiceQuery, order);
+        OrderStatus orderStatus = doCreateOrderStatus(orderQuery, order);
         
         // 持久化订单
-        saveOrder(order, orderItemList, orderStatus);
+        doSaveOrder(order, orderItemList, orderStatus);
         
-        return OrderConverter.INSTANCE.orderToOrderDTO(order);
+        return OrderConverter.INSTANCE.toOrderDTO(order);
     }
     
-    private void saveOrder(Order order, List<OrderItem> orderItemList, OrderStatus orderStatus) {
+    @Override
+    public OrderStatusDTO queryOrderStatusByOrderId(String orderId) {
+        OrderStatus orderStatus = orderStatusMapper.selectByPrimaryKey(orderId);
+        
+        return OrderConverter.INSTANCE.toOrderStatusDTO(orderStatus);
+    }
+    
+    @Override
+    public OrderDTO queryOrderByOrderIdAndUserId(String orderId, String userId) {
+        Order order = orderMapper.selectByOrderIdAndUserId(orderId, userId);
+        return OrderConverter.INSTANCE.toOrderDTO(order);
+    }
+    
+    @Override
+    public List<OrderItemDTO> queryOrderItemByOrderId(String orderId) {
+        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderId(orderId);
+        
+        return OrderConverter.INSTANCE.orderItemListToOrderItemDTOList(orderItemList);
+    }
+    
+    private void doSaveOrder(Order order, List<OrderItem> orderItemList, OrderStatus orderStatus) {
         // 保存订单
         orderMapper.insert(order);
         
@@ -86,48 +106,26 @@ public class OrderServiceImpl implements OrderService {
         orderStatusMapper.insert(orderStatus);
     }
     
-    private Order doCreateOrder(OrderCreateServiceQuery orderCreateServiceQuery) {
-        UserAddress userAddress = userAddressMapper.selectByUserIdAndAddressId(orderCreateServiceQuery.getUserId(),
-                orderCreateServiceQuery.getAddressId());
+    private Order doCreateOrder(OrderQuery orderQuery) {
+        UserAddress userAddress = userAddressMapper.selectByUserIdAndAddressId(orderQuery.getUserId(),
+                orderQuery.getAddressId());
+        // TOdo 增加spring断言
         
-        return OrderConverter.INSTANCE.toOrder(orderCreateServiceQuery, userAddress);
+        return OrderConverter.INSTANCE.toOrder(orderQuery, userAddress);
     }
     
-    private List<OrderItem> doCreateOrderItems(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
-                                               List<ShopCartAddServiceQuery> paidShopCartList,
-                                               OrderCreateServiceQuery orderCreateServiceQuery,
+    private List<OrderItem> doCreateOrderItems(List<ShopCartQuery> shopCartQueryList,
+                                               List<ShopCartQuery> shopCartPaidList,
+                                               OrderQuery orderQuery,
                                                Order order) {
         
-        List<String> idList = CollectionUtils.arrayToList(
-                orderCreateServiceQuery.getItemSpecIds().split(","));
-        //Todo
-        //List<ShopCartItem> shopCartItemList = itemMapper.searchShopCartItemsBySpecIds(idList);
+        List<String> specIdList = CollectionUtils.arrayToList(orderQuery.getItemSpecIds().split(","));
+        List<Item> itemList = itemMapper.searchShopCartItemsBySpecIds(specIdList);
         
-        //return OrderConverter.INSTANCE.toOrderItems(shopCartAddServiceQueryList, paidShopCartList, shopCartItemList, order);
-        return null; //TODO.....
+        return OrderConverter.INSTANCE.toOrderItems(shopCartQueryList, shopCartPaidList, itemList, order);
     }
     
-    private OrderStatus doCreateOrderStatus(OrderCreateServiceQuery orderCreateServiceQuery, Order order) {
+    private OrderStatus doCreateOrderStatus(OrderQuery orderQuery, Order order) {
         return OrderConverter.INSTANCE.toOrderStatus(order);
-    }
-    
-    @Override
-    public OrderStatusDTO queryOrderStatusByOrderId(String orderId) {
-        OrderStatus orderStatus = orderStatusMapper.selectByPrimaryKey(orderId);
-        
-        return OrderConverter.INSTANCE.orderStatusToOrderStatusDTO(orderStatus);
-    }
-    
-    @Override
-    public OrderDTO queryOrderByOrderIdAndUserId(String orderId, String userId) {
-        Order order = orderMapper.selectByOrderIdAndUserId(orderId, userId);
-        return OrderConverter.INSTANCE.orderToOrderDTO(order);
-    }
-    
-    @Override
-    public List<OrderItemDTO> queryOrderItemByOrderId(String orderId) {
-        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderId(orderId);
-        
-        return OrderConverter.INSTANCE.orderItemListToOrderItemDTOList(orderItemList);
     }
 }

@@ -3,8 +3,8 @@ package com.sciatta.openmall.service;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
-import com.sciatta.openmall.service.pojo.query.OrderCreateServiceQuery;
-import com.sciatta.openmall.service.pojo.query.ShopCartAddServiceQuery;
+import com.sciatta.openmall.service.pojo.query.OrderQuery;
+import com.sciatta.openmall.service.pojo.query.ShopCartQuery;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import java.util.List;
  * 订单服务
  */
 public interface OrderService {
-    OrderDTO createOrder(List<ShopCartAddServiceQuery> shopCartAddServiceQueryList,
-                         List<ShopCartAddServiceQuery> paidShopCartList,
-                         OrderCreateServiceQuery orderCreateServiceQuery);
+    OrderDTO createOrder(List<ShopCartQuery> shopCartQueryList,
+                         List<ShopCartQuery> shopCartPaidList,
+                         OrderQuery orderQuery);
     
     OrderStatusDTO queryOrderStatusByOrderId(String orderId);
     

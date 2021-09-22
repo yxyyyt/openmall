@@ -1,6 +1,6 @@
 package com.sciatta.openmall.api.support.cache.processor.impl;
 
-import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
+import com.sciatta.openmall.api.pojo.query.ShopCartQuery;
 import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.utils.JsonUtils;
@@ -24,10 +24,10 @@ public class AddShopCartCacheProcessor extends AbstractCacheProcessor {
     @Override
     protected Object afterHitProcess(String key, Object data, Cache cache, Object... extend) {
         boolean isHaving = false;
-        List<ItemShopCartQuery> shopCart = (List<ItemShopCartQuery>) data;
-        ItemShopCartQuery newItem = (ItemShopCartQuery) extend[0];
+        List<ShopCartQuery> shopCart = (List<ShopCartQuery>) data;
+        ShopCartQuery newItem = (ShopCartQuery) extend[0];
         
-        for (ItemShopCartQuery test : shopCart) {
+        for (ShopCartQuery test : shopCart) {
             String specId = test.getSpecId();
             if (specId.equals(newItem.getSpecId())) {
                 test.setBuyCounts(test.getBuyCounts() + newItem.getBuyCounts());

@@ -1,35 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.UserAddressMapper">
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.UserAddress">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
-        <result column="receiver" jdbcType="VARCHAR" property="receiver"/>
-        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
-        <result column="province" jdbcType="VARCHAR" property="province"/>
-        <result column="city" jdbcType="VARCHAR" property="city"/>
-        <result column="district" jdbcType="VARCHAR" property="district"/>
-        <result column="detail" jdbcType="VARCHAR" property="detail"/>
-        <result column="extend" jdbcType="VARCHAR" property="extend"/>
-        <result column="is_default" jdbcType="INTEGER" property="isDefault"/>
-        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
-        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, user_id, receiver, mobile, province, city, district, detail, extend, is_default,
-        created_time, updated_time
-    </sql>
 
-    <select id="selectByUserIdAndAddressId" resultMap="BaseResultMap">
+    <select id="selectByUserIdAndAddressId"
+            resultMap="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.Base_Column_List"/>
         from user_addresses
         where id = #{addressId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectByUserId" resultMap="BaseResultMap">
+    <select id="selectByUserId" resultMap="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.Base_Column_List"/>
         from user_addresses
         where user_id = #{userId,jdbcType=VARCHAR}
     </select>
@@ -45,9 +28,10 @@
         where id = #{addressId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
     </update>
 
-    <select id="selectByUserIdAndIsDefault" resultMap="BaseResultMap">
+    <select id="selectByUserIdAndIsDefault"
+            resultMap="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.UserAddressMapper.Base_Column_List"/>
         from user_addresses
         where user_id = #{userId,jdbcType=VARCHAR} and is_default = #{isDefault,jdbcType=INTEGER}
     </select>

@@ -1,7 +1,6 @@
 package com.sciatta.openmall.dao.mapper.ext;
 
 import com.sciatta.openmall.dao.pojo.po.ext.Item;
-import com.sciatta.openmall.dao.pojo.po.ext.ShopCartItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

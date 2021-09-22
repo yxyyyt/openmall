@@ -1,7 +1,7 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.ItemConverter;
-import com.sciatta.openmall.api.pojo.query.ItemShopCartQuery;
+import com.sciatta.openmall.api.pojo.query.ShopCartQuery;
 import com.sciatta.openmall.api.pojo.vo.ItemShopCartVO;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.CacheConstants;
@@ -38,20 +38,20 @@ public class ShopCartController {
     
     @PostMapping("add")
     @Cache(key = CacheConstants.SHOP_CART,
-            toClass = ItemShopCartQuery.class,
+            toClass = ShopCartQuery.class,
             timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "addShopCartCacheProcessor")
     public JSONResult add(
             @RequestParam @CacheChildKey(order = 0) @NotBlank(message = "用户标识不能为空") String userId,
-            @RequestBody @CacheExtend @Validated ItemShopCartQuery itemShopCartQuery,
+            @RequestBody @CacheExtend @Validated ShopCartQuery shopCartQuery,
             HttpServletRequest request,
             HttpServletResponse response) {
         
-        log.debug("user {} add {} to shop cart", userId, itemShopCartQuery);
+        log.debug("user {} add {} to shop cart", userId, shopCartQuery);
         
-        List<ItemShopCartQuery> shopCart = new ArrayList<>();
-        shopCart.add(itemShopCartQuery);
+        List<ShopCartQuery> shopCart = new ArrayList<>();
+        shopCart.add(shopCartQuery);
         
         return JSONResult.success(shopCart);
     }
@@ -67,7 +67,7 @@ public class ShopCartController {
     
     @PostMapping("del")
     @Cache(key = CacheConstants.SHOP_CART,
-            toClass = ItemShopCartQuery.class,
+            toClass = ShopCartQuery.class,
             timeout = CacheConstants.NEVER_EXPIRE,
             isList = true,
             processor = "deleteShopCartCacheProcessor")

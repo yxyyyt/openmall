@@ -7,10 +7,10 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/9<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ShopCartAddServiceQuery
+ * ShopCartQuery
  */
 @Data
-public class ShopCartAddServiceQuery implements Serializable {
+public class ShopCartQuery implements Serializable {
     private static final long serialVersionUID = -350908879281100647L;
     
     private String itemId;

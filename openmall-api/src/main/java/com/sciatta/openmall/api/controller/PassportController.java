@@ -1,7 +1,7 @@
 package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.converter.UserConverter;
-import com.sciatta.openmall.api.pojo.query.UserQuery;
+import com.sciatta.openmall.api.pojo.query.PassportQuery;
 import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.api.support.cache.LoginShopCartCacheHelper;
 import com.sciatta.openmall.api.support.cache.UserCacheHelper;
@@ -39,12 +39,12 @@ public class PassportController {
     
     @PostMapping("login")
     public JSONResult login(
-            @RequestBody @Validated(UserQuery.Login.class) UserQuery userQuery,
+            @RequestBody @Validated(PassportQuery.Login.class) PassportQuery passportQuery,
             HttpServletRequest request,
             HttpServletResponse response) {
         
         // 查询用户是否存在
-        UserDTO userDTO = userService.queryUserForLogin(userQuery.getUsername(), userQuery.getPassword());
+        UserDTO userDTO = userService.queryUserForLogin(passportQuery.getUsername(), passportQuery.getPassword());
         if (userDTO == null) {
             return JSONResult.errorUsingMessage("用户名或密码不正确");
         }
@@ -61,19 +61,19 @@ public class PassportController {
     public JSONResult register(
             @RequestBody
             @IsEqual(field = "password", compareField = "confirmPassword", message = "两次密码输入不一致")
-            @Validated(UserQuery.Register.class)
-                    UserQuery userQuery,
+            @Validated(PassportQuery.Register.class)
+                    PassportQuery passportQuery,
             HttpServletRequest request,
             HttpServletResponse response) {
         
         // 查询用户名是否存在
-        boolean test = userService.queryUsernameIsExist(userQuery.getUsername());
+        boolean test = userService.queryUsernameIsExist(passportQuery.getUsername());
         if (test) {
             return JSONResult.errorUsingMessage("用户名已经存在");
         }
         
         // 注册
-        UserDTO userDTO = userService.createUser(UserConverter.INSTANCE.toUserQuery(userQuery));
+        UserDTO userDTO = userService.createUser(UserConverter.INSTANCE.toUserQuery(passportQuery));
         
         UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
