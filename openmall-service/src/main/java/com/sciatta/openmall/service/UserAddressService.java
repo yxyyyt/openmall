@@ -1,8 +1,7 @@
 package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.UserAddressDTO;
-import com.sciatta.openmall.service.pojo.query.UserAddressAddServiceQuery;
-import com.sciatta.openmall.service.pojo.query.UserAddressUpdateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserAddressQuery;
 
 import java.util.List;
 
@@ -14,9 +13,9 @@ import java.util.List;
 public interface UserAddressService {
     List<UserAddressDTO> queryByUserId(String userId);
     
-    void createUserAddress(UserAddressAddServiceQuery userAddressAddServiceQuery);
+    void createUserAddress(UserAddressQuery UserAddressQuery);
     
-    void updateUserAddress(UserAddressUpdateServiceQuery userAddressUpdateServiceQuery);
+    void updateUserAddress(UserAddressQuery userAddressQuery);
     
     void deleteUserAddressByUserIdAndAddressId(String userId, String addressId);
     

@@ -78,7 +78,7 @@ public class OrderController {
     private List<ShopCartQuery> getShopCart(OrderQuery orderQuery) {
         String shopCart = cacheService.get(getKey(orderQuery));
         
-        return ShopCartConverter.INSTANCE.toServiceShopCartQuery(
+        return ShopCartConverter.INSTANCE.toService(
                 JsonUtils.jsonToList(shopCart, com.sciatta.openmall.api.pojo.query.ShopCartQuery.class));
     }
     
@@ -90,7 +90,7 @@ public class OrderController {
         
         shopCartQueryList.removeAll(shopCartPaidList);    // 删除购物车中已支付商品
         
-        String result = JsonUtils.objectToJson(ShopCartConverter.INSTANCE.toApiShopCartQuery(shopCartQueryList));
+        String result = JsonUtils.objectToJson(ShopCartConverter.INSTANCE.toApi(shopCartQueryList));
         
         // 更新缓存
         CookieUtils.setCookie(request, response, CookieConstants.COOKIE_SHOP_CART, result, true);

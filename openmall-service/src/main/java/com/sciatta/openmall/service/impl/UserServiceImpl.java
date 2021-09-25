@@ -7,7 +7,6 @@ import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.converter.UserConverter;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.query.UserQuery;
-import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,9 +59,9 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public boolean updateUserByUserId(String userId, UserServiceQuery userServiceQuery) {
+    public boolean updateUserByUserId(String userId, UserQuery userQuery) {
         
-        return userMapper.updateByPrimaryKeySelective(UserConverter.INSTANCE.userServiceQueryToUser(userId, userServiceQuery))
+        return userMapper.updateByPrimaryKeySelective(UserConverter.INSTANCE.toUser(userId, userQuery))
                 == YesOrNo.YES.type;
     }
 }

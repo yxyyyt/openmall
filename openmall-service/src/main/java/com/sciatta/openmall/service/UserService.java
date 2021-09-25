@@ -2,7 +2,6 @@ package com.sciatta.openmall.service;
 
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.query.UserQuery;
-import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 
 /**
  * Created by yangxiaoyu on 2021/7/29<br>
@@ -37,5 +36,5 @@ public interface UserService {
     
     UserDTO queryUserByUserId(String userId);
     
-    boolean updateUserByUserId(String userId, UserServiceQuery userServiceQuery);
+    boolean updateUserByUserId(String userId, UserQuery userQuery);
 }

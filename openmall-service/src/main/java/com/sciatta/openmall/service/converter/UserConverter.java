@@ -5,7 +5,6 @@ import com.sciatta.openmall.common.utils.DateUtils;
 import com.sciatta.openmall.dao.pojo.po.mbg.User;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
 import com.sciatta.openmall.service.pojo.query.UserQuery;
-import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.n3r.idworker.Sid;
@@ -40,5 +39,5 @@ public abstract class UserConverter {
     
     public abstract UserDTO toUserDTO(User user);
     
-    public abstract User userServiceQueryToUser(String id, UserServiceQuery userServiceQuery);
+    public abstract User toUser(String id, UserQuery userQuery);
 }

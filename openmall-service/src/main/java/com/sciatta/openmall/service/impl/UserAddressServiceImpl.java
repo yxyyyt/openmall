@@ -6,8 +6,7 @@ import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
 import com.sciatta.openmall.service.UserAddressService;
 import com.sciatta.openmall.service.converter.UserAddressConverter;
 import com.sciatta.openmall.service.pojo.dto.UserAddressDTO;
-import com.sciatta.openmall.service.pojo.query.UserAddressAddServiceQuery;
-import com.sciatta.openmall.service.pojo.query.UserAddressUpdateServiceQuery;
+import com.sciatta.openmall.service.pojo.query.UserAddressQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,26 +28,27 @@ public class UserAddressServiceImpl implements UserAddressService {
     public List<UserAddressDTO> queryByUserId(String userId) {
         List<UserAddress> userAddressList = userAddressMapper.selectByUserId(userId);
         
-        return UserAddressConverter.INSTANCE.userAddressListToUserAddressDTOList(userAddressList);
+        return UserAddressConverter.INSTANCE.toUserAddressDTO(userAddressList);
     }
     
     @Override
-    public void createUserAddress(UserAddressAddServiceQuery userAddressAddServiceQuery) {
+    public void createUserAddress(UserAddressQuery userAddressQuery) {
         YesOrNo isDefault = YesOrNo.NO;
         // 判断当前用户是否存在地址，如果没有，则新增为默认地址
-        List<UserAddressDTO> userAddressDTOList = queryByUserId(userAddressAddServiceQuery.getUserId());
+        List<UserAddressDTO> userAddressDTOList = queryByUserId(userAddressQuery.getUserId());
         if (userAddressDTOList.size() == 0) {
             isDefault = YesOrNo.YES;
         }
         
-        UserAddress userAddress = UserAddressConverter.INSTANCE.userAddressAddServiceQueryToUserAddress(userAddressAddServiceQuery, isDefault);
+        UserAddress userAddress = UserAddressConverter.INSTANCE.toUserAddress(userAddressQuery, isDefault);
         
         userAddressMapper.insert(userAddress);
     }
     
     @Override
-    public void updateUserAddress(UserAddressUpdateServiceQuery userAddressUpdateServiceQuery) {
-        UserAddress userAddress = UserAddressConverter.INSTANCE.userAddressUpdateServiceQueryToUserAddress(userAddressUpdateServiceQuery);
+    public void updateUserAddress(UserAddressQuery userAddressQuery) {
+        UserAddress userAddress = UserAddressConverter.INSTANCE.toUserAddress(userAddressQuery);
+        
         userAddressMapper.updateByPrimaryKeySelective(userAddress);
     }
     

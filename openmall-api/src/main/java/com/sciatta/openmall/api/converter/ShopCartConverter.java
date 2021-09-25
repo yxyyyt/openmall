@@ -15,9 +15,9 @@ import java.util.List;
 public abstract class ShopCartConverter {
     public static ShopCartConverter INSTANCE = Mappers.getMapper(ShopCartConverter.class);
     
-    public abstract List<ShopCartQuery> toServiceShopCartQuery(
+    public abstract List<ShopCartQuery> toService(
             List<com.sciatta.openmall.api.pojo.query.ShopCartQuery> shopCartQueryList);
     
-    public abstract List<com.sciatta.openmall.api.pojo.query.ShopCartQuery> toApiShopCartQuery(
+    public abstract List<com.sciatta.openmall.api.pojo.query.ShopCartQuery> toApi(
             List<ShopCartQuery> shopCartQueryList);
 }

@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.UserMapper">
-    <!-- resultMap 和 sql 不会被继承 -->
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.mbg.User">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
-        <result column="realname" jdbcType="VARCHAR" property="realname"/>
-        <result column="face" jdbcType="VARCHAR" property="face"/>
-        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="sex" jdbcType="INTEGER" property="sex"/>
-        <result column="birthday" jdbcType="DATE" property="birthday"/>
-        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
-        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, username, password, nickname, realname, face, mobile, email, sex, birthday, created_time,
-        updated_time
-    </sql>
 
-    <select id="selectByUsernameAndPassword" resultMap="BaseResultMap">
+    <select id="selectByUsernameAndPassword" resultMap="com.sciatta.openmall.dao.mapper.mbg.UserMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.UserMapper.Base_Column_List"/>
         from users
         where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectByUsername" resultMap="BaseResultMap">
+    <select id="selectByUsername" resultMap="com.sciatta.openmall.dao.mapper.mbg.UserMapper.BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="com.sciatta.openmall.dao.mapper.mbg.UserMapper.Base_Column_List"/>
         from users
         where username = #{username,jdbcType=VARCHAR}
     </select>

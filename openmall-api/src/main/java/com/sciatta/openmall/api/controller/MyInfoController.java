@@ -2,55 +2,50 @@ package com.sciatta.openmall.api.controller;
 
 import com.sciatta.openmall.api.config.OpenMallConfig;
 import com.sciatta.openmall.api.converter.UserConverter;
-import com.sciatta.openmall.api.pojo.query.UserApiQuery;
+import com.sciatta.openmall.api.pojo.query.UserQuery;
 import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.api.pojo.vo.UserVO;
+import com.sciatta.openmall.api.support.cache.UserCacheHelper;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.constants.CacheConstants;
-import com.sciatta.openmall.common.utils.CookieUtils;
 import com.sciatta.openmall.common.utils.DateUtils;
-import com.sciatta.openmall.common.utils.JsonUtils;
-import com.sciatta.openmall.common.utils.SidUtils;
 import com.sciatta.openmall.service.UserService;
 import com.sciatta.openmall.service.pojo.dto.UserDTO;
-import com.sciatta.openmall.service.pojo.query.UserServiceQuery;
-import com.sciatta.openmall.service.support.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.*;
-
-import static com.sciatta.openmall.common.constants.CookieConstants.COOKIE_USERNAME;
 
 /**
  * Created by yangxiaoyu on 2021/8/13<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * 用户信息
  */
+@Validated
 @RestController
 @RequestMapping("user")
 @Slf4j
-public class UserController {
+public class MyInfoController {
     private final UserService userService;
     private final OpenMallConfig openMallConfig;
-    private final CacheService cacheService;
+    private final UserCacheHelper userCacheHelper;
     
-    public UserController(UserService userService, OpenMallConfig openMallConfig, CacheService cacheService) {
+    public MyInfoController(UserService userService, OpenMallConfig openMallConfig, UserCacheHelper userCacheHelper) {
         this.userService = userService;
         this.openMallConfig = openMallConfig;
-        this.cacheService = cacheService;
+        this.userCacheHelper = userCacheHelper;
     }
     
     @GetMapping("query")
-    public JSONResult query(@RequestParam String userId) {
+    public JSONResult query(@RequestParam @NotBlank(message = "用户标识不能为空") String userId) {
         UserDTO userDTO = userService.queryUserByUserId(userId);
         UserVO userVO = UserConverter.INSTANCE.toUserVO(userDTO);
         
@@ -58,18 +53,13 @@ public class UserController {
     }
     
     @PostMapping("update")
-    public JSONResult update(@RequestParam String userId,
-                             @RequestBody @Valid UserApiQuery userApiQuery,
-                             BindingResult bindingResult,
-                             HttpServletRequest request,
-                             HttpServletResponse response) {
+    public JSONResult update(
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId,
+            @RequestBody @Validated(UserQuery.Update.class) UserQuery userQuery,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         
-        if (bindingResult.hasErrors()) {
-            return JSONResult.errorUsingData(bindingResult);
-        }
-        
-        UserServiceQuery userServiceQuery = UserConverter.INSTANCE.userApiQueryToUserServiceQuery(userApiQuery);
-        boolean result = userService.updateUserByUserId(userId, userServiceQuery);
+        boolean result = userService.updateUserByUserId(userId, UserConverter.INSTANCE.toService(userQuery));
         if (!result) {
             return JSONResult.errorUsingMessage("用户更新失败，请尝试重试");
         }
@@ -78,22 +68,21 @@ public class UserController {
         UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置缓存
-        setUserCache(userCookieVO, request, response);
+        userCacheHelper.setUserCache(userCookieVO, request, response);
         
         return JSONResult.success();
     }
     
     @PostMapping("uploadFace")
-    public JSONResult uploadFace(@RequestParam String userId, MultipartFile file,
-                                 HttpServletRequest request, HttpServletResponse response) {
+    public JSONResult uploadFace(
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId,
+            @NotNull(message = "文件不能为空") MultipartFile file,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         
         FilePath filePath;
         InputStream in = null;
         OutputStream out = null;
-        
-        if (ObjectUtils.isEmpty(file)) {
-            return JSONResult.errorUsingMessage("文件不能为空");
-        }
         
         try {
             filePath = new FilePath.Builder()
@@ -127,8 +116,7 @@ public class UserController {
         }
         
         // 更新用户数据
-        UserServiceQuery userServiceQuery = UserConverter.INSTANCE.userFaceUrlToUserServiceQuery(filePath.getServerFilePath());
-        if (!userService.updateUserByUserId(userId, userServiceQuery)) {
+        if (!userService.updateUserByUserId(userId, UserConverter.INSTANCE.toService(filePath.getServerFilePath()))) {
             return JSONResult.errorUsingMessage("用户更新失败，请尝试重试");
         }
         
@@ -136,28 +124,9 @@ public class UserController {
         UserCookieVO userCookieVO = UserConverter.INSTANCE.toUserCookieVO(userDTO);
         
         // 设置缓存
-        setUserCache(userCookieVO, request, response);
+        userCacheHelper.setUserCache(userCookieVO, request, response);
         
         return JSONResult.success();
-    }
-    
-    private void setUserCache(UserCookieVO userCookieVO, HttpServletRequest request, HttpServletResponse response) {
-        String userTokenKey = getUserTokenKey(userCookieVO.getId());
-        String userTokenValue = getUserTokenValue();
-        
-        userCookieVO.setUserUniqueToken(userTokenValue);
-        
-        // 设置缓存
-        cacheService.set(userTokenKey, userTokenValue);
-        CookieUtils.setCookie(request, response, COOKIE_USERNAME, JsonUtils.objectToJson(userCookieVO), true);
-    }
-    
-    private String getUserTokenKey(String userId) {
-        return CacheConstants.USER_TOKEN + ":" + userId;
-    }
-    
-    private String getUserTokenValue() {
-        return SidUtils.generateUUID();
     }
     
     private static class FilePath {
@@ -216,7 +185,7 @@ public class UserController {
                 }
                 
                 if (!StringUtils.hasText(userId)) {
-                    throw new FileBuildException("用户不能为空");
+                    throw new FileBuildException("用户标识不能为空");
                 }
                 
                 if (!StringUtils.hasText(fileName)) {
