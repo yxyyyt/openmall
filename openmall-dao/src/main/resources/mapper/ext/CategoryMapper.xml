@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.CategoryMapper">
 
-    <resultMap id="BaseResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.Category">
+    <resultMap id="ResultMap" type="com.sciatta.openmall.dao.pojo.po.ext.Category">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
@@ -25,14 +25,14 @@
         </collection>
     </resultMap>
 
-    <select id="selectByType" resultMap="BaseResultMap">
+    <select id="selectByType" resultMap="ResultMap">
         select
         <include refid="com.sciatta.openmall.dao.mapper.mbg.CategoryMapper.Base_Column_List"/>
         from categories
         where type = #{type,jdbcType=INTEGER}
     </select>
 
-    <select id="selectSubCategoriesByParentId" resultMap="BaseResultMap">
+    <select id="selectSubCategoriesByParentId" resultMap="ResultMap">
         SELECT
         p.id as id,
         p.`name` as `name`,
@@ -48,7 +48,7 @@
         p.parent_id = #{parentId}
     </select>
 
-    <select id="selectSixItemsByParentId" resultMap="BaseResultMap">
+    <select id="selectSixItemsByParentId" resultMap="ResultMap">
         SELECT
         c.id as id,
         c.`name` as `name`,

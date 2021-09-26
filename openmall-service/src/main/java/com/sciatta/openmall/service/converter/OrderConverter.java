@@ -1,17 +1,17 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.common.enums.OrderStatusEnum;
+import com.sciatta.openmall.common.enums.OrderStatus;
 import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.dao.pojo.po.ext.Item;
-import com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem;
 import com.sciatta.openmall.dao.pojo.po.mbg.Order;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderItem;
-import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.po.mbg.UserAddress;
+import com.sciatta.openmall.dao.pojo.query.OrderStatusCountsQuery;
+import com.sciatta.openmall.dao.pojo.query.OrderStatusQuery;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderItemDTO;
+import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
-import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.pojo.query.OrderQuery;
 import com.sciatta.openmall.service.pojo.query.ShopCartQuery;
 import lombok.extern.slf4j.Slf4j;
@@ -93,17 +93,17 @@ public abstract class OrderConverter {
         return orderItemList;
     }
     
-    public OrderStatus toOrderStatus(Order order) {
-        OrderStatus orderStatus = new OrderStatus();
+    public com.sciatta.openmall.dao.pojo.po.ext.OrderStatus toOrderStatus(Order order) {
+        com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus = new com.sciatta.openmall.dao.pojo.po.ext.OrderStatus();
         
         orderStatus.setOrderId(order.getId());
-        orderStatus.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
+        orderStatus.setOrderStatus(OrderStatus.WAIT_PAY.type);
         orderStatus.setCreatedTime(new Date());
         
         return orderStatus;
     }
     
-    public abstract OrderStatus toOrderStatus(String orderId, Date commentTime);
+    public abstract com.sciatta.openmall.dao.pojo.po.ext.OrderStatus toOrderStatus(String orderId, Date commentTime);
     
     @Mappings({
             @Mapping(source = "id", target = "orderId"),
@@ -115,15 +115,25 @@ public abstract class OrderConverter {
     })
     public abstract OrderDTO toOrderDTO(Order order);
     
-    public abstract OrderStatusDTO toOrderStatusDTO(OrderStatus orderStatus);
+    public abstract OrderStatusDTO toOrderStatusDTO(com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus);
     
-    public abstract List<OrderStatusDTO> orderStatusListToOrderStatusDTOList(List<OrderStatus> orderStatusList);
-    
-    public abstract OrderStatusItemDTO orderStatusItemToOrderStatusItemDTO(OrderStatusItem orderStatusItem);
-    
-    public abstract List<OrderStatusItemDTO> orderStatusItemListToOrderStatusItemDTOList(List<OrderStatusItem> orderStatusItemList);
+    public abstract List<OrderStatusDTO> toOrderStatusDTO(List<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> orderStatusList);
     
     public abstract List<OrderItemDTO> toOrderItemDTO(List<OrderItem> orderItemList);
+    
+    public abstract OrderStatusCountsQuery toOrderStatusCountsQuery(String userId, Integer orderStatus, Integer isComment);
+    
+    public abstract OrderStatusCountsDTO toOrderStatusCountsDTO(Integer waitPayCounts,
+                                                                Integer waitDeliverCounts,
+                                                                Integer waitReceiveCounts,
+                                                                Integer waitCommentCounts);
+    
+    
+    public abstract OrderStatusQuery toOrderStatusQuery(String userId, Integer isDelete, List<Integer> orderStatuses);
+    
+    public abstract com.sciatta.openmall.dao.pojo.po.ext.OrderStatus toReceiveOrderStatus(Integer orderStatus, Date successTime);
+    
+    public abstract Order toDeleteOrder(Integer isDelete, Date updatedTime);
     
     private Integer getBuyCountsFromShopCart(List<ShopCartQuery> shopCartQueryList,
                                              List<ShopCartQuery> shopCartPaidList,

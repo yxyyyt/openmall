@@ -7,10 +7,10 @@ import java.io.Serializable;
 /**
  * Created by yangxiaoyu on 2021/8/11<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * OrderStatusCountsDaoQuery
+ * OrderStatusCountsQuery
  */
 @Data
-public class OrderStatusCountsDaoQuery implements Serializable {
+public class OrderStatusCountsQuery implements Serializable {
     
     private static final long serialVersionUID = 6914207747084440368L;
     

@@ -30,7 +30,7 @@ public class JSONResult {
     }
     
     private JSONResult(Object data) {
-        this(SUCCESS, "SUCCESS", data);
+        this(SUCCESS, SUCCESS.name(), data);
     }
     
     private JSONResult(JSONResultStatus status, String message, Object data) {
@@ -52,15 +52,7 @@ public class JSONResult {
     }
     
     public static JSONResult errorUsingData(Object data) {
-        Map<String, String> errorMap = new HashMap<>();
-        if (data instanceof BindingResult) {
-            List<FieldError> fieldErrors = ((BindingResult) data).getFieldErrors();
-            for (FieldError next : fieldErrors) {
-                errorMap.put(next.getField(), next.getDefaultMessage());
-            }
-            data = errorMap;
-        }
-        return new JSONResult(ERROR_USING_DATA, "ERROR", data);
+        return new JSONResult(ERROR_USING_DATA, ERROR_USING_DATA.name(), data);
     }
     
     public static JSONResult errorToken(String message) {
@@ -92,7 +84,7 @@ public class JSONResult {
         ERROR_USING_MESSAGE(500),
         ERROR_USING_DATA(501),
         ERROR_TOKEN(502),
-        ERROR_EXCEPTION(555);
+        ERROR_EXCEPTION(503);
         
         private final Integer status;
         

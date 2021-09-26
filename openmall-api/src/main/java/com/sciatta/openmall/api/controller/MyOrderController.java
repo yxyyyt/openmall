@@ -1,25 +1,23 @@
 package com.sciatta.openmall.api.controller;
 
-import com.sciatta.openmall.api.converter.MyOrderConverter;
 import com.sciatta.openmall.api.converter.OrderConverter;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusCountsVO;
-import com.sciatta.openmall.api.pojo.vo.OrderStatusItemVO;
 import com.sciatta.openmall.api.pojo.vo.OrderStatusVO;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.service.MyOrderService;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.pojo.dto.OrderDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusDTO;
-import com.sciatta.openmall.service.pojo.dto.OrderStatusItemDTO;
 import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -27,82 +25,73 @@ import java.util.List;
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
  * 我的订单
  */
+@Validated
 @RestController
 @RequestMapping("myorders")
 public class MyOrderController {
-    private final MyOrderService myOrderService;
     private final OrderService orderService;
     
-    public MyOrderController(MyOrderService myOrderService, OrderService orderService) {
-        this.myOrderService = myOrderService;
+    public MyOrderController(OrderService orderService) {
         this.orderService = orderService;
     }
     
     @PostMapping("statusCounts")
-    public JSONResult statusCounts(@RequestParam String userId) {
-        if (!StringUtils.hasText(userId)) {
-            return JSONResult.errorUsingMessage("用户不能为空");
-        }
+    public JSONResult statusCounts(@RequestParam @NotBlank(message = "用户标识不能为空") String userId) {
         
-        OrderStatusCountsDTO orderStatusCountsDTO = myOrderService.queryOrderStatusCounts(userId);
-        OrderStatusCountsVO orderStatusCountsVO = MyOrderConverter.INSTANCE.orderStatusCountsDTOToOrderStatusCountsVO(orderStatusCountsDTO);
+        OrderStatusCountsDTO orderStatusCountsDTO = orderService.queryOrderStatusCounts(userId);
+        OrderStatusCountsVO orderStatusCountsVO = OrderConverter.INSTANCE.toOrderStatusCountsVO(orderStatusCountsDTO);
         
         return JSONResult.success(orderStatusCountsVO);
     }
     
     @PostMapping("trend")
     public JSONResult trend(
-            @RequestParam String userId,
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
-        if (!StringUtils.hasText(userId)) {
-            return JSONResult.errorUsingMessage("用户不能为空");
-        }
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
         
-        List<OrderStatusDTO> orderStatusDTOList = myOrderService.queryOrdersTrend(userId, pagedContext);
+        List<OrderStatusDTO> orderStatusDTOList = orderService.queryOrdersTrend(userId, pagedContext);
         
-        List<OrderStatusVO> orderStatusVOList = OrderConverter.INSTANCE.orderStatusDTOListToOrderStatusVOList(orderStatusDTOList);
+        List<OrderStatusVO> orderStatusVOList = OrderConverter.INSTANCE.toOrderStatusVO(orderStatusDTOList);
         
         return JSONResult.success(pagedContext.getPagedGridResult(orderStatusVOList));
     }
     
     @PostMapping("query")
     public JSONResult query(
-            @RequestParam String userId,
-            @RequestParam Integer orderStatus,
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId,
+            @RequestParam @NotNull(message = "订单状态不能为空") Integer orderStatus,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
-        
-        if (!StringUtils.hasText(userId)) {
-            return JSONResult.errorUsingMessage("用户不能为空");
-        }
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
         
-        List<OrderStatusItemDTO> orderStatusItemDTOList = myOrderService.queryOrders(userId, orderStatus, pagedContext);
+        List<OrderStatusDTO> orderStatusDTOList = orderService.queryOrders(userId, orderStatus, pagedContext);
         
-        List<OrderStatusItemVO> orderStatusItemVOList
-                = OrderConverter.INSTANCE.orderStatusItemDTOListToOrderStatusItemVOList(orderStatusItemDTOList);
+        List<OrderStatusVO> orderStatusVOList = OrderConverter.INSTANCE.toOrderStatusVO(orderStatusDTOList);
         
-        return JSONResult.success(pagedContext.getPagedGridResult(orderStatusItemVOList));
+        return JSONResult.success(pagedContext.getPagedGridResult(orderStatusVOList));
     }
     
     @PostMapping("confirmReceive")
-    public JSONResult confirmReceive(@RequestParam String orderId, @RequestParam String userId) {
+    public JSONResult confirmReceive(
+            @RequestParam @NotBlank(message = "订单标识不能为空") String orderId,
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId) {
+        
         OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
         if (ObjectUtils.isEmpty(orderDTO)) {
             return JSONResult.errorUsingMessage("订单不存在");
         }
         
-        boolean result = myOrderService.updateReceiveOrderStatus(orderId);
+        boolean result = orderService.updateReceiveOrderStatus(orderId);
         if (!result) {
             return JSONResult.errorUsingMessage("订单确认收货失败！");
         }
@@ -111,13 +100,16 @@ public class MyOrderController {
     }
     
     @PostMapping("/delete")
-    public JSONResult delete(@RequestParam String orderId, @RequestParam String userId) {
+    public JSONResult delete(
+            @RequestParam @NotBlank(message = "订单标识不能为空") String orderId,
+            @RequestParam @NotBlank(message = "用户标识不能为空") String userId) {
+        
         OrderDTO orderDTO = orderService.queryOrderByOrderIdAndUserId(orderId, userId);
         if (ObjectUtils.isEmpty(orderDTO)) {
             return JSONResult.errorUsingMessage("订单不存在");
         }
         
-        boolean result = myOrderService.deleteOrderByOrderIdAndUserId(orderId, userId);
+        boolean result = orderService.deleteOrderByOrderIdAndUserId(orderId, userId);
         if (!result) {
             return JSONResult.errorUsingMessage("订单删除失败！");
         }

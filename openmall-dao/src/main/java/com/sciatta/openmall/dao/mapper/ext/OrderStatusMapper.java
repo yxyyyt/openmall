@@ -1,10 +1,8 @@
 package com.sciatta.openmall.dao.mapper.ext;
 
-import com.sciatta.openmall.dao.pojo.po.ext.OrderStatusItem;
-import com.sciatta.openmall.dao.pojo.po.mbg.OrderItem;
-import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
-import com.sciatta.openmall.dao.pojo.query.OrderStatusCountsDaoQuery;
-import com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery;
+import com.sciatta.openmall.dao.pojo.po.ext.OrderStatus;
+import com.sciatta.openmall.dao.pojo.query.OrderStatusCountsQuery;
+import com.sciatta.openmall.dao.pojo.query.OrderStatusQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,13 +13,15 @@ import java.util.List;
  * OrderStatusMapper
  */
 public interface OrderStatusMapper extends com.sciatta.openmall.dao.mapper.mbg.OrderStatusMapper {
-    Integer selectOrderStatusCounts(OrderStatusCountsDaoQuery orderStatusCountsDaoQuery);
+    Integer selectOrderStatusCounts(OrderStatusCountsQuery orderStatusCountsQuery);
     
-    List<OrderStatus> selectOrderStatus(OrderStatusDaoQuery orderStatusDaoQuery);
+    List<OrderStatus> selectOrderStatus(OrderStatusQuery orderStatusQuery);
     
-    List<OrderStatusItem> selectOrderStatusItem(OrderStatusDaoQuery orderStatusDaoQuery);
+    List<OrderStatus> selectOrderStatusWithOrderItem(OrderStatusQuery orderStatusQuery);
     
     int updateByPrimaryKeyAndOriginalOrderStatusSelective(@Param("orderStatus") OrderStatus orderStatus,
                                                           @Param("orderId") String orderId,
                                                           @Param("originalOrderStatus") Integer originalOrderStatus);
+    
+    OrderStatus selectByPrimaryKey(String orderId);
 }

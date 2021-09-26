@@ -8,10 +8,10 @@ import java.util.List;
 /**
  * Created by yangxiaoyu on 2021/8/11<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * OrderStatusDaoQuery
+ * OrderStatusQuery
  */
 @Data
-public class OrderStatusDaoQuery implements Serializable {
+public class OrderStatusQuery implements Serializable {
     private static final long serialVersionUID = 5545919201198130860L;
     
     private String userId;

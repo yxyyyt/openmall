@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sciatta.openmall.dao.mapper.ext.ItemCommentMapper">
 
-    <resultMap id="ResultMapWithUserAndItemImage" extends="com.sciatta.openmall.dao.mapper.mbg.ItemCommentMapper.BaseResultMap"
+    <resultMap id="ResultMapWithUserAndItemImage"
+               extends="com.sciatta.openmall.dao.mapper.mbg.ItemCommentMapper.BaseResultMap"
                type="com.sciatta.openmall.dao.pojo.po.ext.ItemComment">
         <result column="userFace" jdbcType="VARCHAR" property="userFace"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>

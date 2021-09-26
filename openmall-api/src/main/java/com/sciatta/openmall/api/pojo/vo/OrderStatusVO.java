@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yangxiaoyu on 2021/8/10<br>
@@ -22,4 +23,12 @@ public class OrderStatusVO implements Serializable {
     private Date successTime;
     private Date closeTime;
     private Date commentTime;
+    
+    // Order
+    private Integer payMethod;
+    private Integer realPayAmount;
+    private Integer postAmount;
+    private Integer isComment;
+    
+    private List<OrderItemVO> subOrderItemList;
 }
