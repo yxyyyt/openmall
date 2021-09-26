@@ -1,6 +1,5 @@
 package com.sciatta.openmall.dao.mapper.ext;
 
-import com.sciatta.openmall.dao.pojo.po.ext.ImageItemComment;
 import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,5 +12,5 @@ public interface ItemCommentMapper extends com.sciatta.openmall.dao.mapper.mbg.I
     
     int insertBatch(@Param("itemCommentList") List<ItemComment> itemCommentList);
     
-    List<ImageItemComment> selectItemCommentsByUserId(@Param("userId") String userId);
+    List<ItemComment> selectItemCommentsByUserId(@Param("userId") String userId);
 }

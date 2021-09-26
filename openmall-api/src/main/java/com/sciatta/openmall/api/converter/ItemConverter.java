@@ -2,7 +2,7 @@ package com.sciatta.openmall.api.converter;
 
 import com.sciatta.openmall.api.pojo.vo.*;
 import com.sciatta.openmall.service.pojo.dto.*;
-import com.sciatta.openmall.service.pojo.query.UserItemCommentServiceQuery;
+import com.sciatta.openmall.service.pojo.query.ItemCommentQuery;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -26,7 +26,7 @@ public abstract class ItemConverter {
     public abstract ItemWrapVO toItemWrapVO(ItemDTO itemDTO, List<ItemImageDTO> itemImageDTOList,
                                             List<ItemSpecDTO> itemSpecDTOList, ItemParamDTO itemParamDTO);
     
-    public abstract UserItemCommentServiceQuery toUserItemCommentServiceQuery(String itemId, Integer level);
+    public abstract ItemCommentQuery toUserItemCommentServiceQuery(String itemId, Integer level);
     
     @Mappings({
             @Mapping(source = "itemSpecName", target = "specName"),

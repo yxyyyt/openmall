@@ -1,4 +1,4 @@
-package com.sciatta.openmall.dao.pojo.po.ext;
+package com.sciatta.openmall.api.pojo.vo;
 
 import lombok.Data;
 
@@ -8,11 +8,12 @@ import java.util.Date;
 /**
  * Created by yangxiaoyu on 2021/8/12<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * ImageItemComment
+ * ItemCommentUrlVO
  */
 @Data
-public class ImageItemComment implements Serializable {
-    private static final long serialVersionUID = -4230721487735223661L;
+public class ItemCommentUrlVO implements Serializable {
+    
+    private static final long serialVersionUID = 4233936611460395571L;
     
     // ItemComment
     private String commentId;

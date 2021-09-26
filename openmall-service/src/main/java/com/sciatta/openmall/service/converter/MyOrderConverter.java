@@ -1,11 +1,11 @@
 package com.sciatta.openmall.service.converter;
 
-import com.sciatta.openmall.dao.pojo.po.ext.ImageItemComment;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.dao.pojo.po.mbg.Order;
 import com.sciatta.openmall.dao.pojo.po.mbg.OrderStatus;
 import com.sciatta.openmall.dao.pojo.query.OrderStatusCountsDaoQuery;
 import com.sciatta.openmall.dao.pojo.query.OrderStatusDaoQuery;
-import com.sciatta.openmall.service.pojo.dto.ImageItemCommentDTO;
+import com.sciatta.openmall.service.pojo.dto.ItemCommentDTO;
 import com.sciatta.openmall.service.pojo.dto.OrderStatusCountsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -38,7 +38,4 @@ public abstract class MyOrderConverter {
     
     public abstract Order toCommentOrder(String id, Integer isComment);
     
-    public abstract OrderStatus toCommentOrderStatus(String orderId, Date commentTime);
-    
-    public abstract List<ImageItemCommentDTO> imageItemCommentListToImageItemCommentDTOList(List<ImageItemComment> imageItemCommentList);
 }

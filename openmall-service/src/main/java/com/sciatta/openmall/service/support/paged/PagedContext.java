@@ -51,7 +51,7 @@ public class PagedContext {
         }
     }
     
-    public <T> List<T> startPage(MapperCallBack<T> mapperCallBack, boolean useExecuteCallBackResult) {
+    public <T> List<T>    startPage(MapperCallBack<T> mapperCallBack, boolean useExecuteCallBackResult) {
         // 分页
         doStartPage();
         

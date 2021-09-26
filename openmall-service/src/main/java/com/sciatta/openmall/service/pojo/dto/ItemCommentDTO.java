@@ -16,12 +16,18 @@ public class ItemCommentDTO implements Serializable {
     private static final long serialVersionUID = 7947111750664230242L;
     
     // ItemComment
+    private String id;
     private Integer commentLevel;
     private String content;
     private String itemSpecName;
     private Date createdTime;
+    private String itemId;
+    private String itemName;
     
     // User
     private String userFace;
     private String nickname;
+    
+    // ItemImage
+    private String url;
 }

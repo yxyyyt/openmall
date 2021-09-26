@@ -31,5 +31,5 @@ public abstract class OrderConverter {
     
     public abstract List<OrderStatusItemVO> orderStatusItemDTOListToOrderStatusItemVOList(List<OrderStatusItemDTO> orderStatusItemDTOList);
     
-    public abstract List<OrderItemVO> orderItemDTOListToOrderItemVOList(List<OrderItemDTO> orderItemDTOList);
+    public abstract List<OrderItemVO> toOrderItemVO(List<OrderItemDTO> orderItemDTOList);
 }

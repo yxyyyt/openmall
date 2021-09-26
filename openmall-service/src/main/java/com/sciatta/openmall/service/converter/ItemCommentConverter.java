@@ -1,7 +1,8 @@
 package com.sciatta.openmall.service.converter;
 
 import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
-import com.sciatta.openmall.service.pojo.query.OrderItemCommentServiceQuery;
+import com.sciatta.openmall.service.pojo.dto.ItemCommentDTO;
+import com.sciatta.openmall.service.pojo.query.ItemCommentQuery;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.n3r.idworker.Sid;
@@ -19,19 +20,20 @@ import java.util.List;
 public abstract class ItemCommentConverter {
     public static ItemCommentConverter INSTANCE = Mappers.getMapper(ItemCommentConverter.class);
     
-    public abstract ItemComment orderItemCommentServiceQueryToItemComment(
-            OrderItemCommentServiceQuery orderItemCommentServiceQuery, String id, String userId, Date createdTime, Date updatedTime);
+    public abstract ItemComment toItemComment(
+            ItemCommentQuery itemCommentQuery, String id, String userId, Date createdTime, Date updatedTime);
     
-    public List<ItemComment> orderItemCommentServiceQueryListToItemComment(
-            List<OrderItemCommentServiceQuery> orderItemCommentServiceQueryList, String userId) {
+    public List<ItemComment> toItemComment(
+            List<ItemCommentQuery> itemCommentQueryList, String userId) {
         
         List<ItemComment> itemCommentList = new ArrayList<>();
         
-        for (OrderItemCommentServiceQuery orderItemCommentServiceQuery : orderItemCommentServiceQueryList) {
-            itemCommentList.add(orderItemCommentServiceQueryToItemComment(
-                    orderItemCommentServiceQuery, Sid.nextShort(), userId, new Date(), new Date()));
+        for (ItemCommentQuery itemCommentQuery : itemCommentQueryList) {
+            itemCommentList.add(toItemComment(
+                    itemCommentQuery, Sid.nextShort(), userId, new Date(), new Date()));
         }
         
         return itemCommentList;
     }
+    public abstract List<ItemCommentDTO> toItemCommentDTO(List<ItemComment> itemCommentList);
 }

@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderItemDTO> queryOrderItemByOrderId(String orderId) {
         List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderId(orderId);
         
-        return OrderConverter.INSTANCE.orderItemListToOrderItemDTOList(orderItemList);
+        return OrderConverter.INSTANCE.toOrderItemDTO(orderItemList);
     }
     
     private void doSaveOrder(Order order, List<OrderItem> orderItemList, OrderStatus orderStatus) {

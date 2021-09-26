@@ -20,4 +20,7 @@ public class ItemComment extends com.sciatta.openmall.dao.pojo.po.mbg.ItemCommen
     // User
     private String userFace;
     private String nickname;
+    
+    // ItemImage
+    private String url;
 }

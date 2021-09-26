@@ -61,6 +61,8 @@ public abstract class OrderConverter {
         return order;
     }
     
+    public abstract Order toOrder(String id, Integer isComment);
+    
     public List<OrderItem> toOrderItems(List<ShopCartQuery> shopCartQueryList,
                                         List<ShopCartQuery> shopCartPaidList,
                                         List<Item> itemList,
@@ -101,6 +103,8 @@ public abstract class OrderConverter {
         return orderStatus;
     }
     
+    public abstract OrderStatus toOrderStatus(String orderId, Date commentTime);
+    
     @Mappings({
             @Mapping(source = "id", target = "orderId"),
             @Mapping(source = "id", target = "merchantOrderDTO.merchantOrderId"),
@@ -119,7 +123,7 @@ public abstract class OrderConverter {
     
     public abstract List<OrderStatusItemDTO> orderStatusItemListToOrderStatusItemDTOList(List<OrderStatusItem> orderStatusItemList);
     
-    public abstract List<OrderItemDTO> orderItemListToOrderItemDTOList(List<OrderItem> orderItemList);
+    public abstract List<OrderItemDTO> toOrderItemDTO(List<OrderItem> orderItemList);
     
     private Integer getBuyCountsFromShopCart(List<ShopCartQuery> shopCartQueryList,
                                              List<ShopCartQuery> shopCartPaidList,
