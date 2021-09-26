@@ -51,7 +51,10 @@ public class MyOrderController {
     }
     
     @PostMapping("trend")
-    public JSONResult trend(@RequestParam String userId, @RequestParam Integer page, @RequestParam Integer pageSize) {
+    public JSONResult trend(
+            @RequestParam String userId,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize) {
         if (!StringUtils.hasText(userId)) {
             return JSONResult.errorUsingMessage("用户不能为空");
         }
@@ -69,8 +72,11 @@ public class MyOrderController {
     }
     
     @PostMapping("query")
-    public JSONResult query(@RequestParam String userId, @RequestParam Integer orderStatus,
-                            @RequestParam Integer page, @RequestParam Integer pageSize) {
+    public JSONResult query(
+            @RequestParam String userId,
+            @RequestParam Integer orderStatus,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize) {
         
         if (!StringUtils.hasText(userId)) {
             return JSONResult.errorUsingMessage("用户不能为空");

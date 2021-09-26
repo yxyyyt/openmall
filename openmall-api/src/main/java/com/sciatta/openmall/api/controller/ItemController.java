@@ -58,8 +58,8 @@ public class ItemController {
     public JSONResult comments(
             @RequestParam @NotBlank(message = "商品标识不能为空") String itemId,
             @RequestParam @NotNull(message = "评论级别不能为空") Integer level,
-            @RequestParam Integer page,
-            @RequestParam Integer pageSize) {
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize) {
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
@@ -81,8 +81,8 @@ public class ItemController {
     public JSONResult search(
             @RequestParam @NotBlank(message = "商品关键字不能为空") String keywords,
             @RequestParam @NotBlank(message = "商品排序不能为空") String sort,
-            @RequestParam Integer page,
-            @RequestParam Integer pageSize) {
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize) {
         
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
@@ -100,8 +100,8 @@ public class ItemController {
     public JSONResult catItems(
             @RequestParam @NotNull(message = "分类标识不能为空") Integer catId,
             @RequestParam @NotBlank(message = "商品排序不能为空") String sort,
-            @RequestParam Integer page,
-            @RequestParam Integer pageSize) {
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize) {
         PagedContext pagedContext = new PagedContext.Builder()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
