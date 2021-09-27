@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -62,7 +63,8 @@ public class IndexController {
     
     @GetMapping("subCategories/{parentId}")
     @Cache(key = CacheConstants.SUB_CATEGORIES, toClass = CategorySubVO.class, isList = true)
-    public JSONResult subCategories(@PathVariable @CacheChildKey(order = 0) Integer parentId) {
+    public JSONResult subCategories(
+            @PathVariable @NotNull(message = "分类标识不能为空") @CacheChildKey(order = 0) Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySubCategoriesByParentId(parentId);
         List<CategorySubVO> categorySubVOList = CategoryConverter.INSTANCE.toCategorySubVO(categoryDTOList);
         
@@ -70,7 +72,7 @@ public class IndexController {
     }
     
     @GetMapping("/sixItems/{parentId}")
-    public JSONResult sixItems(@PathVariable Integer parentId) {
+    public JSONResult sixItems(@PathVariable @NotNull(message = "分类标识不能为空") Integer parentId) {
         List<CategoryDTO> categoryDTOList = categoryService.querySixItemsByParentId(parentId);
         List<CategoryItemVO> categoryItemVOList = CategoryConverter.INSTANCE.toCategoryItemVO(categoryDTOList);
         
