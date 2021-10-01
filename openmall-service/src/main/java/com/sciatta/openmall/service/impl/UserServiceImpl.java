@@ -25,23 +25,23 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
     
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public UserDTO queryUserForLogin(String username, String password) {
         User user = userMapper.selectByUsernameAndPassword(username, DigestUtils.md5DigestAsHex(password.getBytes()));
         
         return UserConverter.INSTANCE.toUserDTO(user);
     }
     
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public boolean queryUsernameIsExist(String username) {
         User user = userMapper.selectByUsername(username);
         return user != null;
     }
     
-    @Transactional(propagation = Propagation.REQUIRED)
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public UserDTO createUser(UserQuery userQuery) {
         User user = UserConverter.INSTANCE.toUser(userQuery);
         
@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean updateUserByUserId(String userId, UserQuery userQuery) {
-        
         return userMapper.updateByPrimaryKeySelective(UserConverter.INSTANCE.toUser(userId, userQuery))
                 == YesOrNo.YES.type;
     }

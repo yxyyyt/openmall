@@ -8,6 +8,8 @@ import com.sciatta.openmall.service.converter.UserAddressConverter;
 import com.sciatta.openmall.service.pojo.dto.UserAddressDTO;
 import com.sciatta.openmall.service.pojo.query.UserAddressQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<UserAddressDTO> queryByUserId(String userId) {
         List<UserAddress> userAddressList = userAddressMapper.selectByUserId(userId);
         
@@ -32,6 +35,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void createUserAddress(UserAddressQuery userAddressQuery) {
         YesOrNo isDefault = YesOrNo.NO;
         // 判断当前用户是否存在地址，如果没有，则新增为默认地址
@@ -46,6 +50,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateUserAddress(UserAddressQuery userAddressQuery) {
         UserAddress userAddress = UserAddressConverter.INSTANCE.toUserAddress(userAddressQuery);
         
@@ -53,11 +58,13 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteUserAddressByUserIdAndAddressId(String userId, String addressId) {
         userAddressMapper.deleteByUserIdAndAddressId(userId, addressId);
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateUserAddressToBeDefault(String userId, String addressId) {
         // 更新原默认地址为非默认
         List<UserAddress> userAddressList = userAddressMapper.selectByUserIdAndIsDefault(userId, YesOrNo.YES.type);

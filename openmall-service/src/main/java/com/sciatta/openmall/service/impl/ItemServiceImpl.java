@@ -56,6 +56,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public ItemDTO queryItemById(String id) {
         Item item = itemMapper.selectByPrimaryKey(id);
         
@@ -63,6 +64,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemImageDTO> queryItemImagesByItemId(String itemId) {
         List<ItemImage> itemImageList = itemImageMapper.selectByItemId(itemId);
         
@@ -70,6 +72,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemSpecDTO> queryItemSpecsByItemId(String itemId) {
         List<ItemSpec> itemSpecList = itemSpecMapper.selectByItemId(itemId);
         
@@ -77,6 +80,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public ItemParamDTO queryItemParamByItemId(String itemId) {
         ItemParam itemParam = itemParamMapper.selectByItemId(itemId);
         
@@ -84,6 +88,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemCommentDTO> queryUserItemComments(ItemCommentQuery itemCommentQuery, PagedContext pagedContext) {
         
         List<ItemComment> itemCommentList = pagedContext.startPage(
@@ -95,6 +100,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public ItemCommentLevelCountDTO queryCommentLevelCounts(String itemId) {
         Integer goodCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.GOOD.type);
         Integer normalCounts = itemCommentMapper.selectCommentCountsByItemIdAndLevel(itemId, CommentLevel.NORMAL.type);
@@ -106,6 +112,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDTO> querySearchItems(String keywords, String sort, PagedContext pagedContext) {
         
         List<Item> itemList = pagedContext.startPage(
@@ -117,6 +124,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDTO> querySearchCatItems(Integer catId, String sort, PagedContext pagedContext) {
         List<Item> searchItemList = pagedContext.startPage(
                 () -> itemMapper.searchItemsByCatId(catId, sort),
@@ -127,6 +135,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDTO> queryShopCartItemsBySpecIds(String specIds) {
         String[] ids = specIds.split(",");
         List<String> idList = CollectionUtils.arrayToList(ids);
@@ -157,6 +166,7 @@ public class ItemServiceImpl implements ItemService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ItemCommentDTO> queryComments(String userId, PagedContext pagedContext) {
         List<ItemComment> itemCommentList =
                 pagedContext.startPage(() -> itemCommentMapper.selectItemCommentsByUserId(userId), false);

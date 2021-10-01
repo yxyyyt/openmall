@@ -6,6 +6,7 @@ import com.sciatta.openmall.service.CarouselService;
 import com.sciatta.openmall.service.converter.CarouselConverter;
 import com.sciatta.openmall.service.pojo.dto.CarouselDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class CarouselServiceImpl implements CarouselService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<CarouselDTO> queryAll(Integer isShow) {
         List<Carousel> carouselList = carouselMapper.selectByIsShow(isShow);
         

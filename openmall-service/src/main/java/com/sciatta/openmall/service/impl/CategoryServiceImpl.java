@@ -6,6 +6,7 @@ import com.sciatta.openmall.service.CategoryService;
 import com.sciatta.openmall.service.converter.CategoryConverter;
 import com.sciatta.openmall.service.pojo.dto.CategoryDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> queryAllRootLevel() {
         List<Category> categoryList = categoryMapper.selectByType(1); // 第一级商品种类
         
@@ -30,6 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> querySubCategoriesByParentId(Integer parentId) {
         // 通过一级商品种类Id查询二级和三级商品种类
         List<Category> subCategoryList = categoryMapper.selectSubCategoriesByParentId(parentId);
@@ -38,6 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> querySixItemsByParentId(Integer parentId) {
         List<Category> categoryList = categoryMapper.selectSixItemsByParentId(parentId);
         

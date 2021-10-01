@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     /**
      * 处理@RequestParam上的请求参数异常
      *
-     * @param e ConstraintViolationException异常
+     * @param e ConstraintViolationException
      * @return JSONResult
      */
     @ExceptionHandler(ConstraintViolationException.class)
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     /**
      * 处理@RequestBody上的请求参数异常
      *
-     * @param e MethodArgumentNotValidException异常
+     * @param e MethodArgumentNotValidException
      * @return JSONResult
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -52,5 +52,17 @@ public class GlobalExceptionHandler {
         
         log.warn("handleMethodArgumentNotValidExceptionHandler::{}", message);
         return JSONResult.errorUsingMessage(message);
+    }
+    
+    /**
+     * 处理应用运行时异常
+     *
+     * @param e RuntimeException
+     * @return JSONResult
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public JSONResult handleRuntimeException(RuntimeException e) {
+        log.warn("handleRuntimeException::{}", e.getMessage());
+        return JSONResult.errorRuntimeException(e.getMessage());
     }
 }

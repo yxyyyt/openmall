@@ -20,6 +20,7 @@ import com.sciatta.openmall.service.support.paged.PagedContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -55,12 +56,11 @@ public class OrderServiceImpl implements OrderService {
         this.itemSpecMapper = itemSpecMapper;
     }
     
-    @Transactional(propagation = Propagation.REQUIRED)
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public OrderDTO createOrder(List<ShopCartQuery> shopCartQueryList,
                                 List<ShopCartQuery> shopCartPaidList,
                                 OrderQuery orderQuery) {
-        
         // 创建订单
         Order order = doCreateOrder(orderQuery);
         
@@ -77,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public OrderStatusDTO queryOrderStatusByOrderId(String orderId) {
         com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus = orderStatusMapper.selectByPrimaryKey(orderId);
         
@@ -84,59 +85,23 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public OrderDTO queryOrderByOrderIdAndUserId(String orderId, String userId) {
         Order order = orderMapper.selectByOrderIdAndUserId(orderId, userId);
         return OrderConverter.INSTANCE.toOrderDTO(order);
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<OrderItemDTO> queryOrderItemByOrderId(String orderId) {
         List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderId(orderId);
         
         return OrderConverter.INSTANCE.toOrderItemDTO(orderItemList);
     }
     
-    private void doSaveOrder(Order order, List<OrderItem> orderItemList, com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus) {
-        // 保存订单
-        orderMapper.insert(order);
-        
-        for (OrderItem orderItem : orderItemList) {
-            // 保存订单商品
-            orderItemMapper.insert(orderItem);
-            // 减库存
-            itemSpecMapper.decreaseItemSpecStock(orderItem.getItemSpecId(), orderItem.getBuyCounts());
-        }
-        
-        // 保存订单状态
-        orderStatusMapper.insert(orderStatus);
-    }
-    
-    private Order doCreateOrder(OrderQuery orderQuery) {
-        UserAddress userAddress = userAddressMapper.selectByUserIdAndAddressId(orderQuery.getUserId(),
-                orderQuery.getAddressId());
-        // TOdo 增加spring断言
-        
-        return OrderConverter.INSTANCE.toOrder(orderQuery, userAddress);
-    }
-    
-    private List<OrderItem> doCreateOrderItems(List<ShopCartQuery> shopCartQueryList,
-                                               List<ShopCartQuery> shopCartPaidList,
-                                               OrderQuery orderQuery,
-                                               Order order) {
-        
-        List<String> specIdList = CollectionUtils.arrayToList(orderQuery.getItemSpecIds().split(","));
-        List<Item> itemList = itemMapper.searchShopCartItemsBySpecIds(specIdList);
-        
-        return OrderConverter.INSTANCE.toOrderItems(shopCartQueryList, shopCartPaidList, itemList, order);
-    }
-    
-    private com.sciatta.openmall.dao.pojo.po.ext.OrderStatus doCreateOrderStatus(OrderQuery orderQuery, Order order) {
-        return OrderConverter.INSTANCE.toOrderStatus(order);
-    }
-    
     @Override
+    @Transactional(readOnly = true)
     public OrderStatusCountsDTO queryOrderStatusCounts(String userId) {
-        
         Integer waitPayCounts = orderStatusMapper.selectOrderStatusCounts(
                 OrderConverter.INSTANCE.toOrderStatusCountsQuery(userId, OrderStatus.WAIT_PAY.type, null));
         
@@ -157,8 +122,8 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<OrderStatusDTO> queryOrdersTrend(String userId, PagedContext pagedContext) {
-        
         OrderStatusQuery orderStatusQuery = OrderConverter.INSTANCE.toOrderStatusQuery(
                 userId,
                 YesOrNo.NO.type,
@@ -175,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<OrderStatusDTO> queryOrders(String userId, Integer orderStatus, PagedContext pagedContext) {
         
         OrderStatusQuery orderStatusQuery = OrderConverter.INSTANCE.toOrderStatusQuery(
@@ -189,6 +155,7 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean updateReceiveOrderStatus(String orderId) {
         com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus = OrderConverter.INSTANCE.toReceiveOrderStatus(OrderStatus.SUCCESS.type,
                 new Date());
@@ -200,12 +167,53 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean deleteOrderByOrderIdAndUserId(String orderId, String userId) {
         Order order = OrderConverter.INSTANCE.toDeleteOrder(YesOrNo.YES.type, new Date());
         
         int result = orderMapper.updateByPrimaryKeyAndUserIdSelective(order, orderId, userId);
         
         return result == YesOrNo.YES.type;
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // private
+    
+    private void doSaveOrder(Order order, List<OrderItem> orderItemList, com.sciatta.openmall.dao.pojo.po.ext.OrderStatus orderStatus) {
+        // 保存订单
+        orderMapper.insert(order);
+        
+        for (OrderItem orderItem : orderItemList) {
+            // 保存订单商品
+            orderItemMapper.insert(orderItem);
+            // 减库存
+            itemSpecMapper.decreaseItemSpecStock(orderItem.getItemSpecId(), orderItem.getBuyCounts());
+        }
+        
+        // 保存订单状态
+        orderStatusMapper.insert(orderStatus);
+    }
+    
+    private Order doCreateOrder(OrderQuery orderQuery) {
+        UserAddress userAddress = userAddressMapper.selectByUserIdAndAddressId(orderQuery.getUserId(),
+                orderQuery.getAddressId());
+        Assert.notNull(userAddress, "用户地址不合法");
+        
+        return OrderConverter.INSTANCE.toOrder(orderQuery, userAddress);
+    }
+    
+    private List<OrderItem> doCreateOrderItems(List<ShopCartQuery> shopCartQueryList,
+                                               List<ShopCartQuery> shopCartPaidList,
+                                               OrderQuery orderQuery,
+                                               Order order) {
+        List<String> specIdList = CollectionUtils.arrayToList(orderQuery.getItemSpecIds().split(","));
+        List<Item> itemList = itemMapper.searchShopCartItemsBySpecIds(specIdList);
+        
+        return OrderConverter.INSTANCE.toOrderItems(shopCartQueryList, shopCartPaidList, itemList, order);
+    }
+    
+    private com.sciatta.openmall.dao.pojo.po.ext.OrderStatus doCreateOrderStatus(OrderQuery orderQuery, Order order) {
+        return OrderConverter.INSTANCE.toOrderStatus(order);
     }
     
     private List<Integer> getOrdersTrendStatus(Integer... orderStatuses) {

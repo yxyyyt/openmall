@@ -59,8 +59,8 @@ public class JSONResult {
         return new JSONResult(ERROR_TOKEN, message, null);
     }
     
-    public static JSONResult errorException(String message) {
-        return new JSONResult(ERROR_EXCEPTION, message, null);
+    public static JSONResult errorRuntimeException(String message) {
+        return new JSONResult(ERROR_RUNTIME_EXCEPTION, message, null);
     }
     
     public Boolean isSuccess() {
@@ -81,10 +81,11 @@ public class JSONResult {
     
     enum JSONResultStatus {
         SUCCESS(200),
+        
         ERROR_USING_MESSAGE(500),
         ERROR_USING_DATA(501),
         ERROR_TOKEN(502),
-        ERROR_EXCEPTION(503);
+        ERROR_RUNTIME_EXCEPTION(503);
         
         private final Integer status;
         
