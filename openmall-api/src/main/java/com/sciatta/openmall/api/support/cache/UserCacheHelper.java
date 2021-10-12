@@ -2,8 +2,8 @@ package com.sciatta.openmall.api.support.cache;
 
 import com.sciatta.openmall.api.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.common.constants.CacheConstants;
-import com.sciatta.openmall.common.utils.CookieUtils;
-import com.sciatta.openmall.common.utils.JsonUtils;
+import com.sciatta.openmall.api.utils.CookieUtils;
+import com.sciatta.openmall.api.utils.JsonUtils;
 import com.sciatta.openmall.common.utils.SidUtils;
 import com.sciatta.openmall.service.support.cache.CacheService;
 import org.springframework.stereotype.Component;

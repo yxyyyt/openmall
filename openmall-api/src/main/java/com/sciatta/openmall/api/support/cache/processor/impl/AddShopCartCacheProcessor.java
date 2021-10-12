@@ -3,7 +3,7 @@ package com.sciatta.openmall.api.support.cache.processor.impl;
 import com.sciatta.openmall.api.pojo.query.ShopCartQuery;
 import com.sciatta.openmall.api.support.cache.processor.AbstractCacheProcessor;
 import com.sciatta.openmall.common.JSONResult;
-import com.sciatta.openmall.common.utils.JsonUtils;
+import com.sciatta.openmall.api.utils.JsonUtils;
 import com.sciatta.openmall.service.support.cache.Cache;
 import com.sciatta.openmall.service.support.cache.CacheService;
 import org.springframework.stereotype.Component;

@@ -3,7 +3,7 @@ package com.sciatta.openmall.api.support.intercepter;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.constants.HeaderConstants;
 import com.sciatta.openmall.common.constants.CacheConstants;
-import com.sciatta.openmall.common.utils.JsonUtils;
+import com.sciatta.openmall.api.utils.JsonUtils;
 import com.sciatta.openmall.service.support.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
