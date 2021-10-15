@@ -11,6 +11,9 @@ spring:
     password: openmall
     database: 0
     port: 6379
+  elasticsearch:
+    rest:
+      uris: http://node100:9200
 
 mybatis:
   configuration:

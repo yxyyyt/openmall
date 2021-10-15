@@ -12,13 +12,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by yangxiaoyu on 2021/9/3<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * RedisCacheService
+ * RedisCacheServiceImpl
  */
 @Service
-public class RedisCacheService implements CacheService {
+public class RedisCacheServiceImpl implements CacheService {
     private final StringRedisTemplate redisTemplate;
     
-    public RedisCacheService(StringRedisTemplate redisTemplate) {
+    public RedisCacheServiceImpl(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
     

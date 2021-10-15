@@ -13,6 +13,7 @@
         <module>openmall-api</module>
         <module>openmall-dao</module>
         <module>openmall-service</module>
+        <module>openmall-search</module>
     </modules>
 
     <repositories>
@@ -57,6 +58,11 @@
             </dependency>
             <dependency>
                 <groupId>com.sciatta.openmall</groupId>
+                <artifactId>openmall-search</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sciatta.openmall</groupId>
                 <artifactId>openmall-service</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -94,12 +100,6 @@
                 <artifactId>mybatis-generator-core</artifactId>
                 <version>${mybatis-generator.version}</version>
             </dependency>
-            <!-- apache -->
-            <!--<dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>-->
             <!-- mapstruct -->
             <dependency>
                 <groupId>org.mapstruct</groupId>

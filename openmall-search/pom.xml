@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>openmall-service</artifactId>
+    <artifactId>openmall-search</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -22,18 +22,10 @@
             <groupId>com.sciatta.openmall</groupId>
             <artifactId>openmall-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-dao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-search</artifactId>
-        </dependency>
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
 

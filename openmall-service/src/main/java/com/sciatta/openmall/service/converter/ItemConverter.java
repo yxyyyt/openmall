@@ -22,6 +22,10 @@ public abstract class ItemConverter {
     
     public abstract ItemDTO toItemDTO(Item item);
     
+    public abstract List<ItemDTO> toItemDTO(List<Item> itemList);
+    
+    public abstract List<ItemDTO> searchToItemDTO(List<com.sciatta.openmall.search.pojo.po.Item> itemList);
+    
     public abstract List<ItemImageDTO> toItemImageDTO(List<ItemImage> itemImageList);
     
     public abstract List<ItemSpecDTO> toItemSpecDTO(List<ItemSpec> itemSpecList);
@@ -31,6 +35,4 @@ public abstract class ItemConverter {
     public abstract List<ItemCommentDTO> toItemCommentDTO(List<ItemComment> itemCommentList);
     
     public abstract ItemCommentLevelCountDTO toItemCommentLevelCountDTO(Integer goodCounts, Integer normalCounts, Integer badCounts, Integer totalCounts);
-    
-    public abstract List<ItemDTO> toItemDTO(List<Item> itemList);
 }

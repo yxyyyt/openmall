@@ -123,7 +123,8 @@ public class OrderServiceImpl implements OrderService {
     
     @Override
     @Transactional(readOnly = true)
-    public List<OrderStatusDTO> queryOrdersTrend(String userId, PagedContext pagedContext) {
+    public List<OrderStatusDTO> queryOrdersTrend(String userId,
+                                                 PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext) {
         OrderStatusQuery orderStatusQuery = OrderConverter.INSTANCE.toOrderStatusQuery(
                 userId,
                 YesOrNo.NO.type,
@@ -141,7 +142,8 @@ public class OrderServiceImpl implements OrderService {
     
     @Override
     @Transactional(readOnly = true)
-    public List<OrderStatusDTO> queryOrders(String userId, Integer orderStatus, PagedContext pagedContext) {
+    public List<OrderStatusDTO> queryOrders(String userId, Integer orderStatus,
+                                            PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext) {
         
         OrderStatusQuery orderStatusQuery = OrderConverter.INSTANCE.toOrderStatusQuery(
                 userId,

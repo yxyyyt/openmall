@@ -25,7 +25,7 @@ public interface OrderService {
     
     OrderStatusCountsDTO queryOrderStatusCounts(String userId);
     
-    List<OrderStatusDTO> queryOrdersTrend(String userId, PagedContext pagedContext);
+    List<OrderStatusDTO> queryOrdersTrend(String userId, PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext);
     
     /**
      * 查询订单关联的所有商品，注意此处由于使用分页的原因需要使用级联即时查询
@@ -35,7 +35,7 @@ public interface OrderService {
      * @param pagedContext 分页上下文
      * @return OrderStatusItemDTO集合
      */
-    List<OrderStatusDTO> queryOrders(String userId, Integer orderStatus, PagedContext pagedContext);
+    List<OrderStatusDTO> queryOrders(String userId, Integer orderStatus, PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext);
     
     boolean updateReceiveOrderStatus(String orderId);
     

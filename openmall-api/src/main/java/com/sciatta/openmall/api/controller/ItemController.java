@@ -6,6 +6,8 @@ import com.sciatta.openmall.api.pojo.vo.ItemCommentUserVO;
 import com.sciatta.openmall.api.pojo.vo.ItemSearchVO;
 import com.sciatta.openmall.api.pojo.vo.ItemWrapVO;
 import com.sciatta.openmall.common.JSONResult;
+import com.sciatta.openmall.dao.pojo.po.ext.Item;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.pojo.dto.*;
 import com.sciatta.openmall.service.support.paged.PagedContext;
@@ -57,11 +59,11 @@ public class ItemController {
     @GetMapping("comments")
     public JSONResult comments(
             @RequestParam @NotBlank(message = "商品标识不能为空") String itemId,
-            @RequestParam @NotNull(message = "评论级别不能为空") Integer level,
+            @RequestParam Integer level,    // 评论级别可以为空，当为空时，则查询全部
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         
-        PagedContext pagedContext = new PagedContext.Builder()
+        PagedContext<ItemComment> pagedContext = new PagedContext.Builder<ItemComment>()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();
@@ -84,10 +86,13 @@ public class ItemController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         
-        PagedContext pagedContext = new PagedContext.Builder()
-                .setPageNumber(page)
-                .setPageSize(pageSize)
-                .build();
+        // 查询ES
+        PagedContext<com.sciatta.openmall.search.pojo.po.Item> pagedContext =
+                new PagedContext.Builder<com.sciatta.openmall.search.pojo.po.Item>()
+                        .setPageNumber(page)
+                        .setPageSize(pageSize)
+                        .setEnv(PagedContext.Env.ES)
+                        .build();
         
         List<ItemDTO> itemDTOList = itemService.querySearchItems(keywords, sort, pagedContext);
         
@@ -102,7 +107,7 @@ public class ItemController {
             @RequestParam @NotBlank(message = "商品排序不能为空") String sort,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
-        PagedContext pagedContext = new PagedContext.Builder()
+        PagedContext<Item> pagedContext = new PagedContext.Builder<Item>()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();

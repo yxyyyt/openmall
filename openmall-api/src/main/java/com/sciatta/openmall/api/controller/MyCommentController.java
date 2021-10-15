@@ -8,6 +8,7 @@ import com.sciatta.openmall.api.pojo.vo.OrderItemVO;
 import com.sciatta.openmall.api.support.validate.ValidList;
 import com.sciatta.openmall.common.JSONResult;
 import com.sciatta.openmall.common.enums.YesOrNo;
+import com.sciatta.openmall.dao.pojo.po.ext.ItemComment;
 import com.sciatta.openmall.service.ItemService;
 import com.sciatta.openmall.service.OrderService;
 import com.sciatta.openmall.service.pojo.dto.ItemCommentDTO;
@@ -83,7 +84,7 @@ public class MyCommentController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         
-        PagedContext pagedContext = new PagedContext.Builder()
+        PagedContext<ItemComment> pagedContext = new PagedContext.Builder<ItemComment>()
                 .setPageNumber(page)
                 .setPageSize(pageSize)
                 .build();

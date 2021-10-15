@@ -50,10 +50,11 @@ public class MyOrderController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         
-        PagedContext pagedContext = new PagedContext.Builder()
-                .setPageNumber(page)
-                .setPageSize(pageSize)
-                .build();
+        PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext =
+                new PagedContext.Builder<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus>()
+                        .setPageNumber(page)
+                        .setPageSize(pageSize)
+                        .build();
         
         List<OrderStatusDTO> orderStatusDTOList = orderService.queryOrdersTrend(userId, pagedContext);
         
@@ -69,10 +70,11 @@ public class MyOrderController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         
-        PagedContext pagedContext = new PagedContext.Builder()
-                .setPageNumber(page)
-                .setPageSize(pageSize)
-                .build();
+        PagedContext<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus> pagedContext =
+                new PagedContext.Builder<com.sciatta.openmall.dao.pojo.po.ext.OrderStatus>()
+                        .setPageNumber(page)
+                        .setPageSize(pageSize)
+                        .build();
         
         List<OrderStatusDTO> orderStatusDTOList = orderService.queryOrders(userId, orderStatus, pagedContext);
         
