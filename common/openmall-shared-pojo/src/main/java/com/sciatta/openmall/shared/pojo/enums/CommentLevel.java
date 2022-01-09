@@ -1,4 +1,4 @@
-package com.sciatta.openmall.common.enums;
+package com.sciatta.openmall.shared.pojo.enums;
 
 /**
  * Created by yangxiaoyu on 2021/8/5<br>

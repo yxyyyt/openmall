@@ -1,18 +1,19 @@
-package com.sciatta.openmall.common.enums;
+package com.sciatta.openmall.shared.pojo.enums;
 
 /**
  * Created by yangxiaoyu on 2021/7/31<br>
  * All Rights Reserved(C) 2017 - 2021 SCIATTA<br><p/>
- * YesOrNo
+ * Sex
  */
-public enum YesOrNo {
-    NO(0, "否"),
-    YES(1, "是");
+public enum Sex {
+    woman(0, "女"),
+    man(1, "男"),
+    secret(2, "保密");
     
     public final Integer type;
     public final String value;
     
-    YesOrNo(Integer type, String value) {
+    Sex(Integer type, String value) {
         this.type = type;
         this.value = value;
     }

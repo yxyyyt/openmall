@@ -8,23 +8,16 @@
     <artifactId>openmall</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+
     <modules>
-        <module>openmall-common</module>
+        <module>common/openmall-common</module>
+        <module>common/openmall-shared-pojo</module>
+        <module>common/openmall-web-component</module>
         <module>openmall-api</module>
         <module>openmall-dao</module>
         <module>openmall-service</module>
         <module>openmall-search</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <id>aliyun</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <properties>
         <revision>1.0-SNAPSHOT</revision>
