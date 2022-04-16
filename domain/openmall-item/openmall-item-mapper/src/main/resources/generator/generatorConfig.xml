@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator/generator.properties"/>
+
+    <context id="MysqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 为模型生成序列化方法 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 为生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!-- 生成mapper.xml时覆盖原文件 -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+
+        <!-- 自定义生成pojo的代码注释 -->
+        <commentGenerator type="com.sciatta.openmall.mapper.mbg.CommentGenerator">
+            <!-- 是否去除自动生成的注释 -->
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+            <property name="addRemarkComments" value="false"/>
+        </commentGenerator>
+
+        <!-- 配置数据库连接 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        userId="${jdbc.userId}"
+                        password="${jdbc.password}">
+            <!-- 解决mysql驱动升级到8.0后不生成指定数据库代码的问题 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- POJO目录 -->
+        <javaModelGenerator targetPackage="com.sciatta.openmall.item.pojo.po.mbg"
+                            targetProject="domain/openmall-item/openmall-item-pojo/src/main/java"/>
+        <!-- mapper.xml目录 -->
+        <sqlMapGenerator targetPackage="mapper.mbg"
+                         targetProject="domain/openmall-item/openmall-item-mapper/src/main/resources"/>
+        <!-- mapper接口目录 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sciatta.openmall.item.mapper.mbg"
+                             targetProject="domain/openmall-item/openmall-item-mapper/src/main/java"/>
+
+        <!-- 商品表 -->
+        <table tableName="items"
+               domainObjectName="Item"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+
+        <!-- 商品评价表 -->
+        <table tableName="item_comments"
+               domainObjectName="ItemComment"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+
+        <!-- 商品图片表 -->
+        <table tableName="item_images"
+               domainObjectName="ItemImage"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+
+        <!-- 商品参数表 -->
+        <table tableName="item_params"
+               domainObjectName="ItemParam"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+
+        <!-- 商品规格表 -->
+        <table tableName="item_specs"
+               domainObjectName="ItemSpec"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+
+        <!-- 商品分类表 -->
+        <table tableName="item_categories"
+               domainObjectName="ItemCategory"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+    </context>
+</generatorConfiguration>

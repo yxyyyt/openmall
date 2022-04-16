@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.order.mapper.ext.OrderStatusMapper">
+    <!-- 统一代码中使用的模型-->
+    <resultMap id="ResultMap" extends="com.sciatta.openmall.order.mapper.mbg.OrderStatusMapper.BaseResultMap"
+               type="com.sciatta.openmall.order.pojo.po.ext.OrderStatus">
+    </resultMap>
+
+    <resultMap id="ResultMapWithOrderItem" extends="ResultMap"
+               type="com.sciatta.openmall.order.pojo.po.ext.OrderStatus">
+
+        <!-- order -->
+        <result column="payMethod" property="payMethod"/>
+        <result column="realPayAmount" property="realPayAmount"/>
+        <result column="postAmount" property="postAmount"/>
+        <result column="isComment" property="isComment"/>
+
+        <!-- OrderItem -->
+        <collection property="subOrderItemList" select="selectOrderItems" column="order_id"
+                    ofType="com.sciatta.openmall.order.pojo.po.mbg.OrderItem">
+            <result column="itemId" property="itemId"/>
+            <result column="itemName" property="itemName"/>
+            <result column="itemImg" property="itemImg"/>
+            <result column="itemSpecId" property="itemSpecId"/>
+            <result column="itemSpecName" property="itemSpecName"/>
+            <result column="buyCounts" property="buyCounts"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMap">
+        select
+        <include refid="com.sciatta.openmall.order.mapper.mbg.OrderStatusMapper.Base_Column_List" />
+        from order_statuses
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectOrderStatusCounts" parameterType="com.sciatta.openmall.order.pojo.query.OrderStatusCountsQuery"
+            resultType="Integer">
+        SELECT count(1) FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE o.user_id = #{userId,jdbcType=VARCHAR} AND os.order_status = #{orderStatus,jdbcType=INTEGER}
+        <if test="isComment != null">
+            and o.is_comment = #{isComment,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectOrderStatus" parameterType="com.sciatta.openmall.order.pojo.query.OrderStatusQuery"
+            resultMap="ResultMap">
+        SELECT
+        os.order_id,
+        os.order_status,
+        os.created_time,
+        os.pay_time,
+        os.deliver_time,
+        os.success_time,
+        os.close_time,
+        os.comment_time
+        FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE
+        o.user_id = #{userId,jdbcType=VARCHAR}
+        <if test="isDelete != null">
+            AND o.is_delete = #{isDelete,jdbcType=INTEGER}
+        </if>
+        <if test="orderStatuses != null and orderStatuses.size() > 0">
+            AND os.order_status IN
+            <foreach collection="orderStatuses" index="index" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+        ORDER BY os.order_id DESC
+    </select>
+
+    <select id="selectOrderStatusWithOrderItem" parameterType="com.sciatta.openmall.order.pojo.query.OrderStatusQuery"
+            resultMap="ResultMapWithOrderItem">
+        SELECT
+        o.id as order_id,
+        o.created_time,
+        o.pay_method as payMethod,
+        o.real_pay_amount as realPayAmount,
+        o.post_amount as postAmount,
+        o.is_comment as isComment,
+        os.order_status
+        FROM orders o
+        LEFT JOIN order_statuses os on o.id = os.order_id
+        WHERE
+        o.user_id = #{userId,jdbcType=VARCHAR}
+        <if test="isDelete != null">
+            AND o.is_delete = #{isDelete,jdbcType=INTEGER}
+        </if>
+        <if test="orderStatuses != null and orderStatuses.size() > 0">
+            AND os.order_status IN
+            <foreach collection="orderStatuses" index="index" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+        ORDER BY o.updated_time ASC
+    </select>
+
+    <select id="selectOrderItems" parameterType="String" resultType="com.sciatta.openmall.order.pojo.po.mbg.OrderItem">
+        select
+        oi.id,
+        oi.order_id as orderId,
+        oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_id as itemSpecId,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+        from order_items oi
+        where oi.order_id = #{order_id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByPrimaryKeyAndOriginalOrderStatusSelective">
+        update order_statuses
+        <set>
+            <if test="orderStatus.orderStatus != null">
+                order_status = #{orderStatus.orderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus.createdTime != null">
+                created_time = #{orderStatus.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.payTime != null">
+                pay_time = #{orderStatus.payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.deliverTime != null">
+                deliver_time = #{orderStatus.deliverTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.successTime != null">
+                success_time = #{orderStatus.successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.closeTime != null">
+                close_time = #{orderStatus.closeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus.commentTime != null">
+                comment_time = #{orderStatus.commentTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR} and order_status =
+        #{originalOrderStatus,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

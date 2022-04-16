@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.item.mapper.ext.ItemCommentMapper">
+
+    <resultMap id="ResultMapWithItemImage"
+               extends="com.sciatta.openmall.item.mapper.mbg.ItemCommentMapper.BaseResultMap"
+               type="com.sciatta.openmall.item.pojo.po.ext.ItemComment">
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+
+    <select id="selectItemComments" resultMap="ResultMapWithItemImage">
+        SELECT
+        ic.user_id,
+        ic.comment_level,
+        ic.content,
+        ic.item_spec_name,
+        ic.created_time
+        FROM
+        item_comments ic
+        WHERE ic.item_id = #{itemId,jdbcType=VARCHAR}
+        <if test="level != null">
+            AND ic.comment_level = #{level,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectCommentCountsByItemIdAndLevel" resultType="Integer">
+        SELECT count(1)
+        FROM
+        item_comments ic
+        WHERE ic.item_id = #{itemId,jdbcType=VARCHAR} AND ic.comment_level = #{level,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertBatch">
+        insert into item_comments (id, user_id, item_id,
+        item_name, item_spec_id, item_spec_name,
+        comment_level, content, created_time,
+        updated_time)
+        values
+        <foreach collection="itemCommentList" item="itemComment" index="index" separator=",">
+            (
+            #{itemComment.id},
+            #{itemComment.userId},
+            #{itemComment.itemId},
+            #{itemComment.itemName},
+            #{itemComment.itemSpecId},
+            #{itemComment.itemSpecName},
+            #{itemComment.commentLevel},
+            #{itemComment.content},
+            #{itemComment.createdTime},
+            #{itemComment.updatedTime}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectItemCommentsByUserId" resultMap="ResultMapWithItemImage">
+        SELECT
+        ic.id,
+        ic.user_id,
+        ic.content,
+        ic.created_time,
+        ic.item_id,
+        ic.item_name,
+        ic.item_spec_name,
+        ii.url
+        FROM
+        item_comments ic
+        LEFT JOIN item_images ii ON ic.item_id = ii.item_id
+        WHERE ic.user_id = #{userId} AND ii.is_main = 1
+        ORDER BY ic.created_time desc
+    </select>
+</mapper>

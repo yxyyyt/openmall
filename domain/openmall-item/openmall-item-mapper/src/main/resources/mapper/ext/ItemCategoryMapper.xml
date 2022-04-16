@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.item.mapper.ext.ItemCategoryMapper">
+
+    <resultMap id="ResultMap" type="com.sciatta.openmall.item.pojo.po.ext.ItemCategory">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="parentId" jdbcType="INTEGER" property="parentId"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo" />
+        <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+        <result column="catImage" jdbcType="VARCHAR" property="catImage" />
+        <result column="bgColor" jdbcType="VARCHAR" property="bgColor" />
+        <collection property="subCategories" ofType="com.sciatta.openmall.item.pojo.po.ext.ItemCategory">
+            <id column="subId" jdbcType="INTEGER" property="id"/>
+            <result column="subName" jdbcType="VARCHAR" property="name"/>
+            <result column="subType" jdbcType="INTEGER" property="type"/>
+            <result column="subParentId" jdbcType="INTEGER" property="parentId"/>
+        </collection>
+        <collection property="items" ofType="com.sciatta.openmall.item.pojo.po.ext.Item">
+            <id column="itemId" jdbcType="VARCHAR" property="id"/>
+            <result column="itemName" jdbcType="VARCHAR" property="itemName"/>
+            <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="itemUrl" jdbcType="VARCHAR" property="url"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByType" resultMap="ResultMap">
+        select
+        <include refid="com.sciatta.openmall.item.mapper.mbg.ItemCategoryMapper.Base_Column_List"/>
+        from item_categories
+        where type = #{type,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSubCategoriesByParentId" resultMap="ResultMap">
+        SELECT
+        p.id as id,
+        p.`name` as `name`,
+        p.type as type,
+        p.parent_id as parentId,
+        c.id as subId,
+        c.`name` as subName,
+        c.type as subType,
+        c.parent_id as subParentId
+        FROM item_categories p
+        LEFT JOIN item_categories c on p.id = c.parent_id
+        WHERE
+        p.parent_id = #{parentId}
+    </select>
+
+    <select id="selectSixItemsByParentId" resultMap="ResultMap">
+        SELECT
+        c.id as id,
+        c.`name` as `name`,
+        c.slogan as slogan,
+        c.cat_image as catImage,
+        c.bg_color as bgColor,
+        i.id as itemId,
+        i.item_name as itemName,
+        ii.url as itemUrl,
+        i.created_time as createdTime
+        FROM item_categories c
+        LEFT JOIN items i ON c.id = i.root_cat_id
+        LEFT JOIN item_images ii ON i.id = ii.item_id
+        WHERE c.type = 1 AND i.root_cat_id = #{parentId} AND ii.is_main = 1
+        ORDER BY i.created_time DESC
+        LIMIT 0,6
+    </select>
+
+</mapper>

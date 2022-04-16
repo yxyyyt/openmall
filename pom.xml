@@ -11,12 +11,21 @@
 
     <modules>
         <module>common/openmall-common</module>
-        <module>common/openmall-shared-pojo</module>
-        <module>common/openmall-web-component</module>
-        <module>openmall-api</module>
-        <module>openmall-dao</module>
-        <module>openmall-service</module>
-        <module>openmall-search</module>
+        <module>common/openmall-mapper</module>
+        <module>common/openmall-pojo</module>
+        <module>common/openmall-service</module>
+        <module>common/openmall-web</module>
+
+        <module>service/openmall-cache</module>
+
+        <module>domain/openmall-user</module>
+        <module>domain/openmall-item</module>
+        <module>domain/openmall-order</module>
+        <module>domain/openmall-cart</module>
+        <module>domain/openmall-portlet</module>
+        <module>domain/openmall-search</module>
+
+        <module>platform/eureka-server</module>
     </modules>
 
     <properties>
@@ -27,48 +36,29 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
 
-        <spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.1.5.RELEASE</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>Greenwich.SR1</spring-cloud-dependencies.version>
         <mybatis.version>2.1.0</mybatis.version>
-        <pagehelper.version>1.2.12</pagehelper.version>
-        <commons-io.version>1.3.2</commons-io.version>
         <mybatis-generator.version>1.4.0</mybatis-generator.version>
+        <pagehelper.version>1.2.12</pagehelper.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <idworker-client.version>1.5</idworker-client.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- openmall -->
-            <dependency>
-                <groupId>com.sciatta.openmall</groupId>
-                <artifactId>openmall-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sciatta.openmall</groupId>
-                <artifactId>openmall-dao</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sciatta.openmall</groupId>
-                <artifactId>openmall-search</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sciatta.openmall</groupId>
-                <artifactId>openmall-service</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sciatta.openmall</groupId>
-                <artifactId>openmall-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -79,77 +69,15 @@
                 <version>${mybatis.version}</version>
             </dependency>
             <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper-spring-boot-starter</artifactId>
-                <version>${mapper.version}</version>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>${mybatis-generator.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-core</artifactId>
-                <version>${mybatis-generator.version}</version>
-            </dependency>
-            <!-- mapstruct -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-jdk8</artifactId>
-                <version>${mapstruct.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>${mapstruct.version}</version>
-            </dependency>
-            <!-- idworker -->
-            <dependency>
-                <groupId>com.github.bingoohuang</groupId>
-                <artifactId>idworker-client</artifactId>
-                <version>${idworker-client.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <!-- spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <!-- mapstruct -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-        </dependency>
-        <!-- idworker -->
-        <dependency>
-            <groupId>com.github.bingoohuang</groupId>
-            <artifactId>idworker-client</artifactId>
-        </dependency>
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-    </dependencies>
 </project>

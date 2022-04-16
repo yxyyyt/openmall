@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 配置文件每隔1分钟检查更新 -->
+<!-- scanPeriod：可以设置单位milliseconds, seconds, minutes，hours -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- 定义参数常量，便于后面直接用${name}来获取value值 -->
+    <!-- 引用spring boot参数 -->
+    <springProperty name="logPattern" source="openmall.log.pattern"
+                    defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50} - %msg%n"/>
+    <springProperty name="logFilePath" source="openmall.log.file-path" defaultValue="${user.home}/openmall/logs/user"/>
+    <springProperty name="logMaxHistory" source="openmall.log.max-history" defaultValue="30"/>
+    <springProperty name="logMaxFileSize" source="openmall.log.max-file-size" defaultValue="10MB"/>
+    <springProperty name="logLevel" source="openmall.log.level" defaultValue="debug"/>
+
+
+    <!-- 日志输出到控制台 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 过去使用layout，现在都推荐使用encoder
+             作用一：将日志信息转换（格式化）为字符串
+             作用二：然后写入到文件中 -->
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志输出到文件 -->
+    <!-- 打印debug级别日志的设置 -->
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 例如当天，也就是今天是2020-2-10，那么在这天生成的日志文件路径为${log.filePath}/debug.log
+             接着到了明天，也就是2019-2-11，这天生成的日志文件路径为${log.filePath}/debug.log，
+             但昨天2020-2-10，生成的日志文件路径就变为${log.filePath}/debug/debug.2020-2-10.0.log.gz（压缩文件） -->
+
+        <!-- 当天生成的日志文件的路径 -->
+        <file>${logFilePath}/debug.log</file>
+        <!-- 设置基于时间（每天）的滚动策略，也就是将日志内容按照日期来写入到相应的文件中 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 当天之前的每天生成的日志文件的路径，%i 索引从0开始 -->
+            <fileNamePattern>${logFilePath}/debug/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 最大历史保存文件的数量，只保存最近30天的日志文件，超出的会被删除-->
+            <maxHistory>${logMaxHistory}</maxHistory>
+            <!-- 按大小分割同一天的日志 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logMaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+        <!-- 过滤掉非debug级别的信息 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+            <onMatch>ACCEPT</onMatch>
+            <!-- 拒绝写入所有与level不匹配的日志信息 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 日志输出到文件 -->
+    <!-- 打印info级别日志的设置 -->
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/info/info.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>${logMaxHistory}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logMaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 日志输出到文件 -->
+    <!-- 打印error级别日志的设置 -->
+    <appender name="errorAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/error/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>${logMaxHistory}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logMaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 日志输出到文件 -->
+    <!-- 打印所有级别日志的设置 -->
+    <appender name="allAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/all/all.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>${logMaxHistory}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logMaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- level可选值：ALL < TRACE < DEBUG < INFO < WARN < ERROR < OFF -->
+    <!-- 不设置additivity属性，或者设置additivity = true的logger，继承root的appender，不继承level -->
+    <!-- root logger是所有logger的父级 -->
+
+    <!-- 开发环境配置 -->
+    <!-- 将所有大于等于指定级别的日志输出到控制台，按debug、info和error级别分别输出到不同的文件 -->
+    <springProfile name="dev">
+        <root level="${logLevel}">
+            <appender-ref ref="console"/>
+<!--            <appender-ref ref="debugAppender"/>-->
+<!--            <appender-ref ref="infoAppender"/>-->
+<!--            <appender-ref ref="errorAppender"/>-->
+        </root>
+    </springProfile>
+
+    <!-- 测试环境配置 -->
+    <springProfile name="dev">
+        <!-- 应用日志按debug、info和error级别分别输出到不同的文件，同时大于等于指定级别的日志也会输出到root的appender -->
+        <logger name="com.sciatta.openmall" level="${logLevel}" additivity="true">
+            <!-- 表示按照debugAppender的设置去打印日志 -->
+            <appender-ref ref="debugAppender"/>
+            <!-- 表示按照infoAppender的设置去打印日志 -->
+            <appender-ref ref="infoAppender"/>
+            <!-- 表示按照errorAppender的设置去打印日志 -->
+            <appender-ref ref="errorAppender"/>
+        </logger>
+
+        <!-- 包含所有大于等于指定级别的日志 -->
+        <root level="${logLevel}">
+            <appender-ref ref="allAppender"/>
+        </root>
+    </springProfile>
+</configuration>

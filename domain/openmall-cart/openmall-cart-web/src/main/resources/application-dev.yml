@@ -1,0 +1,32 @@
+server:
+  port: 8030
+
+spring:
+  redis:
+    host: 192.168.80.8
+    password: rain
+    database: 0
+    port: 6379
+  elasticsearch:
+    rest:
+      uris: http://192.168.80.8:9200
+
+# 开启所有actuator-endpoint
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'  # include: health, info, xxxx
+  security:
+    enabled: false
+
+openmall:
+  log:
+    file-path: D:/data/openmall/logs/cart
+    level: debug
+  upload:
+    image-user-face-location: D:/data/openmall/images/faces
+    image-server-url: http://localhost:8088/faces

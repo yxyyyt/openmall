@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sciatta.openmall.item.mapper.ext.ItemImageMapper">
+
+    <select id="selectByItemId" resultMap="com.sciatta.openmall.item.mapper.mbg.ItemImageMapper.BaseResultMap">
+        select
+        <include refid="com.sciatta.openmall.item.mapper.mbg.ItemImageMapper.Base_Column_List"/>
+        from item_images
+        where item_id = #{itemId,jdbcType=VARCHAR}
+    </select>
+</mapper>
