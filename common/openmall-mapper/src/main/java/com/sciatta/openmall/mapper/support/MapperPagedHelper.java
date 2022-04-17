@@ -29,14 +29,13 @@ public class MapperPagedHelper {
         PageHelper.startPage(pageNum, pageSize);
     }
 
-    public static PagedGridResult endPage(List<?> mapperRows, List<?> converterRows) {
-        PageInfo<?> pageInfo = new PageInfo<>(mapperRows);
+    public static <S, D> PagedGridResult<D> endPage(List<S> mapperRows, List<D> converterRows) {
+        PageInfo<S> pageInfo = new PageInfo<>(mapperRows);
 
-        return PagedGridResult.builder()
-                .pageNumber(pageInfo.getPageNum())
-                .rows(converterRows)
-                .pages(pageInfo.getPages())
-                .total(pageInfo.getTotal())
-                .build();
+        return new PagedGridResult<D>()
+                .setPageNumber(pageInfo.getPageNum())
+                .setRows(converterRows)
+                .setPages(pageInfo.getPages())
+                .setTotal(pageInfo.getTotal());
     }
 }

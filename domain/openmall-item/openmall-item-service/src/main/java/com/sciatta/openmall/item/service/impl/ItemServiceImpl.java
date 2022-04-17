@@ -95,7 +95,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedGridResult queryItemComments(ItemCommentQuery itemCommentQuery, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<ItemCommentDTO> queryItemComments(ItemCommentQuery itemCommentQuery, Integer pageNumber, Integer pageSize) {
 
         MapperPagedHelper.startPage(pageNumber, pageSize);
 
@@ -112,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedGridResult queryUserComments(String userId, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<ItemCommentDTO> queryUserComments(String userId, Integer pageNumber, Integer pageSize) {
 
         MapperPagedHelper.startPage(pageNumber, pageSize);
 
@@ -175,7 +175,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public PagedGridResult searchItemsByKeywords(String keywords, String sort, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<ItemDTO> searchItemsByKeywords(String keywords, String sort, Integer pageNumber, Integer pageSize) {
         MapperPagedHelper.startPage(pageNumber, pageSize);
 
         List<Item> itemList = itemMapper.searchItemsByKeywords(keywords, sort);
@@ -186,7 +186,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public PagedGridResult searchItemsByCatId(Integer catId, String sort, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<ItemDTO> searchItemsByCatId(Integer catId, String sort, Integer pageNumber, Integer pageSize) {
         MapperPagedHelper.startPage(pageNumber, pageSize);
 
         List<Item> itemList = itemMapper.searchItemsByCatId(catId, sort);

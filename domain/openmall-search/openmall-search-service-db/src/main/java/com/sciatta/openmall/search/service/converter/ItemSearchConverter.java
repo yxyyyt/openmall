@@ -7,8 +7,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,42 +18,12 @@ import java.util.List;
 public abstract class ItemSearchConverter {
     public static ItemSearchConverter INSTANCE = Mappers.getMapper(ItemSearchConverter.class);
 
-    public ItemSearchDTO toItemSearchDTO(HashMap<String, ?> itemDTO) {
-        if (itemDTO == null) {
-            return null;
-        }
+    @Mappings({
+            @Mapping(source = "id", target = "itemId"),
+            @Mapping(source = "url", target = "imgUrl"),
+            @Mapping(source = "priceDiscount", target = "price")
+    })
+    public abstract ItemSearchDTO toItemSearchDTO(ItemDTO itemDTO);
 
-        ItemSearchDTO itemSearchDTO = new ItemSearchDTO();
-
-        if (itemDTO.containsKey("id")) {
-            itemSearchDTO.setItemId((String) itemDTO.get("id"));
-        }
-        if (itemDTO.containsKey("url")) {
-            itemSearchDTO.setImgUrl((String) itemDTO.get("url"));
-        }
-        if (itemDTO.containsKey("itemName")) {
-            itemSearchDTO.setItemName((String) itemDTO.get("itemName"));
-        }
-        if (itemDTO.containsKey("priceDiscount")) {
-            itemSearchDTO.setPrice((Integer) itemDTO.get("priceDiscount"));
-        }
-        if (itemDTO.containsKey("sellCounts")) {
-            itemSearchDTO.setSellCounts((Integer) itemDTO.get("sellCounts"));
-        }
-
-        return itemSearchDTO;
-    }
-
-    public List<ItemSearchDTO> toItemSearchDTO(List<HashMap<String, ?>> itemDTOList) {
-        if (itemDTOList == null) {
-            return null;
-        }
-
-        List<ItemSearchDTO> list = new ArrayList<ItemSearchDTO>(itemDTOList.size());
-        for (HashMap<String, ?> hashMap : itemDTOList) {
-            list.add(toItemSearchDTO(hashMap));
-        }
-
-        return list;
-    }
+    public abstract List<ItemSearchDTO> toItemSearchDTO(List<ItemDTO> itemDTOList);
 }

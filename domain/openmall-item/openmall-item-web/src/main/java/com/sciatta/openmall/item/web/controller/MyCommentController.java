@@ -4,6 +4,7 @@ import com.sciatta.openmall.common.enums.YesOrNo;
 import com.sciatta.openmall.item.api.ItemService;
 import com.sciatta.openmall.item.pojo.dto.ItemCommentDTO;
 import com.sciatta.openmall.item.pojo.query.ItemCommentQuery;
+import com.sciatta.openmall.item.pojo.vo.ItemCommentUrlVO;
 import com.sciatta.openmall.item.service.client.OrderServiceFeignClient;
 import com.sciatta.openmall.item.web.converter.ItemCommentConverter;
 import com.sciatta.openmall.item.web.converter.OrderConverter;
@@ -81,11 +82,14 @@ public class MyCommentController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
 
-        PagedGridResult pagedGridResult = itemService.queryUserComments(userId, page, pageSize);
+        PagedGridResult<ItemCommentDTO> pagedGridResult = itemService.queryUserComments(userId, page, pageSize);
 
-        pagedGridResult.setRows(
-                ItemCommentConverter.INSTANCE.toItemCommentUrlVO((List<ItemCommentDTO>)pagedGridResult.getRows()));
-
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(
+                new PagedGridResult<ItemCommentUrlVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(ItemCommentConverter.INSTANCE.toItemCommentUrlVO(pagedGridResult.getRows()))
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
+        );
     }
 }

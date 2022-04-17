@@ -15,6 +15,7 @@
         <module>openmall-search-pojo</module>
         <module>openmall-search-service-db</module>
         <module>openmall-search-web</module>
+        <module>openmall-search-service-es</module>
     </modules>
 
     <artifactId>openmall-search</artifactId>

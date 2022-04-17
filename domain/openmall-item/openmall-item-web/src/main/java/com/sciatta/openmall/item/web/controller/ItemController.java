@@ -3,6 +3,8 @@ package com.sciatta.openmall.item.web.controller;
 import com.sciatta.openmall.item.api.ItemService;
 import com.sciatta.openmall.item.pojo.dto.*;
 import com.sciatta.openmall.item.pojo.vo.ItemCommentLevelCountVO;
+import com.sciatta.openmall.item.pojo.vo.ItemCommentUserVO;
+import com.sciatta.openmall.item.pojo.vo.ItemSearchVO;
 import com.sciatta.openmall.item.pojo.vo.ItemWrapVO;
 import com.sciatta.openmall.item.web.converter.ItemConverter;
 import com.sciatta.openmall.pojo.JSONResult;
@@ -61,16 +63,19 @@ public class ItemController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
 
-        PagedGridResult pagedGridResult = itemService.queryItemComments(
-                ItemConverter.INSTANCE.toItemCommentQuery(itemId, level),
-                page,
-                pageSize);
+        PagedGridResult<ItemCommentDTO> pagedGridResult =
+                itemService.queryItemComments(
+                        ItemConverter.INSTANCE.toItemCommentQuery(itemId, level),
+                        page,
+                        pageSize);
 
-        // 转换，nickname脱敏
-        pagedGridResult.setRows(
-                ItemConverter.INSTANCE.toItemCommentUserVO((List<ItemCommentDTO>) pagedGridResult.getRows()));
-
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(
+                new PagedGridResult<ItemCommentUserVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(ItemConverter.INSTANCE.toItemCommentUserVO(pagedGridResult.getRows())) // 转换，nickname脱敏
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
+        );
     }
 
     @GetMapping("catItems")
@@ -80,10 +85,15 @@ public class ItemController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
 
-        PagedGridResult pagedGridResult = itemService.searchItemsByCatId(catId, sort, page, pageSize);
+        PagedGridResult<ItemDTO> pagedGridResult =
+                itemService.searchItemsByCatId(catId, sort, page, pageSize);
 
-        pagedGridResult.setRows(ItemConverter.INSTANCE.toItemSearchVO((List<ItemDTO>) pagedGridResult.getRows()));
-
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(
+                new PagedGridResult<ItemSearchVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(ItemConverter.INSTANCE.toItemSearchVO(pagedGridResult.getRows()))
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
+        );
     }
 }

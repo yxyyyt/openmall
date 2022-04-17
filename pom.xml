@@ -17,6 +17,7 @@
         <module>common/openmall-web</module>
 
         <module>service/openmall-cache</module>
+        <module>service/openmall-es</module>
 
         <module>domain/openmall-user</module>
         <module>domain/openmall-item</module>
@@ -36,8 +37,8 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
 
-        <spring-boot-dependencies.version>2.1.5.RELEASE</spring-boot-dependencies.version>
-        <spring-cloud-dependencies.version>Greenwich.SR1</spring-cloud-dependencies.version>
+        <spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
         <mybatis.version>2.1.0</mybatis.version>
         <mybatis-generator.version>1.4.0</mybatis-generator.version>
         <pagehelper.version>1.2.12</pagehelper.version>

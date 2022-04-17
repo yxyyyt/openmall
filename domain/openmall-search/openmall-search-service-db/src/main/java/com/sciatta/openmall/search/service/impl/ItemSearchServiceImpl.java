@@ -3,12 +3,10 @@ package com.sciatta.openmall.search.service.impl;
 import com.sciatta.openmall.item.pojo.dto.ItemDTO;
 import com.sciatta.openmall.pojo.PagedGridResult;
 import com.sciatta.openmall.search.api.ItemSearchService;
+import com.sciatta.openmall.search.pojo.dto.ItemSearchDTO;
 import com.sciatta.openmall.search.service.client.ItemServiceFeignClient;
 import com.sciatta.openmall.search.service.converter.ItemSearchConverter;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Rain on 2022/4/15<br>
@@ -24,14 +22,13 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     }
 
     @Override
-    public PagedGridResult search(String keywords, String sort, Integer pageNumber, Integer pageSize) {
-        PagedGridResult pagedGridResult = itemService.searchItemsByKeywords(keywords, sort, pageNumber, pageSize);
+    public PagedGridResult<ItemSearchDTO> search(String keywords, String sort, Integer pageNumber, Integer pageSize) {
+        PagedGridResult<ItemDTO> pagedGridResult = itemService.searchItemsByKeywords(keywords, sort, pageNumber, pageSize);
 
-        pagedGridResult.setRows(
-                ItemSearchConverter.INSTANCE.toItemSearchDTO((
-                        List<HashMap<String, ?>>) pagedGridResult.getRows())
-        );
-
-        return pagedGridResult;
+        return new PagedGridResult<ItemSearchDTO>()
+                .setPageNumber(pagedGridResult.getPageNumber())
+                .setRows(ItemSearchConverter.INSTANCE.toItemSearchDTO(pagedGridResult.getRows()))
+                .setPages(pagedGridResult.getPages())
+                .setTotal(pagedGridResult.getTotal());
     }
 }

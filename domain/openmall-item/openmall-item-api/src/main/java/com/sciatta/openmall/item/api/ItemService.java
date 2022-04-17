@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Rain on 2022/4/5<br>
@@ -33,13 +32,13 @@ public interface ItemService {
     ItemParamDTO queryItemParamByItemId(@RequestParam("itemId") String itemId);
 
     @GetMapping("pagedItemComments")
-    PagedGridResult queryItemComments(
+    PagedGridResult<ItemCommentDTO> queryItemComments(
             @RequestBody ItemCommentQuery itemCommentQuery,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize);
 
     @GetMapping("pagedUserComments")
-    PagedGridResult queryUserComments(
+    PagedGridResult<ItemCommentDTO> queryUserComments(
             @RequestParam("userId") String userId,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize);
@@ -58,14 +57,14 @@ public interface ItemService {
             @RequestBody List<ItemCommentQuery> commentList);
 
     @GetMapping("itemsByKeywords")
-    PagedGridResult searchItemsByKeywords(
+    PagedGridResult<ItemDTO> searchItemsByKeywords(
             @RequestParam("keywords") String keywords,
             @RequestParam("sort") String sort,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize);
 
     @GetMapping("itemsByCatId")
-    PagedGridResult searchItemsByCatId(
+    PagedGridResult<ItemDTO> searchItemsByCatId(
             @RequestParam("catId") Integer catId,
             @RequestParam("sort") String sort,
             @RequestParam(value = "page", required = false) Integer pageNumber,

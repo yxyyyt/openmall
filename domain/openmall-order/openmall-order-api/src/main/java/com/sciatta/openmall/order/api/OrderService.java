@@ -41,7 +41,7 @@ public interface OrderService {
     OrderStatusCountsDTO queryOrderStatusCounts(@RequestParam("userId") String userId);
 
     @GetMapping("order/trend")
-    PagedGridResult queryOrdersTrend(
+    PagedGridResult<OrderStatusDTO> queryOrdersTrend(
             @RequestParam("userId") String userId,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize);
@@ -56,7 +56,7 @@ public interface OrderService {
      * @return OrderStatusItemDTO集合
      */
     @GetMapping("order/query")
-    PagedGridResult queryOrders(
+    PagedGridResult<OrderStatusDTO> queryOrders(
             @RequestParam("userId") String userId,
             @RequestParam("orderStatus") Integer orderStatus,
             @RequestParam(value = "page", required = false) Integer pageNumber,

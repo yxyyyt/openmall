@@ -146,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedGridResult queryOrdersTrend(String userId, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<OrderStatusDTO> queryOrdersTrend(String userId, Integer pageNumber, Integer pageSize) {
 
         MapperPagedHelper.startPage(pageNumber, pageSize);
 
@@ -168,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedGridResult queryOrders(String userId, Integer orderStatus, Integer pageNumber, Integer pageSize) {
+    public PagedGridResult<OrderStatusDTO> queryOrders(String userId, Integer orderStatus, Integer pageNumber, Integer pageSize) {
 
         MapperPagedHelper.startPage(pageNumber, pageSize);
 

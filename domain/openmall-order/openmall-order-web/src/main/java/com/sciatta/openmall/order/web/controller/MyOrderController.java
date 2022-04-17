@@ -5,6 +5,7 @@ import com.sciatta.openmall.order.pojo.dto.OrderDTO;
 import com.sciatta.openmall.order.pojo.dto.OrderStatusCountsDTO;
 import com.sciatta.openmall.order.pojo.dto.OrderStatusDTO;
 import com.sciatta.openmall.order.pojo.query.OrderStatusCountsVO;
+import com.sciatta.openmall.order.pojo.query.OrderStatusVO;
 import com.sciatta.openmall.order.web.converter.OrderConverter;
 import com.sciatta.openmall.pojo.JSONResult;
 import com.sciatta.openmall.pojo.PagedGridResult;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * Created by yangxiaoyu on 2021/8/11<br>
@@ -49,12 +49,15 @@ public class MyOrderController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
 
-        PagedGridResult pagedGridResult = orderService.queryOrdersTrend(userId, page, pageSize);
+        PagedGridResult<OrderStatusDTO> pagedGridResult = orderService.queryOrdersTrend(userId, page, pageSize);
 
-        pagedGridResult.setRows(OrderConverter.INSTANCE.toOrderStatusVO(
-                (List<OrderStatusDTO>) pagedGridResult.getRows()));
-
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(
+                new PagedGridResult<OrderStatusVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(OrderConverter.INSTANCE.toOrderStatusVO(pagedGridResult.getRows()))
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
+        );
     }
 
     @PostMapping("query")
@@ -63,12 +66,15 @@ public class MyOrderController {
             @RequestParam @NotNull(message = "订单状态不能为空") Integer orderStatus,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
-        PagedGridResult pagedGridResult = orderService.queryOrders(userId, orderStatus, page, pageSize);
+        PagedGridResult<OrderStatusDTO> pagedGridResult = orderService.queryOrders(userId, orderStatus, page, pageSize);
 
-        pagedGridResult.setRows(OrderConverter.INSTANCE.toOrderStatusVO(
-                (List<OrderStatusDTO>) pagedGridResult.getRows()));
-
-        return JSONResult.success(pagedGridResult);
+        return JSONResult.success(
+                new PagedGridResult<OrderStatusVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(OrderConverter.INSTANCE.toOrderStatusVO(pagedGridResult.getRows()))
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
+        );
     }
 
     @PostMapping("confirmReceive")
