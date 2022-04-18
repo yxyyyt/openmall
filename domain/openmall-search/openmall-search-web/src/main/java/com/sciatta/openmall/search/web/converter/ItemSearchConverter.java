@@ -1,6 +1,5 @@
 package com.sciatta.openmall.search.web.converter;
 
-import com.sciatta.openmall.item.pojo.dto.ItemDTO;
 import com.sciatta.openmall.search.pojo.dto.ItemSearchDTO;
 import com.sciatta.openmall.search.pojo.vo.ItemSearchVO;
 import org.mapstruct.Mapper;

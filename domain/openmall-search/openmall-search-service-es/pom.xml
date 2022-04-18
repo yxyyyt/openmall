@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>openmall-search-web</artifactId>
+    <artifactId>openmall-search-service-es</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,21 +20,17 @@
         <!-- sciatta -->
         <dependency>
             <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-web</artifactId>
+            <artifactId>openmall-service</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- 基于DB -->
-        <!--
         <dependency>
             <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-search-service-db</artifactId>
+            <artifactId>openmall-search-api</artifactId>
             <version>${revision}</version>
         </dependency>
-        -->
-        <!-- 基于ES -->
         <dependency>
             <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-search-service-es</artifactId>
+            <artifactId>openmall-es</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

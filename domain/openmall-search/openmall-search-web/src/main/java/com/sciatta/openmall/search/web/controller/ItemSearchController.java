@@ -4,6 +4,7 @@ import com.sciatta.openmall.pojo.JSONResult;
 import com.sciatta.openmall.pojo.PagedGridResult;
 import com.sciatta.openmall.search.api.ItemSearchService;
 import com.sciatta.openmall.search.pojo.dto.ItemSearchDTO;
+import com.sciatta.openmall.search.pojo.vo.ItemSearchVO;
 import com.sciatta.openmall.search.web.converter.ItemSearchConverter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * Created by Rain on 2022/4/14<br>
@@ -36,12 +36,15 @@ public class ItemSearchController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
 
-        PagedGridResult pagedGridResult = itemSearchService.search(keywords, sort, page, pageSize);
+        PagedGridResult<ItemSearchDTO> pagedGridResult = itemSearchService.search(keywords, sort, page, pageSize);
 
-        pagedGridResult.setRows(
-                ItemSearchConverter.INSTANCE.toItemSearchVO((List<ItemSearchDTO>) pagedGridResult.getRows())
+
+        return JSONResult.success(
+                new PagedGridResult<ItemSearchVO>()
+                        .setPageNumber(pagedGridResult.getPageNumber())
+                        .setRows(ItemSearchConverter.INSTANCE.toItemSearchVO(pagedGridResult.getRows()))
+                        .setPages(pagedGridResult.getPages())
+                        .setTotal(pagedGridResult.getTotal())
         );
-
-        return JSONResult.success(pagedGridResult);
     }
 }

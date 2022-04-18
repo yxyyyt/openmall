@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>openmall-search</artifactId>
+        <artifactId>openmall</artifactId>
         <groupId>com.sciatta.openmall</groupId>
         <version>${revision}</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>openmall-search-web</artifactId>
+    <artifactId>openmall-es</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,22 +21,18 @@
         <!-- sciatta -->
         <dependency>
             <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-web</artifactId>
+            <artifactId>openmall-common</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- 基于DB -->
-        <!--
         <dependency>
             <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-search-service-db</artifactId>
+            <artifactId>openmall-pojo</artifactId>
             <version>${revision}</version>
         </dependency>
-        -->
-        <!-- 基于ES -->
+        <!-- spring -->
         <dependency>
-            <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-search-service-es</artifactId>
-            <version>${revision}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
 
