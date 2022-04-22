@@ -9,3 +9,6 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+  server:
+    use-read-only-response-cache: false # 不使用一级缓存
+    # response-cache-update-interval-ms: 3000 # 减少服务端一级缓存同步二级缓存时间，默认30000MS

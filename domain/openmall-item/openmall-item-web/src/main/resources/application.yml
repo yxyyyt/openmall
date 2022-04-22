@@ -53,3 +53,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:20000/eureka/
+    registry-fetch-interval-seconds: 3  # 默认30s刷新缓存
