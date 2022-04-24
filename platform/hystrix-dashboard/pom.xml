@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>openmall-service</artifactId>
+    <artifactId>hystrix-dashboard</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,33 +18,17 @@
     </properties>
 
     <dependencies>
-        <!-- sciatta -->
         <dependency>
-            <groupId>com.sciatta.openmall</groupId>
-            <artifactId>openmall-common</artifactId>
-            <version>${revision}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
         </dependency>
-        <!-- spring -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
-        <!-- mapstruct -->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <!-- idworker -->
-        <dependency>
-            <groupId>com.github.bingoohuang</groupId>
-            <artifactId>idworker-client</artifactId>
-            <version>${idworker-client.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
 

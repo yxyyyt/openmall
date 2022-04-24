@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: hystrix-turbine
+
+server:
+  port: 20010
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka/
+
+management:
+  server:
+    port: 20011
+
+turbine:
+  app-config: openmall-cart-service,openmall-item-service,openmall-order-service,openmall-portlet-service,openmall-search-service,openmall-user-service  # 指定了所需要监控的服务名
+  cluster-name-expression: "'default'"
+  combine-host-port: true # 将端口和hostname作为区分不同服务的条件（默认只使用Host）
+  instanceUrlSuffix:
+    default: actuator/hystrix.stream  # 从哪个actuator的端点拉取方法调用信息
+  aggregator:
+    cluster-config: default

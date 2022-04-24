@@ -8,6 +8,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * All Rights Reserved(C) 2017 - 2022 SCIATTA <br> <p/>
  * UserServiceFeignClient
  */
-@FeignClient("openmall-user-service")
+@FeignClient(value = "openmall-user-service", fallbackFactory = UserServiceFallbackFactory.class)
 public interface UserServiceFeignClient extends UserService {
 }

@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public JSONResult handleRuntimeException(RuntimeException e) {
-        log.warn("handleRuntimeException::{}", e.getMessage());
+        log.error("handleRuntimeException::{}", e.getMessage());
         return JSONResult.errorRuntimeException(e.getMessage());
     }
 }

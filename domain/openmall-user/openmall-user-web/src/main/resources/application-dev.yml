@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8000  # 服务端口
 
 spring:
   datasource:
@@ -27,9 +27,37 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'  # include: health, info, xxxx
-  security:
-    enabled: false
+        include: '*'
+
+# feign开启hystrix功能
+feign:
+  hystrix:
+    enabled: true
+
+# hystrix配置
+hystrix:
+  command:
+    default: # 全局超时配置
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # 超时时间
+            interruptOnTimeout: true # 超时以后终止线程
+            interruptOnFutureCancel: true # 取消以后终止线程
+      fallback:
+        enabled: true # 是否开启服务降级
+      circuitBreaker:
+        enabled: true # 是否开启熔断，默认开启
+        forceOpen: false  # 是否强制开启熔断开关
+        forceClosed: false  # 是否强制关闭熔断开关
+        requestVolumeThreshold: 5 # 熔断的前提条件（请求的数量），在一定的时间窗口内，请求达到5个以后，才开始进行熔断判断
+        errorThresholdPercentage: 50  # 超过50%的失败请求后，则熔断开关开启
+        sleepWindowInMilliseconds: 15000  # 当熔断开启以后，经过多少秒再进入半开状态
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 20000 # 配置时间窗口
 
 openmall:
   log:

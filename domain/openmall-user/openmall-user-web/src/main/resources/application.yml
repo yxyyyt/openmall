@@ -48,9 +48,3 @@ openmall:
     max-history: 60
     # 日志文件最大文件大小
     max-file-size: 100MB
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:20000/eureka/
-    registry-fetch-interval-seconds: 3  # 默认30s刷新缓存

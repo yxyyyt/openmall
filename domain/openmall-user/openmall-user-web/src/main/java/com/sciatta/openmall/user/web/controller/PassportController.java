@@ -1,5 +1,8 @@
 package com.sciatta.openmall.user.web.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.sciatta.openmall.user.api.UserService;
 import com.sciatta.openmall.user.pojo.dto.UserDTO;
 import com.sciatta.openmall.user.web.converter.UserConverter;
@@ -8,6 +11,7 @@ import com.sciatta.openmall.user.pojo.vo.UserCookieVO;
 import com.sciatta.openmall.user.web.support.UserCacheHelper;
 import com.sciatta.openmall.pojo.JSONResult;
 import com.sciatta.openmall.web.support.validate.IsEqual;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +27,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RestController
 @RequestMapping("passport")
+@Slf4j
 public class PassportController {
     private final UserService userService;
     private final UserCacheHelper userCacheHelper;
@@ -33,6 +38,7 @@ public class PassportController {
     }
 
     @PostMapping("login")
+    @HystrixCommand(fallbackMethod = "loginFail")
     public JSONResult login(
             @RequestBody @Validated(UserQuery.WebLogin.class) UserQuery userQuery,
             HttpServletRequest request,
@@ -98,5 +104,13 @@ public class PassportController {
 
         // 用户名没有重复
         return JSONResult.success();
+    }
+
+    // private
+
+    public JSONResult loginFail(UserQuery userQuery, HttpServletRequest request, HttpServletResponse response,
+                                Throwable throwable) {
+        log.error("{} login Fail as {} ", userQuery.getUsername(), throwable.getMessage());
+        return JSONResult.errorUsingMessage("登录失败，请重试！");
     }
 }

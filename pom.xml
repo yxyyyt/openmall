@@ -27,6 +27,8 @@
         <module>domain/openmall-search</module>
 
         <module>platform/eureka-server</module>
+        <module>platform/hystrix-turbine</module>
+        <module>platform/hystrix-dashboard</module>
     </modules>
 
     <properties>
